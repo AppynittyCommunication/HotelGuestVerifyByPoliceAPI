@@ -43,6 +43,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                         hoteldetails.HotelRegNo = obj.hotelRegNo;
                         hoteldetails.HotelName = obj.hotelName;
+                        hoteldetails.UserId = obj.userId;
                         hoteldetails.Mobile = obj.mobile;
                         hoteldetails.Email = obj.email;
                         hoteldetails.Address = obj.address;
@@ -61,7 +62,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                         result.code = 200;
                         result.status = "success";
-                        result.message = "Registration Details Save Successfully Done";
+                        result.message = "Registration Details Saved Successfully!";
                         return result;
                     }
                     else

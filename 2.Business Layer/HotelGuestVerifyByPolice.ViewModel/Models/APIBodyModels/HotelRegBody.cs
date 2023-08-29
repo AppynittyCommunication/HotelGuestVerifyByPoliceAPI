@@ -9,7 +9,9 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIBodyModels
     public class HotelRegBody
     {
         public string? hotelName { get; set; }
-        public string? hotelRegNo { get; set; }
+        public string hotelRegNo { get; set; } = null!;
+
+        public string? userId { get; set; }
         public string? mobile { get; set; }
         public string? email { get; set; }
         public string? address { get; set; }
