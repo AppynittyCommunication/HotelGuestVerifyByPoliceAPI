@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelGuestVerifyByPoliceAPI", "HotelGuestVerifyByPoliceAPI\HotelGuestVerifyByPoliceAPI.csproj", "{9C6D4489-697E-4FFF-936C-41AB8936C69E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelGuestVerifyByPoliceAPI", "HotelGuestVerifyByPoliceAPI\HotelGuestVerifyByPoliceAPI.csproj", "{9C6D4489-697E-4FFF-936C-41AB8936C69E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelGuestVerifyByPolice.DataContext", "3.Data Access Layer\HotelGuestVerifyByPolice.DataContext\HotelGuestVerifyByPolice.DataContext.csproj", "{4F2DA342-487E-47C8-9ED4-4BC67EB76614}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelGuestVerifyByPolice.DataContext", "3.Data Access Layer\HotelGuestVerifyByPolice.DataContext\HotelGuestVerifyByPolice.DataContext.csproj", "{4F2DA342-487E-47C8-9ED4-4BC67EB76614}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelGuestVerifyByPolice.Repository", "2.Business Layer\HotelGuestVerifyByPolice.Repository\HotelGuestVerifyByPolice.Repository.csproj", "{752F79B9-A148-4453-B98F-2E246EA07FE0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelGuestVerifyByPolice.ViewModel", "2.Business Layer\HotelGuestVerifyByPolice.ViewModel\HotelGuestVerifyByPolice.ViewModel.csproj", "{2961C44A-D01A-4173-9AF8-2A618D581EF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelGuestVerifyByPolice.ViewModel", "2.Business Layer\HotelGuestVerifyByPolice.ViewModel\HotelGuestVerifyByPolice.ViewModel.csproj", "{2961C44A-D01A-4173-9AF8-2A618D581EF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{4F2DA342-487E-47C8-9ED4-4BC67EB76614}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F2DA342-487E-47C8-9ED4-4BC67EB76614}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F2DA342-487E-47C8-9ED4-4BC67EB76614}.Release|Any CPU.Build.0 = Release|Any CPU
-		{752F79B9-A148-4453-B98F-2E246EA07FE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{752F79B9-A148-4453-B98F-2E246EA07FE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{752F79B9-A148-4453-B98F-2E246EA07FE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{752F79B9-A148-4453-B98F-2E246EA07FE0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2961C44A-D01A-4173-9AF8-2A618D581EF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2961C44A-D01A-4173-9AF8-2A618D581EF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2961C44A-D01A-4173-9AF8-2A618D581EF0}.Release|Any CPU.ActiveCfg = Release|Any CPU

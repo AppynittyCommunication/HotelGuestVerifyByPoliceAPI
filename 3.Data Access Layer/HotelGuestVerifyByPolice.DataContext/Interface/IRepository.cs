@@ -14,5 +14,11 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
     {
         Task<IEnumerable<State>> GetTestAsync();
         Task<HotelRegRes> SaveHotelReg(HotelRegBody obj);
+
+       // Task<HotelRegRes> SavePoliceReg(PoliceRegBody obj);
+        Task<List<StatesList>> getStateListAsync();
+        Task<List<DistrictList>> getDistrictListAsync(int stateID);
+        Task<List<CityList>> getCityListAsync(int stateID,int distID);
+        Task<List<PoliceStationList>> getPoliceStationListAsync(int stateID, int distID, int cityID);
     }
 }

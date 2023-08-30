@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\2.Business Layer\HotelGuestVerifyByPolice.Repository\HotelGuestVerifyByPolice.Repository.csproj" />
     <ProjectReference Include="..\2.Business Layer\HotelGuestVerifyByPolice.ViewModel\HotelGuestVerifyByPolice.ViewModel.csproj" />
     <ProjectReference Include="..\3.Data Access Layer\HotelGuestVerifyByPolice.DataContext\HotelGuestVerifyByPolice.DataContext.csproj" />
   </ItemGroup>

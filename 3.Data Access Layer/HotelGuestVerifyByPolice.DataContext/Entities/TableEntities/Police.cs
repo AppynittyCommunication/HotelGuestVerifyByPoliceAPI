@@ -26,7 +26,8 @@ public partial class Police
     [StringLength(30)]
     public string? UserType { get; set; }
 
-    public int? StateCode { get; set; }
+    [Column("StateID")]
+    public int? StateId { get; set; }
 
     [Column("DistID")]
     public int? DistId { get; set; }
@@ -34,8 +35,8 @@ public partial class Police
     [Column("CityID")]
     public int? CityId { get; set; }
 
-    [Column("StationID")]
-    public int? StationId { get; set; }
+    [StringLength(30)]
+    public string? StationCode { get; set; }
 
     [Column("PoliceID")]
     [StringLength(20)]

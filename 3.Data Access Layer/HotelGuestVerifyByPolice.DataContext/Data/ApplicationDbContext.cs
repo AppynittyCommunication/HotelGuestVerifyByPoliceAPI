@@ -30,13 +30,13 @@ public partial class ApplicationDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=114.143.244.134;Initial Catalog=HotelGuestVerifyByPolice;Persist Security Info=False;User ID=appynitty;Password=BigV$Telecom;MultipleActiveResultSets=False;Connection Timeout=30;Encrypt=false;TrustServerCertificate=true;");
+        => optionsBuilder.UseSqlServer("Server=124.153.94.110;Initial Catalog=HotelGuestVerifyByPolice;Persist Security Info=False;User ID=appynitty;Password=BigV$Telecom;MultipleActiveResultSets=False;Connection Timeout=30;Encrypt=false;TrustServerCertificate=true;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<City>(entity =>
         {
-            entity.HasKey(e => e.CityId).HasName("PK__City__F2D21A9676023179");
+            entity.HasKey(e => e.CityId).HasName("PK__City__F2D21A9673EB0303");
 
             entity.Property(e => e.CityId).ValueGeneratedNever();
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
@@ -44,7 +44,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<District>(entity =>
         {
-            entity.HasKey(e => e.DistId).HasName("PK__District__118299D87AE53B4D");
+            entity.HasKey(e => e.DistId).HasName("PK__District__118299D8BB3335B0");
 
             entity.Property(e => e.DistId).ValueGeneratedNever();
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
@@ -52,14 +52,14 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Hotel>(entity =>
         {
-            entity.HasKey(e => e.HotelRegNo).HasName("PK__Hotel__AC51D22895DDEB65");
+            entity.HasKey(e => e.HotelRegNo).HasName("PK__Hotel__AC51D2283F915969");
 
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
         });
 
         modelBuilder.Entity<Police>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__Police__1788CCACB32CA1F2");
+            entity.HasKey(e => e.UserId).HasName("PK__Police__1788CCAC87986454");
 
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
         });
@@ -71,7 +71,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<State>(entity =>
         {
-            entity.HasKey(e => e.StateId).HasName("PK__State__C3BA3B5A1663D02E");
+            entity.HasKey(e => e.StateId).HasName("PK__State__C3BA3B5AE571F19D");
 
             entity.Property(e => e.StateId).ValueGeneratedNever();
             entity.Property(e => e.Id).ValueGeneratedOnAdd();

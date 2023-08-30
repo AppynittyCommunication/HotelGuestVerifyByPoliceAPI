@@ -6,6 +6,7 @@ using HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
@@ -36,9 +37,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 try
                 {
-                    var hotelrefdetails =await db.Hotels.Where(c=> c.HotelRegNo == obj.hotelRegNo).FirstOrDefaultAsync();
+                    var hotelrefdetails = await db.Hotels.Where(c => c.HotelRegNo == obj.hotelRegNo).FirstOrDefaultAsync();
 
-                    if(hotelrefdetails == null)
+                    if (hotelrefdetails == null)
                     {
 
                         hoteldetails.HotelRegNo = obj.hotelRegNo;
@@ -51,7 +52,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         hoteldetails.StateId = obj.stateId;
                         hoteldetails.DistId = obj.distId;
                         hoteldetails.CityId = obj.cityId;
-                        hoteldetails.StationId = obj.stationId;
+                        hoteldetails.StationCode = obj.stationCode;
                         hoteldetails.Lat = obj.lat;
                         hoteldetails.Long = obj._long;
                         hoteldetails.DiviceIp = obj.diviceIp;
@@ -83,7 +84,108 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                 }
             }
-               
+
         }
+
+
+        public async Task<List<StatesList>> getStateListAsync()
+        {
+            List<StatesList> statelist = new List<StatesList>();
+            try
+            {
+                using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+                {
+                    var st = db.States.AsEnumerable().Where(c => c.IsActive == true).Select(x => new StatesList
+                    {
+                        stateId = x.Id,
+                        stateName = x.StateName
+
+                    }).ToList();
+                    statelist = st;
+                }
+                return statelist;
+            }
+            catch (Exception)
+            {
+                return statelist;
+            }
+        }
+
+
+        public async Task<List<DistrictList>> getDistrictListAsync(int stateID)
+        {
+            List<DistrictList> distlist = new List<DistrictList>();
+            try
+            {
+                using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+                {
+                    var st = db.Districts.AsEnumerable().Where(c => c.StateId == stateID && c.IsActive == true).Select(x => new DistrictList
+                    {
+                        distId = x.Id,
+                        distName = x.DistName
+
+                    }).ToList();
+                    distlist = st;
+                }
+                return distlist;
+            }
+            catch (Exception)
+            {
+                return distlist;
+            }
+        }
+
+
+
+
+        public async Task<List<CityList>> getCityListAsync(int stateID, int distID)
+        {
+            List<CityList> citylist = new List<CityList>();
+            try
+            {
+                using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+                {
+                    var st = db.Cities.AsEnumerable().Where(c => c.StateId == stateID && c.DistId == distID && c.IsActive == true).Select(x => new CityList
+                    {
+                        cityId = x.Id,
+                        cityName = x.CityName,
+
+                    }).ToList();
+                    citylist = st;
+                }
+                return citylist;
+            }
+            catch (Exception)
+            {
+                return citylist;
+            }
+        }
+
+
+        public async Task<List<PoliceStationList>> getPoliceStationListAsync(int stateID, int distID, int cityID)
+        {
+            List<PoliceStationList> pslist = new List<PoliceStationList>();
+            try
+            {
+                using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+                {
+                    var st = db.PoliceStations.AsEnumerable().Where(c => c.StateId == stateID && c.DistId == distID && c.CityId == cityID && c.IsActive == true).Select(x => new PoliceStationList
+                    {
+                        stationID = x.Id,
+                       // stationCode = x.StationCode,
+                        stationName = x.StationName,
+
+                    }).ToList();
+                    pslist = st;
+                }
+                return pslist;
+            }
+            catch (Exception)
+            {
+                return pslist;
+            }
+        }
+
+
     }
 }

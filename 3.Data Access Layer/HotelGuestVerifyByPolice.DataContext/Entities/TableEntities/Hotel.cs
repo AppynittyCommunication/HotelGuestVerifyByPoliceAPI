@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace HotelGuestVerifyByPolice.DataContext.Entities.TableEntities;
 
 [Table("Hotel")]
-[Index("UserId", Name = "UQ__Hotel__1788CCADCF69087C", IsUnique = true)]
+[Index("UserId", Name = "UQ__Hotel__1788CCAD7BB3AD24", IsUnique = true)]
 public partial class Hotel
 {
     [Column("ID")]
@@ -22,6 +22,12 @@ public partial class Hotel
 
     [StringLength(50)]
     public string? Password { get; set; }
+
+    [StringLength(50)]
+    public string? FirstName { get; set; }
+
+    [StringLength(50)]
+    public string? LastName { get; set; }
 
     [Key]
     [StringLength(50)]
@@ -50,8 +56,8 @@ public partial class Hotel
     [Column("CityID")]
     public int? CityId { get; set; }
 
-    [Column("StationID")]
-    public int? StationId { get; set; }
+    [StringLength(30)]
+    public string? StationCode { get; set; }
 
     public double? Lat { get; set; }
 
