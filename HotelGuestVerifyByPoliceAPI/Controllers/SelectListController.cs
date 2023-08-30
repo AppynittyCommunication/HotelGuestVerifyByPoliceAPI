@@ -1,12 +1,13 @@
 ﻿using HotelGuestVerifyByPolice.DataContext.Interface;
-using HotelGuestVerifyByPolice.ViewModel.Models.APIBodyModels;
 using HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelGuestVerifyByPoliceAPI.Controllers
 {
-    public class SelectListController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SelectListController : ControllerBase
     {
         private readonly IRepository objRep;
         private readonly IConfiguration _configuration;
@@ -81,7 +82,6 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
                 return pslist;
             }
         }
-
 
     }
 }
