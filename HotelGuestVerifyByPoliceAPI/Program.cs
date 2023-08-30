@@ -20,8 +20,8 @@ builder.Services.AddDbContext<ApplicationDbContext>();
 
 builder.Services.AddCors(p => p.AddPolicy("MyCorsPolicy", build =>
 {
-    //build.WithOrigins("http://103.26.97.75:8080", "https://coreapi.ictsbm.com","http://localhost:3000", "https://localhost:3000").AllowAnyHeader().WithMethods("GET","POST");
-    build.AllowAnyOrigin().AllowAnyHeader().WithMethods("GET", "POST");
+    build.WithOrigins("http://localhost:3000", "https://localhost:3000").AllowAnyHeader().WithMethods("GET","POST");
+    //build.AllowAnyOrigin().AllowAnyHeader().WithMethods("GET", "POST");
 }));
 var app = builder.Build();
 
