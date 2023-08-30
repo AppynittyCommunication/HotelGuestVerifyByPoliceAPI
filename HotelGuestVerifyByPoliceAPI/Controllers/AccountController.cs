@@ -29,14 +29,14 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         }
 
 
-        //[Route("PoliceRegistration")]
-        //[HttpPost]
-        //public async Task<ActionResult<HotelRegRes>> GetPoliceLogin([FromBody] PoliceRegBody obj)
-        //{
-        //    HotelRegRes objresponse = await objRep.SavePoliceReg(obj);
+        [Route("PoliceRegistration")]
+        [HttpPost]
+        public async Task<ActionResult<HotelRegRes>> GetPoliceLogin([FromBody] PoliceRegBody obj)
+        {
+            HotelRegRes objresponse = await objRep.SavePoliceReg(obj);
 
-        //    return objresponse;
-        //}
+            return objresponse;
+        }
 
     }
 }
