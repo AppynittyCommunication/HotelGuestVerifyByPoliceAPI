@@ -155,12 +155,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = db.States.AsEnumerable().Where(c => c.IsActive == true).Select(x => new StatesList
+                    var st = await db.States.AsQueryable().Where(c => c.IsActive == true).Select(x => new StatesList
                     {
                         stateId = x.Id,
                         stateName = x.StateName
 
-                    }).ToList();
+                    }).ToListAsync();
                     statelist = st;
                 }
                 return statelist;
@@ -179,12 +179,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = db.Districts.AsEnumerable().Where(c => c.StateId == stateID && c.IsActive == true).Select(x => new DistrictList
+                    var st = await db.Districts.AsQueryable().Where(c => c.StateId == stateID && c.IsActive == true).Select(x => new DistrictList
                     {
                         distId = x.Id,
                         distName = x.DistName
 
-                    }).ToList();
+                    }).ToListAsync();
                     distlist = st;
                 }
                 return distlist;
@@ -205,12 +205,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = db.Cities.AsEnumerable().Where(c => c.StateId == stateID && c.DistId == distID && c.IsActive == true).Select(x => new CityList
+                    var st = await db.Cities.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.IsActive == true).Select(x => new CityList
                     {
                         cityId = x.Id,
                         cityName = x.CityName,
 
-                    }).ToList();
+                    }).ToListAsync();
                     citylist = st;
                 }
                 return citylist;
@@ -229,13 +229,13 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = db.PoliceStations.AsEnumerable().Where(c => c.StateId == stateID && c.DistId == distID && c.CityId == cityID && c.IsActive == true).Select(x => new PoliceStationList
+                    var st = await db.PoliceStations.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.CityId == cityID && c.IsActive == true).Select(x => new PoliceStationList
                     {
                         stationID = x.Id,
                        // stationCode = x.StationCode,
                         stationName = x.StationName,
 
-                    }).ToList();
+                    }).ToListAsync();
                     pslist = st;
                 }
                 return pslist;
