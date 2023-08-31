@@ -88,6 +88,66 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
+        public async Task<HotelRegRes> SavePoliceReg(PoliceRegBody obj)
+        {
+            HotelRegRes result = new HotelRegRes();
+            Police policedetails = new Police();
+
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var policerefdetails = await db.Polices.Where(c => c.StationCode == obj.stationCode).FirstOrDefaultAsync();
+
+                    if (policerefdetails == null)
+                    {
+
+                        policedetails.UserId = obj.userId;
+                        policedetails.UserType= obj.userType;
+                        policedetails.StateId = obj.stateId;
+                        policedetails.DistId = obj.distId;
+                        policedetails.CityId = obj.cityId;
+                        policedetails.StationCode = obj.stationCode;
+                        policedetails.Mobile = obj.mobile;
+                        policedetails.Email = obj.email;
+                        policedetails.Lat = obj.lat;
+                        policedetails.Long = obj._long;
+                        policedetails.DiviceIp = obj.deviceIp;
+
+
+                        db.Polices.Add(policedetails);
+                        await db.SaveChangesAsync();
+
+                        result.code = 200;
+                        result.status = "success";
+                        result.message = "Registration Details Saved Successfully!";
+                        return result;
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "Registration Details Save Failed";
+                        return result;
+                    }
+                    //return result;
+                }
+                catch (Exception ex)
+                {
+                    result.code = 200;
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+
+        }
+
+
+
+
+
         public async Task<List<StatesList>> getStateListAsync()
         {
             List<StatesList> statelist = new List<StatesList>();
@@ -95,12 +155,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = db.States.AsEnumerable().Where(c => c.IsActive == true).Select(x => new StatesList
+                    var st = await db.States.AsQueryable().Where(c => c.IsActive == true).Select(x => new StatesList
                     {
                         stateId = x.Id,
                         stateName = x.StateName
 
-                    }).ToList();
+                    }).ToListAsync();
                     statelist = st;
                 }
                 return statelist;
@@ -119,12 +179,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = db.Districts.AsEnumerable().Where(c => c.StateId == stateID && c.IsActive == true).Select(x => new DistrictList
+                    var st = await db.Districts.AsQueryable().Where(c => c.StateId == stateID && c.IsActive == true).Select(x => new DistrictList
                     {
                         distId = x.Id,
                         distName = x.DistName
 
-                    }).ToList();
+                    }).ToListAsync();
                     distlist = st;
                 }
                 return distlist;
@@ -145,12 +205,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = db.Cities.AsEnumerable().Where(c => c.StateId == stateID && c.DistId == distID && c.IsActive == true).Select(x => new CityList
+                    var st = await db.Cities.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.IsActive == true).Select(x => new CityList
                     {
                         cityId = x.Id,
                         cityName = x.CityName,
 
-                    }).ToList();
+                    }).ToListAsync();
                     citylist = st;
                 }
                 return citylist;
@@ -169,13 +229,13 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = db.PoliceStations.AsEnumerable().Where(c => c.StateId == stateID && c.DistId == distID && c.CityId == cityID && c.IsActive == true).Select(x => new PoliceStationList
+                    var st = await db.PoliceStations.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.CityId == cityID && c.IsActive == true).Select(x => new PoliceStationList
                     {
                         stationID = x.Id,
                        // stationCode = x.StationCode,
                         stationName = x.StationName,
 
-                    }).ToList();
+                    }).ToListAsync();
                     pslist = st;
                 }
                 return pslist;
