@@ -1,5 +1,7 @@
 ﻿using HotelGuestVerifyByPolice.DataContext.Interface;
 using HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +21,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         }
 
         [Route("GetStates")]
-        [HttpGet]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<List<StatesList>>> getState()
         {
             List<StatesList> statelist = new List<StatesList>();
@@ -35,7 +38,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         }
 
         [Route("GetDistrict")]
-        [HttpGet]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<List<DistrictList>>> getDistrict([FromHeader] int stateID)
         {
             List<DistrictList> distlist = new List<DistrictList>();
@@ -51,7 +55,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         }
 
         [Route("GetCities")]
-        [HttpGet]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<List<CityList>>> getCities([FromHeader] int stateID, [FromHeader] int distID)
         {
             List<CityList> citylist = new List<CityList>();
@@ -68,7 +73,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
 
         [Route("GetPoliceStation")]
-        [HttpGet]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<List<PoliceStationList>>> getPoliceStation([FromHeader] int stateID, [FromHeader] int distID, [FromHeader] int cityID)
         {
             List<PoliceStationList> pslist = new List<PoliceStationList>();

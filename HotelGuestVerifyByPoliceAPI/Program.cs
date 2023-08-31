@@ -20,8 +20,8 @@ builder.Services.AddDbContext<ApplicationDbContext>();
 
 builder.Services.AddCors(p => p.AddPolicy("MyCorsPolicy", build =>
 {
-    build.WithOrigins("http://localhost:3000", "https://localhost:3000").AllowAnyHeader().WithMethods("GET","POST");
-    //build.AllowAnyOrigin().AllowAnyHeader().WithMethods("GET", "POST");
+    //build.WithOrigins("http://localhost:3000", "https://localhost:3000").AllowAnyHeader().WithMethods("GET","POST");
+    build.AllowAnyOrigin().AllowAnyHeader().WithMethods("GET", "POST");
 }));
 var app = builder.Build();
 
@@ -37,5 +37,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseCors();
 app.Run();
