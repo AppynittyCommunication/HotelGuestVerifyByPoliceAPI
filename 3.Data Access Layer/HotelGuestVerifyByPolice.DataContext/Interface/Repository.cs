@@ -41,9 +41,11 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                     if (hotelrefdetails == null)
                     {
-
+                        hoteldetails.CreateDate = DateTime.Now;
                         hoteldetails.HotelRegNo = obj.hotelRegNo;
                         hoteldetails.HotelName = obj.hotelName;
+                        hoteldetails.FirstName = obj.firstName;
+                        hoteldetails.LastName = obj.lastName;
                         hoteldetails.UserId = obj.userId;
                         hoteldetails.Mobile = obj.mobile;
                         hoteldetails.Email = obj.email;
@@ -56,7 +58,17 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         hoteldetails.Lat = obj.lat;
                         hoteldetails.Long = obj._long;
                         hoteldetails.DiviceIp = obj.diviceIp;
+                        hoteldetails.IsActive = false;
 
+                        Random random = new Random();
+                        string r = random.Next(000001,999999).ToString();
+
+                        var existOTP = await db.Hotels.Where(c => c.Otp == r).FirstOrDefaultAsync();
+                        if (existOTP != null)
+                        {
+                             r = random.Next().ToString();
+                        }
+                        hoteldetails.Otp = r;
 
                         db.Hotels.Add(hoteldetails);
                         await db.SaveChangesAsync();
@@ -70,7 +82,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     {
                         result.code = 200;
                         result.status = "error";
-                        result.message = "Registration Details Save Failed";
+                        result.message = "Registration Failed";
                         return result;
                     }
                     //return result;
@@ -127,7 +139,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     {
                         result.code = 200;
                         result.status = "error";
-                        result.message = "Registration Details Save Failed";
+                        result.message = "Registration Failed";
                         return result;
                     }
                     //return result;
@@ -158,7 +170,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     var st = await db.States.AsQueryable().Where(c => c.IsActive == true).Select(x => new StatesList
                     {
                         stateId = x.Id,
-                        stateName = x.StateName
+                        stateName = x.StateName,
 
                     }).ToListAsync();
                     statelist = st;
@@ -182,7 +194,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     var st = await db.Districts.AsQueryable().Where(c => c.StateId == stateID && c.IsActive == true).Select(x => new DistrictList
                     {
                         distId = x.Id,
-                        distName = x.DistName
+                        distName = x.DistName,
 
                     }).ToListAsync();
                     distlist = st;
