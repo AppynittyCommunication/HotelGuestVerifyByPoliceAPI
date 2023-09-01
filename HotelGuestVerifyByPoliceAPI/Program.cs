@@ -1,4 +1,4 @@
-using HotelGuestVerifyByPolice.DataContext.Data;
+global using HotelGuestVerifyByPolice.DataContext.Data;
 using HotelGuestVerifyByPolice.DataContext.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
