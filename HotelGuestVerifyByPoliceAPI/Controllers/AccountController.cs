@@ -1,6 +1,7 @@
 ﻿using HotelGuestVerifyByPolice.DataContext.Interface;
 using HotelGuestVerifyByPolice.ViewModel.Models.APIBodyModels;
 using HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
         [Route("HotelRegistration")]
         [HttpPost]
+        [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<HotelRegRes>> GetAdminLogin([FromBody] HotelRegBody obj)
         {
             HotelRegRes objresponse = await objRep.SaveHotelReg(obj);
