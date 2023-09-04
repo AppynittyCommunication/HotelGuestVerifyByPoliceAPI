@@ -23,7 +23,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("HotelRegistration")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<HotelRegRes>> GetAdminLogin([FromBody] HotelRegBody obj)
+        public async Task<ActionResult<HotelRegRes>> HotelRegistration([FromBody] HotelRegBody obj)
         {
             HotelRegRes objresponse = await objRep.SaveHotelReg(obj);
 
@@ -33,12 +33,36 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
         [Route("PoliceRegistration")]
         [HttpPost]
-        public async Task<ActionResult<HotelRegRes>> GetPoliceLogin([FromBody] PoliceRegBody obj)
+        public async Task<ActionResult<HotelRegRes>> PoliceRegistration([FromBody] PoliceRegBody obj)
         {
             HotelRegRes objresponse = await objRep.SavePoliceReg(obj);
 
             return objresponse;
         }
+        [Route("HotelLogin")]
+        [HttpPost]
+        public async Task<ActionResult<HotelLoginRes>> HotelLogin([FromBody] HotelLoginBody obj)
+        {
+            HotelLoginRes objresponse = await objRep.CheckHotelLogin(obj);
+           
+            return objresponse;
+        }
 
+        [Route("ResetHotelPasswordUsingOTP")]
+        [HttpPost]
+        public async Task<ActionResult<SetHotelLoginPassRes>> SetHotelLoginPassUsingOTP([FromBody] SetHotelPassBody obj)
+        {
+            SetHotelLoginPassRes objresponse = await objRep.ChangeHotelPassUsingOTP(obj);
+
+            return objresponse;
+        }
+
+        [Route("ResetHotelPassword")]
+        public async Task<ActionResult<SetHotelLoginPassRes>> ResetHotelPassword([FromBody] ResetHotelPassBody obj)
+        {
+            SetHotelLoginPassRes objresponse = await objRep.ResetHotelPass(obj);
+
+            return objresponse;
+        }
     }
 }

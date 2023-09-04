@@ -258,6 +258,213 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
+        public async Task<HotelLoginRes> CheckHotelLogin(HotelLoginBody obj)
+        {
+            HotelLoginRes result = new HotelLoginRes();
+            //Hotel hoteldetails = new Hotel();
 
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var hotelrefdetails = await db.Hotels.Where(c => c.UserId == obj.hUsername).FirstOrDefaultAsync();
+
+                    if (hotelrefdetails != null)
+                    {
+                        var hotelDetailsRes = await db.Hotels.Where(x => x.UserId == obj.hUsername).Select(x => new { x.HotelRegNo, x.HotelName }).ToListAsync();
+
+                        if (hotelrefdetails.Password == null || hotelrefdetails.Password == "")
+                        {
+                            if(hotelrefdetails.Otp == obj.hPassword)
+                            {
+                                if(hotelrefdetails.Otpuse == null)
+                                {
+                                    hotelrefdetails.Otpuse = 1;
+                                }
+                                else
+                                {
+                                    int a = (int)hotelrefdetails.Otpuse;
+                                    hotelrefdetails.Otpuse = a + 1 ;
+                                }
+                                hotelrefdetails.OtpuseDateTime = DateTime.Now;
+
+                                await db.SaveChangesAsync();
+                                
+                                
+
+                                result.code = 200;
+                                result.status = "success";
+                                result.message = "Hotel Login Successfully Done!";
+                                result.otp = true;
+                                result.data = hotelDetailsRes;
+                                return result;
+                            }
+                            else
+                            {
+                                result.code = 200;
+                                result.status = "error";
+                                result.message = "Login Failed.. You Entered Wrong OTP!";
+                                result.otp = false;
+                                result.data = "";
+                                return result;
+                            }
+                       }
+                        else
+                        {
+                            if(hotelrefdetails.Password == obj.hPassword)
+                            {
+                                result.code = 200;
+                                result.status = "success";
+                                result.message = "Hotel Login Successfully Done!";
+                                result.otp = false;
+                                result.data = hotelDetailsRes;
+                                return result;
+                            }
+                            else
+                            {
+                                result.code = 200;
+                                result.status = "error";
+                                result.message = "Login Failed.. You Entered Wrong Password!";
+                                return result;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "The Username "+obj.hUsername+" Is Not Available.. Please Enter Correct Username";
+                        return result;
+                    }
+                    //return result;
+                }
+                catch (Exception ex)
+                {
+                    result.code = 200;
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+        }
+
+        public async Task<SetHotelLoginPassRes> ChangeHotelPassUsingOTP(SetHotelPassBody obj)
+        {
+            SetHotelLoginPassRes result = new SetHotelLoginPassRes();
+           
+
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var hotelrefdetails = await db.Hotels.Where(c => c.UserId == obj.hUsername).FirstOrDefaultAsync();
+
+                    if (hotelrefdetails != null)
+                    {
+                        if(hotelrefdetails.Otpuse != null)
+                        {
+                            if(hotelrefdetails.Password == null || hotelrefdetails.Password == "")
+                            {
+                                if (hotelrefdetails.Otp == obj.otp)
+                                {
+                                    hotelrefdetails.Password = obj.pass;
+                                    await db.SaveChangesAsync();
+
+                                    result.code = 200;
+                                    result.status = "success";
+                                    result.message = "New Password Are Successfully Set.Please Login Again";
+                                    return result;
+                                }
+                                else
+                                {
+                                    result.code = 200;
+                                    result.status = "error";
+                                    result.message = "You Used Wrong OTP..Please Entered Correct OTP";
+                                    return result;
+                                }
+                            }
+                            else
+                            {
+                                result.code = 200;
+                                result.status = "error";
+                                result.message = "Password Already Set Using OTP";
+                                return result;
+                            }
+                            
+                        }
+                        else
+                        {
+                            result.code=200;
+                            result.status = "error";
+                            result.message = "Please Used OTP For First Time Login Then Set The New Password";
+                            return result;
+                        }
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "The Username " + obj.hUsername + " Is Not Available.. Please Enter Correct Username";
+                        return result;
+                    }
+                    //return result;
+                }
+                catch (Exception ex)
+                {
+                    result.code = 200;
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+            
+        }
+
+        public async Task<SetHotelLoginPassRes> ResetHotelPass(ResetHotelPassBody obj)
+        {
+            SetHotelLoginPassRes result = new SetHotelLoginPassRes();
+            //Hotel hoteldetails = new Hotel();
+
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var hotelrefdetails = await db.Hotels.Where(c => c.UserId == obj.hUsername && c.Password == obj.oldPass).FirstOrDefaultAsync();
+
+                    if (hotelrefdetails != null)
+                    {
+                        hotelrefdetails.Password = obj.newPass;
+
+                        await db.SaveChangesAsync();
+
+                        result.code = 200;
+                        result.status = "success";
+                        result.message = "Your Password Has Changed Successfully";
+
+                        return result;
+                        
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "The Username " + obj.hUsername + " Is Not Available.. Please Enter Correct Username";
+                        return result;
+                    }
+                    //return result;
+                }
+                catch (Exception ex)
+                {
+                    result.code = 200;
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+        }
     }
 }
