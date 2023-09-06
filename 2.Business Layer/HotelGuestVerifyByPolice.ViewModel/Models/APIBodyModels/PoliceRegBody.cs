@@ -22,7 +22,7 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIBodyModels
         // public string? designation { get; set; }
         public string? mobile { get; set; }
         public string? email { get; set; }
-        //public string? otp { get; set; }
+        public string? otp { get; set; }
         public double? lat { get; set; }
         public double? _long { get; set; }
         public string? deviceIp { get; set; }

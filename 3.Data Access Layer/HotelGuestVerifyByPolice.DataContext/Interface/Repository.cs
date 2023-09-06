@@ -28,9 +28,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             return await _dbcontext.States.ToListAsync();
         }
 
-        public async Task<HotelRegRes> SaveHotelReg(HotelRegBody obj)
+        public async Task<CommonAPIResponse> SaveHotelReg(HotelRegBody obj)
         {
-            HotelRegRes result = new HotelRegRes();
+            CommonAPIResponse result = new CommonAPIResponse();
             Hotel hoteldetails = new Hotel();
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
@@ -100,9 +100,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
-        public async Task<HotelRegRes> SavePoliceReg(PoliceRegBody obj)
+        public async Task<CommonAPIResponse> SavePoliceReg(PoliceRegBody obj)
         {
-            HotelRegRes result = new HotelRegRes();
+            CommonAPIResponse result = new CommonAPIResponse();
             Police policedetails = new Police();
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
@@ -113,7 +113,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                     if (policerefdetails == null)
                     {
-
                         policedetails.UserId = obj.userId;
                         policedetails.UserType= obj.userType;
                         policedetails.StateId = obj.stateId;
@@ -125,6 +124,15 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         policedetails.Lat = obj.lat;
                         policedetails.Long = obj._long;
                         policedetails.DiviceIp = obj.deviceIp;
+
+                        Random random = new Random();
+                        string r = random.Next(000001, 999999).ToString();
+                        var existOTP = await db.Polices.Where(c => c.Otp == r).FirstOrDefaultAsync();
+                        if (existOTP != null)
+                        {
+                            r = random.Next().ToString();
+                        }
+                        policedetails.Otp = r;
 
 
                         db.Polices.Add(policedetails);
@@ -290,8 +298,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                                 await db.SaveChangesAsync();
                                 
-                                
-
                                 result.code = 200;
                                 result.status = "success";
                                 result.message = "Hotel Login Successfully Done!";
@@ -350,9 +356,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
-        public async Task<SetHotelLoginPassRes> ChangeHotelPassUsingOTP(SetHotelPassBody obj)
+        public async Task<CommonAPIResponse> ChangeHotelPassUsingOTP(SetHotelPassBody obj)
         {
-            SetHotelLoginPassRes result = new SetHotelLoginPassRes();
+            CommonAPIResponse result = new CommonAPIResponse();
            
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
@@ -423,9 +429,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             
         }
 
-        public async Task<SetHotelLoginPassRes> ResetHotelPass(ResetHotelPassBody obj)
+        public async Task<CommonAPIResponse> ResetHotelPass(ResetHotelPassBody obj)
         {
-            SetHotelLoginPassRes result = new SetHotelLoginPassRes();
+            CommonAPIResponse result = new CommonAPIResponse();
             //Hotel hoteldetails = new Hotel();
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
@@ -466,5 +472,97 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
             }
         }
+
+
+        public async Task<CommonAPIResponse> passwordRecoveryResponse(PasswordRecoveryBody obj)
+        {
+            CommonAPIResponse result = new CommonAPIResponse();
+            //Hotel hoteldetails = new Hotel();
+
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var hotelrefdetails = await db.Hotels.Where(c => c.UserId == obj.hUserId).FirstOrDefaultAsync();
+                    
+                    if (hotelrefdetails != null)
+                    {
+                        if(hotelrefdetails.Password != obj.hNewPassword)
+                        {
+                            hotelrefdetails.Password = obj.hNewPassword;
+                            await db.SaveChangesAsync();
+                            result.code = 200;
+                            result.status = "success";
+                            result.message = "Your New Password Is "+obj.hNewPassword;
+                        }
+                        else
+                        {
+                            result.code = 200;
+                            result.status = "error";
+                            result.message = "Please Enter Different Password.";
+                        }
+
+                        return result;
+
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "The Username " + obj.hUserId + " Is Not Available.. Please Enter Correct Username";
+                        return result;
+                    }
+                    //return result;
+                }
+                catch (Exception ex)
+                {
+                    result.code = 200;
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+        }
+
+
+
+        public async Task<CommonAPIResponse> checkHotelRegExistAsync(string hotelRegNumber)
+        {
+            CommonAPIResponse result = new CommonAPIResponse();
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var hotelrefdetails = await db.Hotels.Where(c => c.HotelRegNo == hotelRegNumber).FirstOrDefaultAsync();
+
+                    if (hotelrefdetails != null)
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = hotelRegNumber + " Is Already Exist";
+                        return result;
+
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "success";
+                        result.message = hotelRegNumber + " Is Available";
+                        return result;
+                    }
+                    //return result;
+                }
+                catch (Exception ex)
+                {
+                    result.code = 200;
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+        }
+
     }
 }

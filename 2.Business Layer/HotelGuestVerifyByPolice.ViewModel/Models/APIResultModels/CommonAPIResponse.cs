@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
 {
-    public class SetHotelLoginPassRes
+    public class CommonAPIResponse
     {
         public int code { get; set; }
         public string? status { get; set; }
         public string? message { get; set; }
-
     }
 }

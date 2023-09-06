@@ -13,14 +13,16 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
     public interface IRepository
     {
         Task<IEnumerable<State>> GetTestAsync();
-        Task<HotelRegRes> SaveHotelReg(HotelRegBody obj);
-        Task<HotelRegRes> SavePoliceReg(PoliceRegBody obj);
+        Task<CommonAPIResponse> SaveHotelReg(HotelRegBody obj);
+        Task<CommonAPIResponse> SavePoliceReg(PoliceRegBody obj);
         Task<List<StatesList>> getStateListAsync();
         Task<List<DistrictList>> getDistrictListAsync(int stateID);
         Task<List<CityList>> getCityListAsync(int stateID,int distID);
         Task<List<PoliceStationList>> getPoliceStationListAsync(int stateID, int distID, int cityID);
         Task<HotelLoginRes> CheckHotelLogin(HotelLoginBody obj);
-        Task<SetHotelLoginPassRes> ChangeHotelPassUsingOTP(SetHotelPassBody obj);
-        Task<SetHotelLoginPassRes> ResetHotelPass(ResetHotelPassBody obj);
+        Task<CommonAPIResponse> ChangeHotelPassUsingOTP(SetHotelPassBody obj);
+        Task<CommonAPIResponse> ResetHotelPass(ResetHotelPassBody obj);
+        Task<CommonAPIResponse> passwordRecoveryResponse(PasswordRecoveryBody obj);
+        Task<CommonAPIResponse> checkHotelRegExistAsync(string hotelRegNumber);
     }
 }
