@@ -6,11 +6,15 @@ using HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HotelGuestVerifyByPolice.DataContext.Interface
 {
@@ -89,7 +93,16 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 catch (Exception ex)
                 {
-                    result.code = 200;
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
                     result.status = "error";
                     result.message = ex.Message;
                     return result;
@@ -154,7 +167,16 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 catch (Exception ex)
                 {
-                    result.code = 200;
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
                     result.status = "error";
                     result.message = ex.Message;
                     return result;
@@ -347,7 +369,16 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 catch (Exception ex)
                 {
-                    result.code = 200;
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
                     result.status = "error";
                     result.message = ex.Message;
                     return result;
@@ -419,7 +450,16 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 catch (Exception ex)
                 {
-                    result.code = 200;
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
                     result.status = "error";
                     result.message = ex.Message;
                     return result;
@@ -464,7 +504,16 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 catch (Exception ex)
                 {
-                    result.code = 200;
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
                     result.status = "error";
                     result.message = ex.Message;
                     return result;
@@ -483,40 +532,62 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 try
                 {
-                    var hotelrefdetails = await db.Hotels.Where(c => c.UserId == obj.hUserId).FirstOrDefaultAsync();
-                    
-                    if (hotelrefdetails != null)
+                    if(obj.otpstatus == false)
                     {
-                        if(hotelrefdetails.Password != obj.hNewPassword)
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "Please Send The OTP Verification Status.";
+                        return result;
+                    }
+                    else
+                    {
+                        var hotelrefdetails = await db.Hotels.Where(c => c.UserId == obj.hUserId).FirstOrDefaultAsync();
+
+                        if (hotelrefdetails != null)
                         {
-                            hotelrefdetails.Password = obj.hNewPassword;
-                            await db.SaveChangesAsync();
-                            result.code = 200;
-                            result.status = "success";
-                            result.message = "Your New Password Is "+obj.hNewPassword;
+                            if (hotelrefdetails.Password != obj.hPassword)
+                            {
+                                hotelrefdetails.Password = obj.hPassword;
+                                await db.SaveChangesAsync();
+                                result.code = 200;
+                                result.status = "success";
+                                result.message = "Your New Password Is " + obj.hPassword;
+                            }
+                            else
+                            {
+                                result.code = 200;
+                                result.status = "error";
+                                result.message = "Please Enter Different Password.";
+                            }
+
+                            return result;
+
                         }
                         else
                         {
                             result.code = 200;
                             result.status = "error";
-                            result.message = "Please Enter Different Password.";
+                            result.message = "The Username " + obj.hUserId + " Is Not Available.. Please Enter Correct Username";
+                            return result;
                         }
-
-                        return result;
-
+                        //return result;
                     }
-                    else
-                    {
-                        result.code = 200;
-                        result.status = "error";
-                        result.message = "The Username " + obj.hUserId + " Is Not Available.. Please Enter Correct Username";
-                        return result;
-                    }
-                    //return result;
+
                 }
                 catch (Exception ex)
                 {
-                    result.code = 200;
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
+
+                    
                     result.status = "error";
                     result.message = ex.Message;
                     return result;
@@ -564,5 +635,89 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
+        public async Task<CheckHotelUsernameRes> checkHotelUsernameExistAsync(string username)
+        {
+            CheckHotelUsernameRes result = new CheckHotelUsernameRes();
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var hotelrefdetails = await db.Hotels.Where(c => c.UserId == username).FirstOrDefaultAsync();
+
+                    if (hotelrefdetails != null)
+                    {
+                        Random random = new Random();
+                        string otp = random.Next(000001, 999999).ToString();
+
+                        string msg = "Your OTP is " + otp + ". Do not Share it with anyone by any means. This is confidential and to be used by you only. ICTSBM";
+
+                        if(hotelrefdetails.Mobile != null)
+                        {
+                            sendSMS(msg, hotelrefdetails.Mobile);
+                            result.code = 200;
+                            result.otp = otp;
+                            result.status = "success";
+                            result.message = "OTP sent successfully to your Registered Mobile Number.";
+                            return result;
+                        }
+                        else
+                        {
+                            result.code = 200;
+                            result.otp = "";
+                            result.status = "success";
+                            result.message = "Mobile Number Not Avilable to the User.";
+                            return result;
+                        }
+                      
+
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = username + " Is Not Exist";
+                        return result;
+                    }
+                    //return result;
+                }
+                catch (Exception ex)
+                {
+                    result.code = 200;
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+        }
+
+
+        public void sendSMS(string sms, string MobilNumber)
+        {
+            try
+            {
+               HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create("https://www.smsjust.com/sms/user/urlsms.php?username=artiyocc&pass=123456&senderid=ICTSBM&dest_mobileno=" + MobilNumber + "&message=" + sms + "%20&response=Y");
+             
+                //Get response from Ozeki NG SMS Gateway Server and read the answer
+                HttpWebResponse myResp = (HttpWebResponse)myReq.GetResponse();
+                System.IO.StreamReader respStreamReader = new System.IO.StreamReader(myResp.GetResponseStream());
+                string responseString = respStreamReader.ReadToEnd();
+                respStreamReader.Close();
+                myResp.Close();
+            }
+            catch (Exception ex) {
+                var w32ex = ex as Win32Exception;
+                if (w32ex == null)
+                {
+                    w32ex = ex.InnerException as Win32Exception;
+                }
+                if (w32ex != null)
+                {
+                    int code = w32ex.ErrorCode;
+                    // do stuff
+                }
+            }
+
+        }
     }
 }

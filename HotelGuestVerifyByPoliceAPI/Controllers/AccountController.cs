@@ -89,5 +89,15 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
             return objresponse;
         }
+
+        [Route("CheckHotelUsername")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<CheckHotelUsernameRes>> checkHotelUsername([FromHeader] string username)
+        {
+            CheckHotelUsernameRes objresponse = await objRep.checkHotelUsernameExistAsync(username);
+
+            return objresponse;
+        }
     }
 }
