@@ -8,7 +8,7 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIBodyModels
 {
     public class HotelLoginBody
     {
-        public string hUsername { get; set; }
-        public string hPassword { get; set; }
+        public string? hUsername { get; set; }
+        public string? hPassword { get; set; }
     }
 }
