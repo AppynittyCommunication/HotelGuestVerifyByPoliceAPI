@@ -656,6 +656,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             sendSMS(msg, hotelrefdetails.Mobile);
                             result.code = 200;
                             result.otp = otp;
+                            result.userid = username;
                             result.status = "success";
                             result.message = "OTP sent successfully to your Registered Mobile Number.";
                             return result;
@@ -664,6 +665,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         {
                             result.code = 200;
                             result.otp = "";
+                            result.userid = username;
                             result.status = "success";
                             result.message = "Mobile Number Not Avilable to the User.";
                             return result;

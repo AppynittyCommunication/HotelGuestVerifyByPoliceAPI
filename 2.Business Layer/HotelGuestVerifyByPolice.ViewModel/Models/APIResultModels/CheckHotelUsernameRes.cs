@@ -10,6 +10,7 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
     {
         public int code { get; set; }
         public string? otp { get; set; }
+        public string? userid { get; set; }
         public string? status { get; set; }
         public string? message { get; set; }
     }
