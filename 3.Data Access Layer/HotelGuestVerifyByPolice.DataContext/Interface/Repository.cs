@@ -541,7 +541,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     else
                     {
-                        var hotelrefdetails = await db.Hotels.Where(c => c.UserId == obj.hUserId).FirstOrDefaultAsync();
+                        var hotelrefdetails = await db.Hotels.Where(c => c.UserId == obj.hUserId && c.UserId != null).FirstOrDefaultAsync();
 
                         if (hotelrefdetails != null)
                         {
