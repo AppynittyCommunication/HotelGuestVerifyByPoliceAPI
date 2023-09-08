@@ -89,5 +89,23 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
             }
         }
 
+
+        [Route("GetDepartmentType")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<List<DepartmentTypeList>>> getDepartmentType()
+        {
+            List<DepartmentTypeList> deptTypeList = new List<DepartmentTypeList>();
+            try
+            {
+                deptTypeList = await objRep.getDepartmentTypeListAsync();
+                return deptTypeList;
+            }
+            catch (Exception)
+            {
+                return deptTypeList;
+            }
+        }
+
     }
 }

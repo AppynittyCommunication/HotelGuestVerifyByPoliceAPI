@@ -126,6 +126,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                     if (policerefdetails == null)
                     {
+                        policedetails.CreateDate = DateTime.Now;
                         policedetails.UserId = obj.userId;
                         policedetails.UserType= obj.userType;
                         policedetails.StateId = obj.stateId;
@@ -137,7 +138,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         policedetails.Lat = obj.lat;
                         policedetails.Long = obj._long;
                         policedetails.DiviceIp = obj.deviceIp;
-
+                        policedetails.IsActive = false;
                         Random random = new Random();
                         string r = random.Next(000001, 999999).ToString();
                         var existOTP = await db.Polices.Where(c => c.Otp == r).FirstOrDefaultAsync();
@@ -210,6 +211,29 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             catch (Exception)
             {
                 return statelist;
+            }
+        }
+
+        public async Task<List<DepartmentTypeList>> getDepartmentTypeListAsync()
+        {
+            List<DepartmentTypeList> depttypelist = new List<DepartmentTypeList>();
+            try
+            {
+                using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+                {
+                    var st = await db.DepartmentTypes.AsQueryable().Where(c => c.IsActive == true).Select(x => new DepartmentTypeList
+                    {
+                        departmentTypeID = x.Id,
+                        departmentTypeName = x.DeptTypeName,
+
+                    }).ToListAsync();
+                    depttypelist = st;
+                }
+                return depttypelist;
+            }
+            catch (Exception)
+            {
+                return depttypelist;
             }
         }
 

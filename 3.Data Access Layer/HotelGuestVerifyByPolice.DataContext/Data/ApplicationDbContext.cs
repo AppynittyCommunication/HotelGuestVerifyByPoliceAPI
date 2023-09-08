@@ -18,6 +18,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<City> Cities { get; set; }
 
+    public virtual DbSet<DepartmentType> DepartmentTypes { get; set; }
+
     public virtual DbSet<District> Districts { get; set; }
 
     public virtual DbSet<Hotel> Hotels { get; set; }
@@ -42,6 +44,14 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
         });
 
+        modelBuilder.Entity<DepartmentType>(entity =>
+        {
+            entity.HasKey(e => e.DeptTypeId).HasName("PK__Departme__2DD71682FB3F5E4C");
+
+            entity.Property(e => e.DeptTypeId).ValueGeneratedNever();
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+        });
+
         modelBuilder.Entity<District>(entity =>
         {
             entity.HasKey(e => e.DistId).HasName("PK__District__118299D8BB3335B0");
@@ -54,6 +64,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => e.HotelRegNo).HasName("PK__Hotel__AC51D2283F915969");
 
+            entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
         });
 

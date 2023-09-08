@@ -16,6 +16,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         Task<CommonAPIResponse> SaveHotelReg(HotelRegBody obj);
         Task<CommonAPIResponse> SavePoliceReg(PoliceRegBody obj);
         Task<List<StatesList>> getStateListAsync();
+        Task<List<DepartmentTypeList>> getDepartmentTypeListAsync();
+
         Task<List<DistrictList>> getDistrictListAsync(int stateID);
         Task<List<CityList>> getCityListAsync(int stateID,int distID);
         Task<List<PoliceStationList>> getPoliceStationListAsync(int stateID, int distID, int cityID);
