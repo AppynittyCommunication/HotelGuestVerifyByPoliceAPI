@@ -27,7 +27,7 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIBodyModels
         public double? _long { get; set; }
         public string? deviceIp { get; set; }
 
-
+        public bool ? isMobileVerify { get; set; }
 
 
     }
