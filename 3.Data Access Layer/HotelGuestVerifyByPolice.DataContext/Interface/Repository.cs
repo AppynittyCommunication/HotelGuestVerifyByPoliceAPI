@@ -781,5 +781,43 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
 
         }
+
+        public async Task<VerifyMobileNo> SendOTPToMobile(string mobileno)
+        {
+            VerifyMobileNo result = new VerifyMobileNo();
+            try
+            {
+               
+                Random random = new Random();
+                string otp = random.Next(000001, 999999).ToString();
+
+                string msg = "Your OTP is " + otp + ". Do not Share it with anyone by any means. This is confidential and to be used by you only. ICTSBM";
+
+                sendSMS(msg, mobileno);
+
+                result.code = 200;
+                result.otp = otp;
+                result.status = "success";
+                result.message = "OTP sent successfully to your Registered Mobile Number.";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                var w32ex = ex as Win32Exception;
+                if (w32ex == null)
+                {
+                    w32ex = ex.InnerException as Win32Exception;
+                }
+                if (w32ex != null)
+                {
+                    result.code = w32ex.ErrorCode;
+                    // do stuff
+                }
+                result.otp = "";
+                result.status = "error";
+                result.message = "OTP sent Failed.";
+                return result;
+            }
+        }
     }
 }

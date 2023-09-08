@@ -108,5 +108,15 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
             return objresponse;
         }
+
+        [Route("VerifyMobileNo")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<VerifyMobileNo>> MobileNoVerification([FromHeader] string mobileno)
+        {
+            VerifyMobileNo objresponse = await objRep.SendOTPToMobile(mobileno);
+
+            return objresponse;
+        }
     }
 }
