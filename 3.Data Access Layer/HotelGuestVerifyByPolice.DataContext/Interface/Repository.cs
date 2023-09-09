@@ -21,10 +21,11 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
     public class Repository : IRepository
     {
         private readonly ApplicationDbContext _dbcontext;
-
+        private readonly HttpClient _httpClient;
         public Repository(ApplicationDbContext dbcontext)
         {
             _dbcontext = dbcontext;
+            _httpClient = new HttpClient();
         }
 
         public async Task<IEnumerable<State>> GetTestAsync()
@@ -794,6 +795,18 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
         }
 
+        public async Task<string> sendSMSasync(string sms, string MobilNumber)
+        {
+            string smsresponse = string.Empty;
+            string smsuri = "https://www.smsjust.com/sms/user/urlsms.php?username=artiyocc&pass=123456&senderid=ICTSBM&dest_mobileno=" + MobilNumber + "&message=" + sms + "%20&response=Y";
+            HttpClient client = new HttpClient();
+            HttpResponseMessage responseMessage = await client.GetAsync(smsuri);
+
+            if(responseMessage.IsSuccessStatusCode) {
+                smsresponse = await responseMessage.Content.ReadAsStringAsync();
+            }
+            return smsresponse;
+        }
         public async Task<VerifyMobileNo> SendOTPToMobile(string mobileno)
         {
             VerifyMobileNo result = new VerifyMobileNo();
@@ -806,6 +819,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 string msg = "Your OTP is " + otp + ". Do not Share it with anyone by any means. This is confidential and to be used by you only. ICTSBM";
 
                 sendSMS(msg, mobileno);
+                //string smsresult = await sendSMSasync(msg, mobileno);
 
                 result.code = 200;
                 result.otp = otp;
