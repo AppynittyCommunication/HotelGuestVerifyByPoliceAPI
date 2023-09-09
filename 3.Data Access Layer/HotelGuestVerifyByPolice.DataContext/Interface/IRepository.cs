@@ -26,7 +26,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         Task<CommonAPIResponse> ResetHotelPass(ResetHotelPassBody obj);
         Task<CommonAPIResponse> passwordRecoveryResponse(PasswordRecoveryBody obj);
         Task<CommonAPIResponse> checkHotelRegExistAsync(string hotelRegNumber);
-        Task<CheckHotelUsernameRes> checkHotelUsernameExistAsync(string username);
+        Task<CheckHotelUsernameRes> checkHotelUsernameExistAsync(string username,string mobileno);
         Task<CommonAPIResponse> checkDepartUsernameExistAsync(string userId);
         Task<VerifyMobileNo> SendOTPToMobile(string mobileno);
     }

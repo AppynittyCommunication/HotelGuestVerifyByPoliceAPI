@@ -695,7 +695,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
             }
         }
-        public async Task<CheckHotelUsernameRes> checkHotelUsernameExistAsync(string username)
+        public async Task<CheckHotelUsernameRes> checkHotelUsernameExistAsync(string username, string mobileno)
         {
             CheckHotelUsernameRes result = new CheckHotelUsernameRes();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
@@ -706,28 +706,40 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                     if (hotelrefdetails != null)
                     {
-                        Random random = new Random();
-                        string otp = random.Next(000001, 999999).ToString();
-
-                        string msg = "Your OTP is " + otp + ". Do not Share it with anyone by any means. This is confidential and to be used by you only. ICTSBM";
-
-                        if(hotelrefdetails.Mobile != null)
+                        if(hotelrefdetails.Mobile == mobileno)
                         {
-                            sendSMS(msg, hotelrefdetails.Mobile);
-                            result.code = 200;
-                            result.otp = otp;
-                            result.userid = username;
-                            result.status = "success";
-                            result.message = "OTP sent successfully to your Registered Mobile Number.";
-                            return result;
+                            Random random = new Random();
+                            string otp = random.Next(000001, 999999).ToString();
+
+                            string msg = "Your OTP is " + otp + ". Do not Share it with anyone by any means. This is confidential and to be used by you only. ICTSBM";
+
+                            if (hotelrefdetails.Mobile != null)
+                            {
+                                sendSMS(msg, hotelrefdetails.Mobile);
+                                result.code = 200;
+                                result.otp = otp;
+                                result.userid = username;
+                                result.status = "success";
+                                result.message = "OTP sent successfully to your Registered Mobile Number.";
+                                return result;
+                            }
+                            else
+                            {
+                                result.code = 200;
+                                result.otp = "";
+                                result.userid = username;
+                                result.status = "error";
+                                result.message = "Mobile Number Not Avilable to the User.";
+                                return result;
+                            }
                         }
                         else
                         {
                             result.code = 200;
                             result.otp = "";
                             result.userid = username;
-                            result.status = "success";
-                            result.message = "Mobile Number Not Avilable to the User.";
+                            result.status = "error";
+                            result.message = "Please Enter Registered Mobile Number.";
                             return result;
                         }
                       
