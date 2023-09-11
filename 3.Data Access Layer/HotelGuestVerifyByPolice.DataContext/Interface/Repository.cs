@@ -797,38 +797,50 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
 
         }
-
-        public async Task<string> sendSMSasync(string sms, string MobilNumber)
+        public class smsStatus
         {
-            string smsresponse = string.Empty;
-            string smsuri = "https://www.smsjust.com/sms/user/urlsms.php?username=artiyocc&pass=123456&senderid=ICTSBM&dest_mobileno=" + MobilNumber + "&message=" + sms + "%20&response=Y";
-            HttpClient client = new HttpClient();
-            HttpResponseMessage responseMessage = await client.GetAsync(smsuri);
-
-            if(responseMessage.IsSuccessStatusCode) {
-                smsresponse = await responseMessage.Content.ReadAsStringAsync();
-            }
-            return smsresponse;
+            
         }
+       
         public async Task<VerifyMobileNo> SendOTPToMobile(string mobileno)
         {
-            VerifyMobileNo result = new VerifyMobileNo();
+            VerifyMobileNo result = new ();
             try
             {
                
-                Random random = new Random();
+                Random random = new ();
                 string otp = random.Next(000001, 999999).ToString();
 
                 string msg = "Your OTP is " + otp + ". Do not Share it with anyone by any means. This is confidential and to be used by you only. ICTSBM";
 
-                sendSMS(msg, mobileno);
+                //smsStatus smsapiRes = new ();
+
+                //sendSMS(msg, mobileno);
                 //string smsresult = await sendSMSasync(msg, mobileno);
 
-                result.code = 200;
-                result.otp = otp;
-                result.status = "success";
-                result.message = "OTP sent successfully to your Registered Mobile Number.";
-                return result;
+                Task<string> myTask = sendSMSasync(msg, mobileno);
+                await myTask;
+                string html = myTask.Result;
+
+               
+                string status = myTask.Result.Replace("<br>","");
+
+                if(status == "DELIVRD")
+                {
+                    result.code = 200;
+                    result.otp = otp;
+                    result.status = "success";
+                    result.message = "OTP sent successfully to your Registered Mobile Number.";
+                    return result;
+                }
+                else
+                {
+                    result.code = 200;
+                    result.otp = "";
+                    result.status = "error";
+                    result.message = "SMS Status is"+ status;
+                    return result;
+                }
             }
             catch (Exception ex)
             {
@@ -847,6 +859,38 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 result.message = "OTP sent Failed.";
                 return result;
             }
+        }
+
+        async Task<string> sendSMSasync(string sms, string MobilNumber)
+        {
+            string smsresponse = "";
+            string sms_status = "";
+            string smsuri = "https://www.smsjust.com/sms/user/urlsms.php?username=artiyocc&pass=123456&senderid=ICTSBM&dest_mobileno=" + MobilNumber + "&message=" + sms + "%20&response=Y";
+            HttpClient client = new HttpClient();
+            HttpResponseMessage responseMessage = await client.GetAsync(smsuri);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                smsresponse = await responseMessage.Content.ReadAsStringAsync();
+
+                await Task.Delay(TimeSpan.FromSeconds(5));
+                string smsresuri = "https://www.smsjust.com/sms/user/response.php?Scheduleid=" + smsresponse.Trim();
+                HttpResponseMessage responseMessage_Status = await client.GetAsync(smsresuri);
+
+                if (responseMessage_Status.IsSuccessStatusCode)
+                {
+                    sms_status = await responseMessage_Status.Content.ReadAsStringAsync();
+
+                    string[] myStr = sms_status.Split(' ');
+
+                    string mono = myStr[0];
+                    string status = myStr[1];
+                    return status;
+
+                }
+
+            }
+            return sms_status;
         }
     }
 }
