@@ -64,6 +64,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         hoteldetails.Long = obj._long;
                         hoteldetails.DiviceIp = obj.diviceIp;
                         hoteldetails.IsActive = false;
+                        hoteldetails.IsMobileVerify = obj.isMobileVerify;
 
                         Random random = new Random();
                         string r = random.Next(000001,999999).ToString();
