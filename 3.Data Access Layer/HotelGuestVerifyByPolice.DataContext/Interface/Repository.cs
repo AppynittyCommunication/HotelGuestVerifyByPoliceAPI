@@ -124,7 +124,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 try
                 {
-                    var policerefdetails = await db.Polices.Where(c => c.StationCode == obj.stationCode).FirstOrDefaultAsync();
+                    var policerefdetails = await db.Polices.Where(c => c.StationCode == obj.stationCode && obj.stationCode != null).FirstOrDefaultAsync();
 
                     if (policerefdetails == null)
                     {
