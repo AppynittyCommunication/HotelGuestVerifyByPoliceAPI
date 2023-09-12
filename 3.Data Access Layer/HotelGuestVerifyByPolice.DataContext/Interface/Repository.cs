@@ -130,6 +130,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     {
                         policedetails.CreateDate = DateTime.Now;
                         policedetails.UserId = obj.userId;
+                        policedetails.PoliceName = obj.policeName;
                         policedetails.UserType= obj.userType;
                         policedetails.StateId = obj.stateId;
                         policedetails.DistId = obj.distId;

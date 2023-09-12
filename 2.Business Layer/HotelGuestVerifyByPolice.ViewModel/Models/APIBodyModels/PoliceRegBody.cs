@@ -18,7 +18,7 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIBodyModels
         public int? cityId { get; set; }
         public string? stationCode { get; set; }
         // public string? policeId { get; set; }
-        // public string? policeName { get; set; }
+        public string? policeName { get; set; }
         // public string? designation { get; set; }
         public string? mobile { get; set; }
         public string? email { get; set; }
