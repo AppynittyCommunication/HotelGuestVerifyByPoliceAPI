@@ -819,10 +819,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 //string smsresult = await sendSMSasync(msg, mobileno);
 
                 Task<string> myTask = sendSMSasync(msg, mobileno);
-                await myTask;
-                string html = myTask.Result;
+              
 
-               
                 string status = myTask.Result.Replace("<br>","");
 
                 if(status == "DELIVRD")
@@ -831,6 +829,14 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     result.otp = otp;
                     result.status = "success";
                     result.message = "OTP sent successfully to your Registered Mobile Number.";
+                    return result;
+                }
+                else if(status == "NCPR")
+                {
+                    result.code = 200;
+                    result.otp = "";
+                    result.status = "error";
+                    result.message = "Please Deactivate Do Not Disturb(DND) of your Registered Mobile Number.";
                     return result;
                 }
                 else
