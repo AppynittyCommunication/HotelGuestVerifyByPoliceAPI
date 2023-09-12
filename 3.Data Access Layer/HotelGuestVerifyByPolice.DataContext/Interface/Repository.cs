@@ -719,13 +719,37 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                             if (hotelrefdetails.Mobile != null)
                             {
-                                sendSMS(msg, hotelrefdetails.Mobile);
-                                result.code = 200;
-                                result.otp = otp;
-                                result.userid = username;
-                                result.status = "success";
-                                result.message = "OTP sent successfully to your Registered Mobile Number.";
-                                return result;
+                                //sendSMS(msg, hotelrefdetails.Mobile);
+
+                                Task<string> myTask = sendSMSasync(msg, mobileno);
+
+
+                                string status = myTask.Result.Replace("<br>", "");
+
+                                if (status == "DELIVRD")
+                                {
+                                    result.code = 200;
+                                    result.otp = otp;
+                                    result.status = "success";
+                                    result.message = "OTP sent successfully to your Registered Mobile Number.";
+                                    return result;
+                                }
+                                else if (status == "NCPR")
+                                {
+                                    result.code = 200;
+                                    result.otp = "";
+                                    result.status = "error";
+                                    result.message = "Please Deactivate Do Not Disturb(DND) of your Registered Mobile Number.";
+                                    return result;
+                                }
+                                else
+                                {
+                                    result.code = 200;
+                                    result.otp = "";
+                                    result.status = "error";
+                                    result.message = "SMS Status is" + status;
+                                    return result;
+                                }
                             }
                             else
                             {
@@ -796,10 +820,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
             }
 
-        }
-        public class smsStatus
-        {
-            
         }
        
         public async Task<VerifyMobileNo> SendOTPToMobile(string mobileno)
