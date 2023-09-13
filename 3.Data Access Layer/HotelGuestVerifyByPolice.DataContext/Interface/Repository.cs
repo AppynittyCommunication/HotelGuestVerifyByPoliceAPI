@@ -947,7 +947,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 {
                     sms_status = await responseMessage_Status.Content.ReadAsStringAsync();
 
-                    string[] myStr = sms_status.Split(' ');
+                    string[] myStr = sms_status.Split(" ");
 
                     string mono = myStr[0];
                     string status = myStr[1];
