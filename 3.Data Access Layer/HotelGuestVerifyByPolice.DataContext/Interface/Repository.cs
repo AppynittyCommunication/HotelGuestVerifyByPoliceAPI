@@ -360,7 +360,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             {
                                 result.code = 200;
                                 result.status = "error";
-                                result.message = "Login Failed.. You Entered Wrong OTP!";
+                                result.message = "Login Failed..You Entered Wrong OTP!";
                                 result.otp = false;
                                 result.data = "";
                                 return result;
