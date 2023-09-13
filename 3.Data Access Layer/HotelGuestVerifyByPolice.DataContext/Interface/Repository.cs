@@ -700,6 +700,45 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
             }
         }
+
+        public async Task<CommonAPIResponse> checkHotelUsernameExistAsync(string userid)
+        {
+            CommonAPIResponse result = new CommonAPIResponse();
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var hotelrefdetails = await db.Hotels.Where(c => c.UserId == userid).FirstOrDefaultAsync();
+
+                    if (hotelrefdetails != null)
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = userid + " Is Already Exist";
+                        return result;
+
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "success";
+                        result.message = userid + " Is Available";
+                        return result;
+                    }
+                    //return result;
+                }
+                catch (Exception ex)
+                {
+                    result.code = 200;
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+        }
+
+
         public async Task<CheckHotelUsernameRes> checkHotelUsernameExistAsync(string username, string mobileno)
         {
             CheckHotelUsernameRes result = new CheckHotelUsernameRes();

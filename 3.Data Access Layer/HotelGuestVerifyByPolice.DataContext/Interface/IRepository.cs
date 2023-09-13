@@ -28,6 +28,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         Task<CommonAPIResponse> checkHotelRegExistAsync(string hotelRegNumber);
         Task<CheckHotelUsernameRes> checkHotelUsernameExistAsync(string username,string mobileno);
         Task<CommonAPIResponse> checkDepartUsernameExistAsync(string userId);
+        Task<CommonAPIResponse> checkHotelUsernameExistAsync(string userId);
         Task<VerifyMobileNo> SendOTPToMobile(string mobileno);
     }
 }
