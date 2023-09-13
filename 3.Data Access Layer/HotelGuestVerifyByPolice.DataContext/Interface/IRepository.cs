@@ -23,7 +23,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         Task<List<PoliceStationList>> getPoliceStationListAsync(int stateID, int distID, int cityID);
         Task<DepartmentLoginRes> CheckDeptLogin(DepartmentLoginBody obj);
         Task<HotelLoginRes> CheckHotelLogin(HotelLoginBody obj);
-        Task<CommonAPIResponse> ChangeHotelPassUsingOTP(SetHotelPassBody obj);
+        Task<CommonAPIResponse> ChangeHotelPassUsingOTP(SetHotelPassBody obj); 
+        Task<CommonAPIResponse> ChangeDeptPassUsingOTP(SetDeptPassBody obj);
         Task<CommonAPIResponse> ResetHotelPass(ResetHotelPassBody obj);
         Task<CommonAPIResponse> passwordRecoveryResponse(PasswordRecoveryBody obj);
         Task<CommonAPIResponse> checkHotelRegExistAsync(string hotelRegNumber);

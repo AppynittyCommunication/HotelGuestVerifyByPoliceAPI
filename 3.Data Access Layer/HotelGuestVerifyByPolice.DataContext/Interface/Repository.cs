@@ -601,6 +601,90 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             
         }
 
+        public async Task<CommonAPIResponse> ChangeDeptPassUsingOTP(SetDeptPassBody obj)
+        {
+            CommonAPIResponse result = new CommonAPIResponse();
+
+
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var deptrefdetails = await db.Polices.Where(c => c.UserId == obj.dUsername).FirstOrDefaultAsync();
+
+                    if (deptrefdetails != null)
+                    {
+                        if (deptrefdetails.Otpuse != null)
+                        {
+                            if (deptrefdetails.Password == null || deptrefdetails.Password == "")
+                            {
+                                if (deptrefdetails.Otp == obj.otp)
+                                {
+                                    deptrefdetails.Password = obj.pass;
+                                    await db.SaveChangesAsync();
+
+                                    result.code = 200;
+                                    result.status = "success";
+                                    result.message = "New Password Are Successfully Set.Please Login Again";
+                                    return result;
+                                }
+                                else
+                                {
+                                    result.code = 200;
+                                    result.status = "error";
+                                    result.message = "You Used Wrong OTP..Please Entered Correct OTP";
+                                    return result;
+                                }
+                            }
+                            else
+                            {
+                                result.code = 200;
+                                result.status = "error";
+                                result.message = "Password Already Set Using OTP";
+                                return result;
+                            }
+
+                        }
+                        else
+                        {
+                            result.code = 200;
+                            result.status = "error";
+                            result.message = "Please Used OTP For First Time Login Then Set The New Password";
+                            return result;
+                        }
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "The Username " + obj.dUsername + " Is Not Available.. Please Enter Correct Username";
+                        return result;
+                    }
+                    //return result;
+                }
+                catch (Exception ex)
+                {
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+
+        }
+
+
+
         public async Task<CommonAPIResponse> ResetHotelPass(ResetHotelPassBody obj)
         {
             CommonAPIResponse result = new CommonAPIResponse();
