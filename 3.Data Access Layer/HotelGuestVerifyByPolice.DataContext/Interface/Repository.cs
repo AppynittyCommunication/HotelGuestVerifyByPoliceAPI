@@ -879,9 +879,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 //string smsresult = await sendSMSasync(msg, mobileno);
 
                 Task<string> myTask = sendSMSasync(msg, mobileno);
-              
+                string[] myStr = myTask.Result.Split(" ");
 
-                string status = myTask.Result.Replace("<br>","");
+                string mono = myStr[0];
+                string status1 = myStr[1];
+
+                string status = status1.Replace("<br>","");
 
                 if(status == "DELIVRD")
                 {
@@ -947,11 +950,11 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 {
                     sms_status = await responseMessage_Status.Content.ReadAsStringAsync();
 
-                    string[] myStr = sms_status.Split(" ");
+                    //string[] myStr = sms_status.Split(" ");
 
-                    string mono = myStr[0];
-                    string status = myStr[1];
-                    return status;
+                    //string mono = myStr[0];
+                    //string status = myStr[1];
+                    return sms_status;
 
                 }
 
