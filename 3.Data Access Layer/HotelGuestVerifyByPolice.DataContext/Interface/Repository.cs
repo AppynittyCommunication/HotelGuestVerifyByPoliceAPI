@@ -142,7 +142,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         policedetails.Long = obj._long;
                         policedetails.DiviceIp = obj.deviceIp;
                         policedetails.IsActive = false;
-                        policedetails.Password = obj.password;
+                       // policedetails.Password = obj.password;
                         policedetails.IsMobileVerify = obj.isMobileVerify;
                         Random random = new Random();
                         string r = random.Next(000001, 999999).ToString();
