@@ -21,6 +21,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         Task<List<DistrictList>> getDistrictListAsync(int stateID);
         Task<List<CityList>> getCityListAsync(int stateID,int distID);
         Task<List<PoliceStationList>> getPoliceStationListAsync(int stateID, int distID, int cityID);
+        Task<DepartmentLoginRes> CheckDeptLogin(DepartmentLoginBody obj);
         Task<HotelLoginRes> CheckHotelLogin(HotelLoginBody obj);
         Task<CommonAPIResponse> ChangeHotelPassUsingOTP(SetHotelPassBody obj);
         Task<CommonAPIResponse> ResetHotelPass(ResetHotelPassBody obj);

@@ -416,6 +416,109 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
+
+        public async Task<DepartmentLoginRes> CheckDeptLogin(DepartmentLoginBody obj)
+        {
+            DepartmentLoginRes result = new ();
+            //Hotel hoteldetails = new Hotel();
+
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var deptrefdetails = await db.Polices.Where(c => c.UserId == obj.dUsername).FirstOrDefaultAsync();
+
+                    if (deptrefdetails != null)
+                    {
+                        var deptDetailsRes = await db.Polices.Where(x => x.UserId == obj.dUsername).Select(x => new { x.PoliceId, x.UserId }).ToListAsync();
+
+                        if (deptrefdetails.Password == null || deptrefdetails.Password == "")
+                        {
+                            if (deptrefdetails.Otp == obj.dPassword)
+                            {
+                                if (deptrefdetails.Otpuse == null)
+                                {
+                                    deptrefdetails.Otpuse = 1;
+                                }
+                                else
+                                {
+                                    int a = (int)deptrefdetails.Otpuse;
+                                    deptrefdetails.Otpuse = a + 1;
+                                }
+                                deptrefdetails.OtpuseDateTime = DateTime.Now;
+
+                                await db.SaveChangesAsync();
+
+                                result.code = 200;
+                                result.status = "success";
+                                result.message = "Department Login Successfully Done!";
+                                result.otp = true;
+                                result.data = deptDetailsRes;
+                                return result;
+                            }
+                            else
+                            {
+                                result.code = 200;
+                                result.status = "error";
+                                result.message = "Login Failed..You Entered Wrong OTP!";
+                                result.otp = false;
+                                result.data = "";
+                                return result;
+                            }
+                        }
+                        else
+                        {
+                            if (deptrefdetails.Password == obj.dPassword)
+                            {
+                                result.code = 200;
+                                result.status = "success";
+                                result.message = "Department Login Successfully Done!";
+                                result.otp = false;
+                                result.data = deptDetailsRes;
+                                return result;
+                            }
+                            else
+                            {
+                                result.code = 200;
+                                result.status = "error";
+                                result.message = "Login Failed.. You Entered Wrong Password!";
+                                return result;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "The Username " + obj.dUsername + " Is Not Available.. Please Enter Correct Username";
+                        return result;
+                    }
+                    //return result;
+                }
+                catch (Exception ex)
+                {
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+        }
+
+
+
+
         public async Task<CommonAPIResponse> ChangeHotelPassUsingOTP(SetHotelPassBody obj)
         {
             CommonAPIResponse result = new CommonAPIResponse();

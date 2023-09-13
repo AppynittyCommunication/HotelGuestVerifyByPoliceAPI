@@ -50,6 +50,18 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
             return objresponse;
         }
 
+        [Route("DeptLogin")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<DepartmentLoginRes>> DeptLogin([FromBody] DepartmentLoginBody obj)
+        {
+            DepartmentLoginRes objresponse = await objRep.CheckDeptLogin(obj);
+
+            return objresponse;
+        }
+
+
+
         [Route("ResetHotelPasswordUsingOTP")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
