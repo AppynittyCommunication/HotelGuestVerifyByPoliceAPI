@@ -814,7 +814,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
 
 
-        public async Task<CommonAPIResponse> deptPasswordRecoveryResponse(PasswordRecoveryBody obj)
+        public async Task<CommonAPIResponse> deptPasswordRecoveryResponse(DeptPasswordRecoveryBody obj)
         {
             CommonAPIResponse result = new CommonAPIResponse();
             //Hotel hoteldetails = new Hotel();
@@ -832,17 +832,17 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     else
                     {
-                        var deptrefdetails = await db.Polices.Where(c => c.UserId == obj.hUserId && c.UserId != null).FirstOrDefaultAsync();
+                        var deptrefdetails = await db.Polices.Where(c => c.UserId == obj.dUserId && c.UserId != null).FirstOrDefaultAsync();
 
                         if (deptrefdetails != null)
                         {
-                            if (deptrefdetails.Password != obj.hPassword)
+                            if (deptrefdetails.Password != obj.dPassword)
                             {
-                                deptrefdetails.Password = obj.hPassword;
+                                deptrefdetails.Password = obj.dPassword;
                                 await db.SaveChangesAsync();
                                 result.code = 200;
                                 result.status = "success";
-                                result.message = "Your New Password Is " + obj.hPassword;
+                                result.message = "Your New Password Is " + obj.dPassword;
                             }
                             else
                             {
@@ -858,7 +858,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         {
                             result.code = 200;
                             result.status = "error";
-                            result.message = "The Username " + obj.hUserId + " Is Not Available.. Please Enter Correct Username";
+                            result.message = "The Username " + obj.dUserId + " Is Not Available.. Please Enter Correct Username";
                             return result;
                         }
                         //return result;

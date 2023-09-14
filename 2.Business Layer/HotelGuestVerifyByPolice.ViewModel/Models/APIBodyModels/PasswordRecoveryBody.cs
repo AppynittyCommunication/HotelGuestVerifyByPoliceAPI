@@ -16,4 +16,14 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIBodyModels
 
        // public int opt { get; set; }
     }
+
+    public class DeptPasswordRecoveryBody
+    {
+        public bool otpstatus { get; set; }
+        public string? dUserId { get; set; }
+        public string? dPassword { get; set; }
+
+
+        // public int opt { get; set; }
+    }
 }

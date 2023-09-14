@@ -107,7 +107,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("ForgetDeptPassword")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CommonAPIResponse>>? forgetDeptPassword([FromBody] PasswordRecoveryBody obj)
+        public async Task<ActionResult<CommonAPIResponse>>? forgetDeptPassword([FromBody] DeptPasswordRecoveryBody obj)
         {
             CommonAPIResponse objresponse = await objRep.deptPasswordRecoveryResponse(obj);
 
