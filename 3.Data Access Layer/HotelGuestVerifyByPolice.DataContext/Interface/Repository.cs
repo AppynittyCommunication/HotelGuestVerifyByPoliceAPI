@@ -739,7 +739,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
-        public async Task<CommonAPIResponse> passwordRecoveryResponse(PasswordRecoveryBody obj)
+        public async Task<CommonAPIResponse> hotelPasswordRecoveryResponse(PasswordRecoveryBody obj)
         {
             CommonAPIResponse result = new CommonAPIResponse();
             //Hotel hoteldetails = new Hotel();
@@ -811,6 +811,83 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
             }
         }
+
+
+
+        public async Task<CommonAPIResponse> deptPasswordRecoveryResponse(PasswordRecoveryBody obj)
+        {
+            CommonAPIResponse result = new CommonAPIResponse();
+            //Hotel hoteldetails = new Hotel();
+
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    if (obj.otpstatus == false)
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "Please Send The OTP Verification Status.";
+                        return result;
+                    }
+                    else
+                    {
+                        var deptrefdetails = await db.Polices.Where(c => c.UserId == obj.hUserId && c.UserId != null).FirstOrDefaultAsync();
+
+                        if (deptrefdetails != null)
+                        {
+                            if (deptrefdetails.Password != obj.hPassword)
+                            {
+                                deptrefdetails.Password = obj.hPassword;
+                                await db.SaveChangesAsync();
+                                result.code = 200;
+                                result.status = "success";
+                                result.message = "Your New Password Is " + obj.hPassword;
+                            }
+                            else
+                            {
+                                result.code = 200;
+                                result.status = "error";
+                                result.message = "Please Enter Different Password.";
+                            }
+
+                            return result;
+
+                        }
+                        else
+                        {
+                            result.code = 200;
+                            result.status = "error";
+                            result.message = "The Username " + obj.hUserId + " Is Not Available.. Please Enter Correct Username";
+                            return result;
+                        }
+                        //return result;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
+
+
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+        }
+
+
 
 
 
@@ -949,9 +1026,13 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 //sendSMS(msg, hotelrefdetails.Mobile);
 
                                 Task<string> myTask = sendSMSasync(msg, mobileno);
+                                string[] myStr = myTask.Result.Split(" ");
 
+                                string mono = myStr[0];
+                                string status1 = myStr[1];
 
-                                string status = myTask.Result.Replace("<br>", "");
+                                string status = status1.Replace("<br>", "");
+
 
                                 if (status == "DELIVRD")
                                 {
@@ -1019,6 +1100,110 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
             }
         }
+
+
+
+        public async Task<CheckDeptUsernameRes> checkDeptUsernameExistAsync(string username, string mobileno)
+        {
+            CheckDeptUsernameRes result = new();
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var deptrefdetails = await db.Polices.Where(c => c.UserId == username).FirstOrDefaultAsync();
+
+                    if (deptrefdetails != null)
+                    {
+                        if (deptrefdetails.Mobile == mobileno)
+                        {
+                            Random random = new Random();
+                            string otp = random.Next(000001, 999999).ToString();
+
+                            string msg = "Your OTP is " + otp + ". Do not Share it with anyone by any means. This is confidential and to be used by you only. ICTSBM";
+
+                            if (deptrefdetails.Mobile != null)
+                            {
+                                //sendSMS(msg, hotelrefdetails.Mobile);
+
+                                Task<string> myTask = sendSMSasync(msg, mobileno);
+
+                                string[] myStr = myTask.Result.Split(" ");
+
+                                string mono = myStr[0];
+                                string status1 = myStr[1];
+
+                                string status = status1.Replace("<br>", "");
+
+                                if (status == "DELIVRD")
+                                {
+                                    result.code = 200;
+                                    result.otp = otp;
+                                    result.userid = username;
+                                    result.status = "success";
+                                    result.message = "OTP sent successfully to your Registered Mobile Number.";
+                                    return result;
+                                }
+                                else if (status == "NCPR")
+                                {
+                                    result.code = 200;
+                                    result.otp = "";
+                                    result.userid = username;
+                                    result.status = "error";
+                                    result.message = "Please Deactivate Do Not Disturb(DND) of your Registered Mobile Number.";
+                                    return result;
+                                }
+                                else
+                                {
+                                    result.code = 200;
+                                    result.otp = "";
+                                    result.userid = username;
+                                    result.status = "error";
+                                    result.message = "SMS Status is" + status;
+                                    return result;
+                                }
+                            }
+                            else
+                            {
+                                result.code = 200;
+                                result.otp = "";
+                                result.userid = username;
+                                result.status = "error";
+                                result.message = "Mobile Number Not Avilable to the User.";
+                                return result;
+                            }
+                        }
+                        else
+                        {
+                            result.code = 200;
+                            result.otp = "";
+                            result.userid = username;
+                            result.status = "error";
+                            result.message = "Please Enter Registered Mobile Number.";
+                            return result;
+                        }
+
+
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = username + " Is Not Exist";
+                        return result;
+                    }
+                    //return result;
+                }
+                catch (Exception ex)
+                {
+                    result.code = 200;
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+        }
+
 
 
         public void sendSMS(string sms, string MobilNumber)

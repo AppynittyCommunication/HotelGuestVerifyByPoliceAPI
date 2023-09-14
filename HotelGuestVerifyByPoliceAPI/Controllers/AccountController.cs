@@ -99,10 +99,23 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<CommonAPIResponse>>? forgetHotelPassword([FromBody] PasswordRecoveryBody obj)
         {
-            CommonAPIResponse objresponse = await objRep.passwordRecoveryResponse(obj);
+            CommonAPIResponse objresponse = await objRep.hotelPasswordRecoveryResponse(obj);
 
             return objresponse;
         }
+
+        [Route("ForgetDeptPassword")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<CommonAPIResponse>>? forgetDeptPassword([FromBody] PasswordRecoveryBody obj)
+        {
+            CommonAPIResponse objresponse = await objRep.deptPasswordRecoveryResponse(obj);
+
+            return objresponse;
+        }
+
+
+
 
         [Route("HotelRegExist")]
         [HttpPost]
@@ -145,6 +158,19 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
             return objresponse;
         }
+
+
+        [Route("CheckDeptUsername")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<CheckDeptUsernameRes>> checkDeptUsername([FromHeader] string username, [FromHeader] string mobileno)
+        {
+            CheckDeptUsernameRes objresponse = await objRep.checkDeptUsernameExistAsync(username, mobileno);
+
+            return objresponse;
+        }
+
+
 
         [Route("VerifyMobileNo")]
         [HttpPost]
