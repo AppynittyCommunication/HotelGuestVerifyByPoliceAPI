@@ -25,12 +25,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         Task<HotelLoginRes> CheckHotelLogin(HotelLoginBody obj);
         Task<CommonAPIResponse> ChangeHotelPassUsingOTP(SetHotelPassBody obj); 
         Task<CommonAPIResponse> ChangeDeptPassUsingOTP(SetDeptPassBody obj);
-        Task<CommonAPIResponse> ResetHotelPass(ResetHotelPassBody obj);
+        Task<CommonAPIResponse> resetHotelPass(ResetHotelPassBody obj);
         Task<CommonAPIResponse> passwordRecoveryResponse(PasswordRecoveryBody obj);
         Task<CommonAPIResponse> checkHotelRegExistAsync(string hotelRegNumber);
         Task<CheckHotelUsernameRes> checkHotelUsernameExistAsync(string username,string mobileno);
         Task<CommonAPIResponse> checkDepartUsernameExistAsync(string userId);
         Task<CommonAPIResponse> checkHotelUsernameExistAsync(string userId);
-        Task<VerifyMobileNo> SendOTPToMobile(string mobileno);
+        Task<VerifyMobileNo> sendOTPToMobile(string mobileno);
     }
 }

@@ -89,7 +89,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<CommonAPIResponse>> ResetHotelPassword([FromBody] ResetHotelPassBody obj)
         {
-            CommonAPIResponse objresponse = await objRep.ResetHotelPass(obj);
+            CommonAPIResponse objresponse = await objRep.resetHotelPass(obj);
 
             return objresponse;
         }
@@ -97,7 +97,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("ForgetHotelPassword")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CommonAPIResponse>>? ForgetHotelPassword([FromBody] PasswordRecoveryBody obj)
+        public async Task<ActionResult<CommonAPIResponse>>? forgetHotelPassword([FromBody] PasswordRecoveryBody obj)
         {
             CommonAPIResponse objresponse = await objRep.passwordRecoveryResponse(obj);
 
@@ -149,9 +149,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("VerifyMobileNo")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<VerifyMobileNo>> MobileNoVerification([FromHeader] string mobileno)
+        public async Task<ActionResult<VerifyMobileNo>> mobileNoVerification([FromHeader] string mobileno)
         {
-            VerifyMobileNo objresponse = await objRep.SendOTPToMobile(mobileno);
+            VerifyMobileNo objresponse = await objRep.sendOTPToMobile(mobileno);
 
             return objresponse;
         }

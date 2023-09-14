@@ -685,7 +685,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
 
 
-        public async Task<CommonAPIResponse> ResetHotelPass(ResetHotelPassBody obj)
+        public async Task<CommonAPIResponse> resetHotelPass(ResetHotelPassBody obj)
         {
             CommonAPIResponse result = new CommonAPIResponse();
             //Hotel hoteldetails = new Hotel();
@@ -1049,7 +1049,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
         }
        
-        public async Task<VerifyMobileNo> SendOTPToMobile(string mobileno)
+        public async Task<VerifyMobileNo> sendOTPToMobile(string mobileno)
         {
             VerifyMobileNo result = new ();
             try
