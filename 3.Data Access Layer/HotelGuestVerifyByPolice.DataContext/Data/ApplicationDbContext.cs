@@ -16,6 +16,8 @@ public partial class ApplicationDbContext : DbContext
     {
     }
 
+    public virtual DbSet<AddHotelGuest> AddHotelGuests { get; set; }
+
     public virtual DbSet<City> Cities { get; set; }
 
     public virtual DbSet<DepartmentType> DepartmentTypes { get; set; }
@@ -23,6 +25,8 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<District> Districts { get; set; }
 
     public virtual DbSet<Hotel> Hotels { get; set; }
+
+    public virtual DbSet<HotelGuest> HotelGuests { get; set; }
 
     public virtual DbSet<Police> Polices { get; set; }
 
@@ -65,6 +69,14 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.HotelRegNo).HasName("PK__Hotel__AC51D2283F915969");
 
             entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+        });
+
+        modelBuilder.Entity<HotelGuest>(entity =>
+        {
+            entity.HasKey(e => e.RoomBookingId).HasName("PK__HotelGue__1FAA5777A3BFEE50");
+
+            entity.Property(e => e.Gender).IsFixedLength();
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
         });
 

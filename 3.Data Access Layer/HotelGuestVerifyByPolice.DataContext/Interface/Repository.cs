@@ -12,6 +12,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static System.Net.WebRequestMethods;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -67,12 +68,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         hoteldetails.IsMobileVerify = obj.isMobileVerify;
 
                         Random random = new Random();
-                        string r = random.Next(000001,999999).ToString();
+                        string r = random.Next(000001, 999999).ToString();
 
                         var existOTP = await db.Hotels.Where(c => c.Otp == r).FirstOrDefaultAsync();
                         if (existOTP != null)
                         {
-                             r = random.Next().ToString();
+                            r = random.Next().ToString();
                         }
                         hoteldetails.Otp = r;
 
@@ -131,7 +132,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         policedetails.CreateDate = DateTime.Now;
                         policedetails.UserId = obj.userId;
                         policedetails.PoliceName = obj.policeName;
-                        policedetails.UserType= obj.userType;
+                        policedetails.UserType = obj.userType;
                         policedetails.StateId = obj.stateId;
                         policedetails.DistId = obj.distId;
                         policedetails.CityId = obj.cityId;
@@ -142,7 +143,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         policedetails.Long = obj._long;
                         policedetails.DiviceIp = obj.deviceIp;
                         policedetails.IsActive = false;
-                       // policedetails.Password = obj.password;
+                        // policedetails.Password = obj.password;
                         policedetails.IsMobileVerify = obj.isMobileVerify;
                         Random random = new Random();
                         string r = random.Next(000001, 999999).ToString();
@@ -303,7 +304,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     var st = await db.PoliceStations.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.CityId == cityID && c.IsActive == true).Select(x => new PoliceStationList
                     {
                         stationID = x.Id,
-                       // stationCode = x.StationCode,
+                        // stationCode = x.StationCode,
                         stationName = x.StationName,
 
                     }).ToListAsync();
@@ -334,21 +335,21 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                         if (hotelrefdetails.Password == null || hotelrefdetails.Password == "")
                         {
-                            if(hotelrefdetails.Otp == obj.hPassword)
+                            if (hotelrefdetails.Otp == obj.hPassword)
                             {
-                                if(hotelrefdetails.Otpuse == null)
+                                if (hotelrefdetails.Otpuse == null)
                                 {
                                     hotelrefdetails.Otpuse = 1;
                                 }
                                 else
                                 {
                                     int a = (int)hotelrefdetails.Otpuse;
-                                    hotelrefdetails.Otpuse = a + 1 ;
+                                    hotelrefdetails.Otpuse = a + 1;
                                 }
                                 hotelrefdetails.OtpuseDateTime = DateTime.Now;
 
                                 await db.SaveChangesAsync();
-                                
+
                                 result.code = 200;
                                 result.status = "success";
                                 result.message = "Hotel Login Successfully Done!";
@@ -365,10 +366,10 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 result.data = "";
                                 return result;
                             }
-                       }
+                        }
                         else
                         {
-                            if(hotelrefdetails.Password == obj.hPassword)
+                            if (hotelrefdetails.Password == obj.hPassword)
                             {
                                 result.code = 200;
                                 result.status = "success";
@@ -391,7 +392,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     {
                         result.code = 200;
                         result.status = "error";
-                        result.message = "The Username "+obj.hUsername+" Is Not Available.. Please Enter Correct Username";
+                        result.message = "The Username " + obj.hUsername + " Is Not Available.. Please Enter Correct Username";
                         return result;
                     }
                     //return result;
@@ -419,7 +420,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
         public async Task<DepartmentLoginRes> CheckDeptLogin(DepartmentLoginBody obj)
         {
-            DepartmentLoginRes result = new ();
+            DepartmentLoginRes result = new();
             //Hotel hoteldetails = new Hotel();
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
@@ -522,7 +523,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         public async Task<CommonAPIResponse> ChangeHotelPassUsingOTP(SetHotelPassBody obj)
         {
             CommonAPIResponse result = new CommonAPIResponse();
-           
+
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
@@ -532,9 +533,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                     if (hotelrefdetails != null)
                     {
-                        if(hotelrefdetails.Otpuse != null)
+                        if (hotelrefdetails.Otpuse != null)
                         {
-                            if(hotelrefdetails.Password == null || hotelrefdetails.Password == "")
+                            if (hotelrefdetails.Password == null || hotelrefdetails.Password == "")
                             {
                                 if (hotelrefdetails.Otp == obj.otp)
                                 {
@@ -561,11 +562,11 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 result.message = "Password Already Set Using OTP";
                                 return result;
                             }
-                            
+
                         }
                         else
                         {
-                            result.code=200;
+                            result.code = 200;
                             result.status = "error";
                             result.message = "Please Used OTP For First Time Login Then Set The New Password";
                             return result;
@@ -598,7 +599,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                 }
             }
-            
+
         }
 
         public async Task<CommonAPIResponse> ChangeDeptPassUsingOTP(SetDeptPassBody obj)
@@ -707,7 +708,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.message = "Your Password Has Changed Successfully";
 
                         return result;
-                        
+
                     }
                     else
                     {
@@ -748,7 +749,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 try
                 {
-                    if(obj.otpstatus == false)
+                    if (obj.otpstatus == false)
                     {
                         result.code = 200;
                         result.status = "error";
@@ -803,7 +804,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         // do stuff
                     }
 
-                    
+
                     result.status = "error";
                     result.message = ex.Message;
                     return result;
@@ -1014,7 +1015,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                     if (hotelrefdetails != null)
                     {
-                        if(hotelrefdetails.Mobile == mobileno)
+                        if (hotelrefdetails.Mobile == mobileno)
                         {
                             Random random = new Random();
                             string otp = random.Next(000001, 999999).ToString();
@@ -1078,7 +1079,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             result.message = "Please Enter Registered Mobile Number.";
                             return result;
                         }
-                      
+
 
                     }
                     else
@@ -1210,8 +1211,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         {
             try
             {
-               HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create("https://www.smsjust.com/sms/user/urlsms.php?username=artiyocc&pass=123456&senderid=ICTSBM&dest_mobileno=" + MobilNumber + "&message=" + sms + "%20&response=Y");
-             
+                HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create("https://www.smsjust.com/sms/user/urlsms.php?username=artiyocc&pass=123456&senderid=ICTSBM&dest_mobileno=" + MobilNumber + "&message=" + sms + "%20&response=Y");
+
                 //Get response from Ozeki NG SMS Gateway Server and read the answer
                 HttpWebResponse myResp = (HttpWebResponse)myReq.GetResponse();
                 System.IO.StreamReader respStreamReader = new System.IO.StreamReader(myResp.GetResponseStream());
@@ -1219,7 +1220,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 respStreamReader.Close();
                 myResp.Close();
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 var w32ex = ex as Win32Exception;
                 if (w32ex == null)
                 {
@@ -1233,14 +1235,14 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
 
         }
-       
+
         public async Task<VerifyMobileNo> sendOTPToMobile(string mobileno)
         {
-            VerifyMobileNo result = new ();
+            VerifyMobileNo result = new();
             try
             {
-               
-                Random random = new ();
+
+                Random random = new();
                 string otp = random.Next(000001, 999999).ToString();
 
                 string msg = "Your OTP is " + otp + ". Do not Share it with anyone by any means. This is confidential and to be used by you only. ICTSBM";
@@ -1256,9 +1258,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 string mono = myStr[0];
                 string status1 = myStr[1];
 
-                string status = status1.Replace("<br>","");
+                string status = status1.Replace("<br>", "");
 
-                if(status == "DELIVRD")
+                if (status == "DELIVRD")
                 {
                     result.code = 200;
                     result.otp = otp;
@@ -1266,7 +1268,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     result.message = "OTP sent successfully to your Registered Mobile Number.";
                     return result;
                 }
-                else if(status == "NCPR")
+                else if (status == "NCPR")
                 {
                     result.code = 200;
                     result.otp = "";
@@ -1279,7 +1281,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     result.code = 200;
                     result.otp = "";
                     result.status = "error";
-                    result.message = "SMS Status is"+ status;
+                    result.message = "SMS Status is" + status;
                     return result;
                 }
             }
@@ -1332,6 +1334,181 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             }
             return sms_status;
+        }
+
+
+
+
+        public async Task<CommonAPIResponse> saveHotelGuestReg(HotelGuestRegistration obj)
+        {
+            CommonAPIResponse result = new CommonAPIResponse();
+            HotelGuest hgdetails = new();
+           
+
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var guestreg = await db.Hotels.Where(c => c.HotelRegNo == obj.HotelRegNo).FirstOrDefaultAsync();
+
+                    if (guestreg != null)
+                    {
+                        hgdetails.Date = DateTime.Now;
+                        hgdetails.HotelRegNo = obj.HotelRegNo;
+                        hgdetails.GuestName = obj.GuestName;
+                        hgdetails.NumberOfGuest = obj.NumberOfGuest;
+                        hgdetails.GuestType = obj.GuestType;
+                        hgdetails.Age = obj.Age;
+                        hgdetails.Gender = obj.Gender;
+                        hgdetails.Mobile = obj.Mobile;
+                        hgdetails.Email = obj.Email;
+                        hgdetails.CheckInDate = Convert.ToDateTime(obj.CheckInDate);
+                        hgdetails.CheckOutDate = Convert.ToDateTime(obj.CheckOutDate);
+                        hgdetails.VisitPurpose = obj.VisitPurpose;
+                        hgdetails.RoomType = obj.RoomType;
+                        hgdetails.RoomNo = obj.RoomNo;
+                        hgdetails.Country = obj.Country;
+                        hgdetails.State = obj.State;
+                        hgdetails.City = obj.City;
+                        hgdetails.Address = obj.Address;
+                        hgdetails.ComingFrom = obj.ComingFrom;
+                        hgdetails.GuestIdType = obj.GuestIdType;
+                        hgdetails.PaymentMode = obj.PaymentMode;
+
+                        List<AddOnGuest> add = obj.AddOnGuest;
+
+                        if ((string.IsNullOrEmpty(obj.GuestPhoto)) == false)
+                        {
+                            // house.BinaryQrCodeImage = Convert.FromBase64String(obj.QRCodeImage.Substring(obj.QRCodeImage.LastIndexOf(',') + 1));
+                            Regex regex = new Regex(@"^[\w/\:.-]+;base64,");
+                            obj.GuestPhoto = regex.Replace(obj.GuestPhoto, string.Empty);
+                            obj.GuestPhoto = obj.GuestPhoto.Replace("data:image/jpeg;base64,", string.Empty);
+                            hgdetails.GuestPhoto = Convert.FromBase64String(obj.GuestPhoto);
+                        }
+                        if ((string.IsNullOrEmpty(obj.GuestIDProof)) == false)
+                        {
+                            // house.BinaryQrCodeImage = Convert.FromBase64String(obj.QRCodeImage.Substring(obj.QRCodeImage.LastIndexOf(',') + 1));
+                            Regex regex = new Regex(@"^[\w/\:.-]+;base64,");
+                            obj.GuestIDProof = regex.Replace(obj.GuestIDProof, string.Empty);
+                            obj.GuestIDProof = obj.GuestIDProof.Replace("data:image/jpeg;base64,", string.Empty);
+                            hgdetails.GuestIdproof = Convert.FromBase64String(obj.GuestIDProof);
+                        }
+
+                        Random random = new();
+                        string roomb = random.Next(0000000001, 999999999).ToString();
+
+                        hgdetails.RoomBookingId = roomb;
+
+                        db.HotelGuests.Add(hgdetails);
+                        await db.SaveChangesAsync();
+
+                        if(add != null)
+                        {
+                            var checkBookingID = await db.HotelGuests.Where(c => c.RoomBookingId == roomb).FirstOrDefaultAsync();
+                            if (checkBookingID != null)
+                            {
+                                var regno = checkBookingID.RoomBookingId.ToString();
+                                DateTime date = Convert.ToDateTime(checkBookingID.Date);
+
+                                foreach (var c in add)
+                                {
+                                    AddHotelGuest addOnGuest = new();
+
+                                    addOnGuest.RoomBookingId = regno;
+                                    addOnGuest.Date = date;
+                                    addOnGuest.HotelRegNo = obj.HotelRegNo;
+                                    addOnGuest.GuestName = c.GuestName;
+                                    addOnGuest.Age = c.Age;
+                                    addOnGuest.Gender = c.Gender;
+                                    addOnGuest.Mobile = c.Mobile;
+                                    addOnGuest.Email = c.Email;
+                                    addOnGuest.Country = c.Country;
+                                    addOnGuest.State = c.State;
+                                    addOnGuest.City = c.City;
+                                    addOnGuest.Address = c.Address;
+                                    addOnGuest.ComingFrom = c.ComingFrom;
+                                    addOnGuest.GuestType = c.GuestType;
+                                    addOnGuest.RelationWithGuest = c.RelationWithGuest;
+                                    addOnGuest.GuestIdType = c.GuestIdType;
+
+                                    if ((string.IsNullOrEmpty(c.GuestPhoto)) == false)
+                                    {
+                                        // house.BinaryQrCodeImage = Convert.FromBase64String(obj.QRCodeImage.Substring(obj.QRCodeImage.LastIndexOf(',') + 1));
+                                        Regex regex = new Regex(@"^[\w/\:.-]+;base64,");
+                                        c.GuestPhoto = regex.Replace(c.GuestPhoto, string.Empty);
+                                        c.GuestPhoto = c.GuestPhoto.Replace("data:image/jpeg;base64,", string.Empty);
+                                        addOnGuest.GuestPhoto = Convert.FromBase64String(c.GuestPhoto);
+                                    }
+                                    if ((string.IsNullOrEmpty(c.GuestIDProof)) == false)
+                                    {
+                                        // house.BinaryQrCodeImage = Convert.FromBase64String(obj.QRCodeImage.Substring(obj.QRCodeImage.LastIndexOf(',') + 1));
+                                        Regex regex = new Regex(@"^[\w/\:.-]+;base64,");
+                                        c.GuestIDProof = regex.Replace(c.GuestIDProof, string.Empty);
+                                        c.GuestIDProof = c.GuestIDProof.Replace("data:image/jpeg;base64,", string.Empty);
+                                        addOnGuest.GuestIdproof = Convert.FromBase64String(c.GuestIDProof);
+                                    }
+
+
+
+                                    db.AddHotelGuests.Add(addOnGuest);
+                                    await db.SaveChangesAsync();
+
+
+                                }
+
+                                result.code = 200;
+                                result.status = "success";
+                                result.message = "Registration Details Saved Successfully!";
+                                return result;
+
+                            }
+                            else
+                            {
+                                result.code = 200;
+                                result.status = "error";
+                                result.message = "Booking ID Not Generated!";
+                                return result;
+                            }
+                            
+                        }
+                        else
+                        {
+                            result.code = 200;
+                            result.status = "success";
+                            result.message = "Registration Details Saved Successfully!";
+                            return result;
+                        }
+                       
+                        
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "Hotel Not Registred!";
+                        return result;
+                    }
+                    //return result;
+                }
+                catch (Exception ex)
+                {
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+
         }
     }
 }

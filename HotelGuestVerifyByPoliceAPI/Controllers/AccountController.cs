@@ -115,8 +115,6 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         }
 
 
-
-
         [Route("HotelRegExist")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
