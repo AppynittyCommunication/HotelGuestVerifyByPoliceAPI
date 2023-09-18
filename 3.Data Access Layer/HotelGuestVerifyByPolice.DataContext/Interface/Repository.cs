@@ -1524,8 +1524,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 try
                 {
+                    DateTime date = DateTime.UtcNow.Date;
                     var totalGuest = await db.HotelGuests.Where(guest => guest.CheckOutDate == null).Select(guest => guest.Id).ToListAsync();
-                    var todayCIN = await db.HotelGuests.Where(guest => DateTime.Compare((DateTime)guest.CheckInDate,DateTime.Now.Date)<=0 && guest.CheckOutDate == null).Select(guest => guest.Id).ToListAsync();
+                    var todayCIN = await db.HotelGuests.Where(guest => DateTime.Compare(guest.CheckInDate.Value.Date , date) <=0).Select(guest => guest.Id).ToListAsync();
                     var todayCOUT = await db.HotelGuests.Where(guest => DateTime.Compare((DateTime)guest.CheckOutDate, DateTime.Now.Date) <= 0).Select(guest => guest.Id).ToListAsync();
 
                   
