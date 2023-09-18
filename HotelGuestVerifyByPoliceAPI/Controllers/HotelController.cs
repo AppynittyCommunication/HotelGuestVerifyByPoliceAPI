@@ -31,7 +31,15 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         }
 
 
+        [Route("GetGuestCheckInOutInfo")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<GuestInOutStatusResponse>> checkGuestInOutStatus([FromHeader] string hotelRegNo)
+        {
+            GuestInOutStatusResponse objresponse = await objRep.checkGuestInOutStatusAsync(hotelRegNo);
 
+            return objresponse;
+        }
 
     }
 }

@@ -1,8 +1,10 @@
 ﻿using HotelGuestVerifyByPolice.DataContext.Data;
 using HotelGuestVerifyByPolice.DataContext.Entities;
+using HotelGuestVerifyByPolice.DataContext.Entities.SPEntities;
 using HotelGuestVerifyByPolice.DataContext.Entities.TableEntities;
 using HotelGuestVerifyByPolice.ViewModel.Models.APIBodyModels;
 using HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -1362,15 +1364,15 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         hgdetails.Gender = obj.Gender;
                         hgdetails.Mobile = obj.Mobile;
                         hgdetails.Email = obj.Email;
-                        hgdetails.CheckInDate = Convert.ToDateTime(obj.CheckInDate);
-                        hgdetails.CheckOutDate = Convert.ToDateTime(obj.CheckOutDate);
+                        hgdetails.CheckInDate = DateTime.Now;
+                        //hgdetails.CheckOutDate = Convert.ToDateTime(obj.CheckOutDate);
                         hgdetails.VisitPurpose = obj.VisitPurpose;
                         hgdetails.RoomType = obj.RoomType;
                         hgdetails.RoomNo = obj.RoomNo;
                         hgdetails.Country = obj.Country;
                         hgdetails.State = obj.State;
                         hgdetails.City = obj.City;
-                        hgdetails.Address = obj.Address;
+                       // hgdetails.Address = obj.Address;
                         hgdetails.ComingFrom = obj.ComingFrom;
                         hgdetails.GuestIdType = obj.GuestIdType;
                         hgdetails.PaymentMode = obj.PaymentMode;
@@ -1425,7 +1427,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                     addOnGuest.Country = c.Country;
                                     addOnGuest.State = c.State;
                                     addOnGuest.City = c.City;
-                                    addOnGuest.Address = c.Address;
+                                   // addOnGuest.Address = c.Address;
                                     addOnGuest.ComingFrom = c.ComingFrom;
                                     addOnGuest.GuestType = c.GuestType;
                                     addOnGuest.RelationWithGuest = c.RelationWithGuest;
@@ -1509,6 +1511,62 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
             }
 
+        }
+
+        public async Task<GuestInOutStatusResponse> checkGuestInOutStatusAsync(string hotelRegNo)
+        {
+
+            GuestInOutStatusResponse result = new ();
+            List<GuestDetailsList> guestDetailsList = new();
+            HotelGuest obj = new();
+
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var totalGuest = await db.HotelGuests.Where(guest => guest.CheckOutDate == null).Select(guest => guest.Id).ToListAsync();
+                    var todayCIN = await db.HotelGuests.Where(guest => DateTime.Compare((DateTime)guest.CheckInDate,DateTime.Now.Date)<=0 && guest.CheckOutDate == null).Select(guest => guest.Id).ToListAsync();
+                    var todayCOUT = await db.HotelGuests.Where(guest => DateTime.Compare((DateTime)guest.CheckOutDate, DateTime.Now.Date) <= 0).Select(guest => guest.Id).ToListAsync();
+
+                  
+                            
+                    List<SqlParameter> parms = new List<SqlParameter>
+                            {
+                            // Create parameter(s)
+                            new SqlParameter { ParameterName = "@HotelRegNo", Value = hotelRegNo },
+                                  
+                            };
+                    var checkInListdata = await db.Hotel_CheckInList_Results.FromSqlRaw<Hotel_CheckInList_Result>("EXEC Hotel_CheckInList @HotelRegNo", parms.ToArray()).ToListAsync();
+                    foreach (var i in checkInListdata)
+                    {
+                        guestDetailsList.Add(new GuestDetailsList
+                        {
+                            guestName = i.GuestName,
+                            mobile = i.Mobile,
+                            country = i.Country,
+                            checkInDate = i.CheckInDate,
+                            totalAdult = i.Total_Adult,
+                            totalChild = i.Total_Child,
+                        });
+
+                    }
+                    result.guestDetails = guestDetailsList;
+                        
+                    
+
+
+
+                    result.TotalGuest = totalGuest.Count();
+                    result.TodaysCheckIn = todayCIN.Count();
+                    result.TodaysCheckOut = todayCOUT.Count();
+                    return result;
+
+                }
+                catch (Exception ex)
+                {
+                    return result;
+                }
+            }
         }
     }
 }
