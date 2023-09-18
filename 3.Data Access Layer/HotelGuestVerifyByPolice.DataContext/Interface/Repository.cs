@@ -1513,10 +1513,10 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
         }
 
-        public async Task<GuestInOutStatusResponse> checkGuestInOutStatusAsync(string hotelRegNo)
+        public async Task<HotelCheckInListResult> checkGuestInOutStatusAsync(string hotelRegNo)
         {
-
-            GuestInOutStatusResponse result = new ();
+            HotelCheckInListResult result = new();
+            List<GuestInOutStatusResponse> guestres = new ();
             List<GuestDetailsList> guestDetailsList = new();
             HotelGuest obj = new();
 
@@ -1527,15 +1527,13 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     DateTime date = DateTime.UtcNow.Date;
                     var totalGuest = await db.HotelGuests.Where(guest => guest.CheckOutDate == null).Select(guest => guest.Id).ToListAsync();
                     var todayCIN = await db.HotelGuests.Where( guest => guest.CheckOutDate == null && DateTime.Compare(guest.CheckInDate.Value.Date , date) <=0).Select(guest => guest.Id).ToListAsync();
-                    var todayCOUT = await db.HotelGuests.Where(guest => DateTime.Compare(guest.CheckInDate.Value.Date, date) <= 0).Select(guest => guest.Id).ToListAsync();
+                    var todayCOUT = await db.HotelGuests.Where(guest => DateTime.Compare(guest.CheckOutDate.Value.Date, date) <= 0).Select(guest => guest.Id).ToListAsync();
 
-                  
-                            
                     List<SqlParameter> parms = new List<SqlParameter>
                             {
                             // Create parameter(s)
                             new SqlParameter { ParameterName = "@HotelRegNo", Value = hotelRegNo },
-                                  
+
                             };
                     var checkInListdata = await db.Hotel_CheckInList_Results.FromSqlRaw<Hotel_CheckInList_Result>("EXEC Hotel_CheckInList @HotelRegNo", parms.ToArray()).ToListAsync();
                     foreach (var i in checkInListdata)
@@ -1551,15 +1549,25 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         });
 
                     }
-                    result.guestDetails = guestDetailsList;
-                        
-                    
 
 
+                    guestres.Add(new GuestInOutStatusResponse
+                    {
+                        TotalGuest = totalGuest.Count(),
+                        TodaysCheckIn = todayCIN.Count(),
+                        TodaysCheckOut = todayCOUT.Count(),
+                        guestDetails=guestDetailsList,
+                     });
+                  
+                            
+                 
 
-                    result.TotalGuest = totalGuest.Count();
-                    result.TodaysCheckIn = todayCIN.Count();
-                    result.TodaysCheckOut = todayCOUT.Count();
+                    result.code = 200;
+                    result.status = "success";
+                    result.message = "Success Response";
+                    result.data = guestres;
+
+                  
                     return result;
 
                 }

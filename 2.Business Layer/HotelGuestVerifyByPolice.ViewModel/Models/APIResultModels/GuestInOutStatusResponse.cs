@@ -6,6 +6,15 @@ using System.Threading.Tasks;
 
 namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
 {
+    public class HotelCheckInListResult
+    {
+        public int code { get; set; }
+        public string? status { get; set; }
+        public string? message { get; set; }
+
+        public List<GuestInOutStatusResponse>? data { get; set; }
+
+    }
     public class GuestInOutStatusResponse
     {
         public int TotalGuest { get; set; }
