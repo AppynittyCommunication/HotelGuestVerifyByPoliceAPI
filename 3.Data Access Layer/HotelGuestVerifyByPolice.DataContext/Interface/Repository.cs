@@ -1573,7 +1573,11 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 catch (Exception ex)
                 {
+                    result.code = 200;
+                    result.status = "error";
+                    result.message = "Failed Response";
                     return result;
+
                 }
             }
         }
