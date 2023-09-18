@@ -1524,58 +1524,74 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 try
                 {
-                    DateTime date = DateTime.UtcNow.Date;
-                    var totalGuest = await db.HotelGuests.Where(guest => guest.CheckOutDate == null).Select(guest => guest.Id).ToListAsync();
-                    var todayCIN = await db.HotelGuests.Where( guest => guest.CheckOutDate == null && DateTime.Compare(guest.CheckInDate.Value.Date , date) <=0).Select(guest => guest.Id).ToListAsync();
-                    var todayCOUT = await db.HotelGuests.Where(guest => DateTime.Compare(guest.CheckOutDate.Value.Date, date) <= 0).Select(guest => guest.Id).ToListAsync();
+                    var checkhregno = await db.Hotels.Where(x => x.HotelRegNo == hotelRegNo).FirstOrDefaultAsync();
+                    if (checkhregno != null)
+                    {
+                        DateTime date = DateTime.UtcNow.Date;
+                        var totalGuest = await db.HotelGuests.Where(guest => guest.CheckOutDate == null && guest.HotelRegNo == hotelRegNo).Select(guest => guest.Id).ToListAsync();
+                        var todayCIN = await db.HotelGuests.Where(guest => guest.CheckOutDate == null && DateTime.Compare(guest.CheckInDate.Value.Date, date) <= 0 && guest.HotelRegNo == hotelRegNo).Select(guest => guest.Id).ToListAsync();
+                        var todayCOUT = await db.HotelGuests.Where(guest => DateTime.Compare(guest.CheckOutDate.Value.Date, date) <= 0 && guest.HotelRegNo == hotelRegNo).Select(guest => guest.Id).ToListAsync();
 
-                    List<SqlParameter> parms = new List<SqlParameter>
+                        List<SqlParameter> parms = new List<SqlParameter>
                             {
                             // Create parameter(s)
                             new SqlParameter { ParameterName = "@HotelRegNo", Value = hotelRegNo },
 
                             };
-                    var checkInListdata = await db.Hotel_CheckInList_Results.FromSqlRaw<Hotel_CheckInList_Result>("EXEC Hotel_CheckInList @HotelRegNo", parms.ToArray()).ToListAsync();
-                    foreach (var i in checkInListdata)
-                    {
-                        guestDetailsList.Add(new GuestDetailsList
+                        var checkInListdata = await db.Hotel_CheckInList_Results.FromSqlRaw<Hotel_CheckInList_Result>("EXEC Hotel_CheckInList @HotelRegNo", parms.ToArray()).ToListAsync();
+                        foreach (var i in checkInListdata)
                         {
-                            guestName = i.GuestName,
-                            mobile = i.Mobile,
-                            country = i.Country,
-                            checkInDate = i.CheckInDate,
-                            totalAdult = i.Total_Adult,
-                            totalChild = i.Total_Child,
+                            guestDetailsList.Add(new GuestDetailsList
+                            {
+                                guestName = i.GuestName,
+                                mobile = i.Mobile,
+                                country = i.Country,
+                                checkInDate = i.CheckInDate,
+                                totalAdult = i.Total_Adult,
+                                totalChild = i.Total_Child,
+                            });
+
+                        }
+
+
+                        guestres.Add(new GuestInOutStatusResponse
+                        {
+                            TotalGuest = totalGuest.Count(),
+                            TodaysCheckIn = todayCIN.Count(),
+                            TodaysCheckOut = todayCOUT.Count(),
+                            guestDetails = guestDetailsList,
                         });
 
+                        result.code = 200;
+                        result.status = "success";
+                        result.message = "Success Response";
+                        result.data = guestres;
+
+
+                        return result;
                     }
-
-
-                    guestres.Add(new GuestInOutStatusResponse
+                    else
                     {
-                        TotalGuest = totalGuest.Count(),
-                        TodaysCheckIn = todayCIN.Count(),
-                        TodaysCheckOut = todayCOUT.Count(),
-                        guestDetails=guestDetailsList,
-                     });
-                  
-                            
-                 
-
-                    result.code = 200;
-                    result.status = "success";
-                    result.message = "Success Response";
-                    result.data = guestres;
-
-                  
-                    return result;
-
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "Hotel Registration Number Not Found!";
+                        return result;
+                    }
                 }
                 catch (Exception ex)
                 {
-                    result.code = 200;
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
                     result.status = "error";
-                    result.message = "Failed Response";
+                    result.message = ex.Message;
                     return result;
 
                 }
