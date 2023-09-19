@@ -1546,6 +1546,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 guestName = i.GuestName,
                                 mobile = i.Mobile,
                                 country = i.Country,
+                                state = i.State,
                                 checkInDate = i.CheckInDate,
                                 totalAdult = i.Total_Adult,
                                 totalChild = i.Total_Child,
@@ -1556,9 +1557,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                         guestres.Add(new GuestInOutStatusResponse
                         {
-                            TotalGuest = totalGuest.Count(),
-                            TodaysCheckIn = todayCIN.Count(),
-                            TodaysCheckOut = todayCOUT.Count(),
+                            totalGuest = totalGuest.Count(),
+                            todaysCheckIn = todayCIN.Count(),
+                            todaysCheckOut = todayCOUT.Count(),
                             guestDetails = guestDetailsList,
                         });
 

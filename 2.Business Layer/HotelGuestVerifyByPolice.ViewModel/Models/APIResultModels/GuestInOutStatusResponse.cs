@@ -17,9 +17,9 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
     }
     public class GuestInOutStatusResponse
     {
-        public int TotalGuest { get; set; }
-        public int TodaysCheckIn { get; set; }
-        public int TodaysCheckOut { get; set; }
+        public int totalGuest { get; set; }
+        public int todaysCheckIn { get; set; }
+        public int todaysCheckOut { get; set; }
 
         public List<GuestDetailsList>? guestDetails { get; set; }
     }
@@ -31,6 +31,8 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
         public int totalAdult { get; set; }
         public int totalChild { get; set; }       
         public string? mobile { get; set; }
+
+        public string? state { get; set; }
         public string? country { get; set; }
         public DateTime checkInDate { get; set; }
     }

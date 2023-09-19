@@ -10,6 +10,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Entities.SPEntities
     {
         public string? GuestName { get; set; }
         public string? Mobile { get; set; }
+        public string? State { get; set; }
         public string? Country { get; set; }
         public DateTime CheckInDate { get; set; }
         public int Total_Adult { get; set; }
