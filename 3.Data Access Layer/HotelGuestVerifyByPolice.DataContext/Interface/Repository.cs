@@ -199,7 +199,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
 
 
-        public async Task<List<StatesList>> getStateListAsync()
+        public async Task<List<StatesList>> GetStateListAsync()
         {
             List<StatesList> statelist = new List<StatesList>();
             try
@@ -222,7 +222,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
-        public async Task<List<DepartmentTypeList>> getDepartmentTypeListAsync()
+        public async Task<List<DepartmentTypeList>> GetDepartmentTypeListAsync()
         {
             List<DepartmentTypeList> depttypelist = new List<DepartmentTypeList>();
             try
@@ -246,7 +246,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
-        public async Task<List<DistrictList>> getDistrictListAsync(int stateID)
+        public async Task<List<DistrictList>> GetDistrictListAsync(int stateID)
         {
             List<DistrictList> distlist = new List<DistrictList>();
             try
@@ -272,7 +272,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
 
 
-        public async Task<List<CityList>> getCityListAsync(int stateID, int distID)
+        public async Task<List<CityList>> GetCityListAsync(int stateID, int distID)
         {
             List<CityList> citylist = new List<CityList>();
             try
@@ -296,7 +296,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
-        public async Task<List<PoliceStationList>> getPoliceStationListAsync(int stateID, int distID, int cityID)
+        public async Task<List<PoliceStationList>> GetPoliceStationListAsync(int stateID, int distID, int cityID)
         {
             List<PoliceStationList> pslist = new List<PoliceStationList>();
             try
@@ -688,7 +688,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
 
 
-        public async Task<CommonAPIResponse> resetHotelPass(ResetHotelPassBody obj)
+        public async Task<CommonAPIResponse> ResetHotelPassAsync(ResetHotelPassBody obj)
         {
             CommonAPIResponse result = new CommonAPIResponse();
             //Hotel hoteldetails = new Hotel();
@@ -742,7 +742,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
-        public async Task<CommonAPIResponse> hotelPasswordRecoveryResponse(PasswordRecoveryBody obj)
+        public async Task<CommonAPIResponse> ForgetHotelPassStep2Async(PasswordRecoveryBody obj)
         {
             CommonAPIResponse result = new CommonAPIResponse();
             //Hotel hoteldetails = new Hotel();
@@ -817,7 +817,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
 
 
-        public async Task<CommonAPIResponse> deptPasswordRecoveryResponse(DeptPasswordRecoveryBody obj)
+        public async Task<CommonAPIResponse> ForgetDeptPassStep2Async(DeptPasswordRecoveryBody obj)
         {
             CommonAPIResponse result = new CommonAPIResponse();
             //Hotel hoteldetails = new Hotel();
@@ -894,7 +894,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
 
 
-        public async Task<CommonAPIResponse> checkHotelRegExistAsync(string hotelRegNumber)
+        public async Task<CommonAPIResponse> CheckHotelRegExistAsync(string hotelRegNumber)
         {
             CommonAPIResponse result = new CommonAPIResponse();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
@@ -931,7 +931,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
-        public async Task<CommonAPIResponse> checkDepartUsernameExistAsync(string userid)
+        public async Task<CommonAPIResponse> CheckDepartUsernameExistAsync(string userid)
         {
             CommonAPIResponse result = new CommonAPIResponse();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
@@ -968,7 +968,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
-        public async Task<CommonAPIResponse> checkHotelUsernameExistAsync(string userid)
+        public async Task<CommonAPIResponse> CheckHotelUsernameExistAsync(string userid)
         {
             CommonAPIResponse result = new CommonAPIResponse();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
@@ -1006,7 +1006,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
-        public async Task<CheckHotelUsernameRes> checkHotelUsernameExistAsync(string username, string mobileno)
+        public async Task<CheckHotelUsernameRes> ForgetHotePassStep1Async(string username, string mobileno)
         {
             CheckHotelUsernameRes result = new CheckHotelUsernameRes();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
@@ -1106,7 +1106,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
 
 
-        public async Task<CheckDeptUsernameRes> checkDeptUsernameExistAsync(string username, string mobileno)
+        public async Task<CheckDeptUsernameRes> ForgetDeptPassStep1Async(string username, string mobileno)
         {
             CheckDeptUsernameRes result = new();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
@@ -1238,7 +1238,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
         }
 
-        public async Task<VerifyMobileNo> sendOTPToMobile(string mobileno)
+        public async Task<VerifyMobileNo> VerifyMobileNoAsync(string mobileno)
         {
             VerifyMobileNo result = new();
             try
@@ -1318,7 +1318,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 smsresponse = await responseMessage.Content.ReadAsStringAsync();
 
-                await Task.Delay(TimeSpan.FromSeconds(5));
+                await Task.Delay(TimeSpan.FromSeconds(10));
                 string smsresuri = "https://www.smsjust.com/sms/user/response.php?Scheduleid=" + smsresponse.Trim();
                 HttpResponseMessage responseMessage_Status = await client.GetAsync(smsresuri);
 
@@ -1341,7 +1341,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
 
 
-        public async Task<CommonAPIResponse> saveHotelGuestReg(HotelGuestRegistration obj)
+        public async Task<CommonAPIResponse> SaveHotelGuestReg(HotelGuestRegistration obj)
         {
             CommonAPIResponse result = new CommonAPIResponse();
             HotelGuest hgdetails = new();
@@ -1513,7 +1513,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
         }
 
-        public async Task<HotelCheckInListResult> checkGuestInOutStatusAsync(string hotelRegNo)
+        public async Task<HotelCheckInListResult> CheckGuestInOutStatusAsync(string hotelRegNo)
         {
             HotelCheckInListResult result = new();
             List<GuestInOutStatusResponse> guestres = new ();
@@ -1598,5 +1598,176 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
             }
         }
+
+        public async Task<DeptDashboardRes> DepartmentDashboardAsync(string userID)
+        {
+            DeptDashboardRes result = new();
+            List<HotelLocOnDashboard> hotelLocOnDashboard = new();
+            List<HotelListDetailsForDashboard> hotelListDetailsForDashboard = new();
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var stateid = await db.Polices.Where(x => x.UserId == userID).Select(x => x.StateId).FirstOrDefaultAsync();
+                    var distid = await db.Polices.Where(x => x.UserId == userID).Select(x => x.DistId).FirstOrDefaultAsync();
+                    var cityid = await db.Polices.Where(x => x.UserId == userID).Select(x => x.CityId).FirstOrDefaultAsync();
+                    var stationid = await db.Polices.Where(x => x.UserId == userID).Select(x => x.StationCode).FirstOrDefaultAsync();
+
+
+                    var checkuser = await db.Polices.Where(x => x.UserId == userID).FirstOrDefaultAsync();
+                    var usertype = await db.Polices.Where(x => x.UserId == userID).Select(x => x.UserType).FirstOrDefaultAsync();
+
+
+                    List<SqlParameter> parms = new List<SqlParameter>
+                            {
+                            // Create parameter(s)
+                            new SqlParameter { ParameterName = "@DepartUsername", Value = userID },
+                            };
+
+                    var checkloc = await db.HotelLocForDepartDash_Results.FromSqlRaw<HotelLocForDepartDash_Result>("EXEC HotelLocForDepartDash @DepartUsername", parms.ToArray()).ToListAsync();
+                    foreach (var i in checkloc)
+                    {
+                        hotelLocOnDashboard.Add(new HotelLocOnDashboard
+                        {
+                            hotelName = i.HotelName,
+                            Mobile = i.Mobile,
+                            Address = i.Address,
+                            lat = i.Lat,
+                            _long = i.Long,
+                        });
+                        result.hotelLocOnDashboard = hotelLocOnDashboard;
+
+                    }
+
+
+
+                    List<SqlParameter> parms1 = new List<SqlParameter>
+                            {
+                            // Create parameter(s)
+                            new SqlParameter { ParameterName = "@DepartUsername", Value = userID },
+                            };
+
+                    var details = await db.HotelListDetailsForDepart_Results.FromSqlRaw<HotelListDetailsForDepart_Result>("EXEC HotelListDetailsForDepart @DepartUsername", parms.ToArray()).ToListAsync();
+                    foreach (var i in details)
+                    {
+                        hotelListDetailsForDashboard.Add(new HotelListDetailsForDashboard
+                        {
+                            stationName = i.StationName,
+                            hotelCount = i.Hotel_Count,
+                            totalCheckIn = i.Total_CheckIn,
+                            todaysCheckIn = i.Today_CheckIn,
+                            todaysCheckOut = i.Today_CheckOut,
+
+                        });
+                        result.hotelListDetailsForDashboards = hotelListDetailsForDashboard;
+
+                    }
+
+
+                    if (checkuser != null)
+                    {
+                        
+                        if(usertype != null)
+                        {
+                            if(usertype == "1")
+                            {
+                                
+                                var loc = await db.States.Where(x => x.StateId == stateid).Select(x => x.StateName).FirstOrDefaultAsync();
+
+                                result.code = 200;
+                                result.status = "success";
+                                result.message = "Success Response";
+                                result.stationName = loc + " State";
+                                return result;
+
+                            }
+                            else if(usertype == "2")
+                            {
+                               
+                                var loc = await db.Districts.Where(x => x.DistId == distid ).Select(x => x.DistName).FirstOrDefaultAsync();
+
+                                result.code = 200;
+                                result.status = "success";
+                                result.message = "Success Response";
+                                result.stationName = loc + " District ";
+                                return result;
+
+                            }
+                            else if (usertype == "3")
+                            {
+                               
+                                var loc = await db.Cities.Where(x => x.CityId == cityid).Select(x => x.CityName).FirstOrDefaultAsync();
+
+                                result.code = 200;
+                                result.status = "success";
+                                result.message = "Success Response";
+                                result.stationName = loc + " City";
+                                return result;
+
+                            }
+                            else if(usertype == "4")
+                            {
+                               
+                                var loc = await db.PoliceStations.Where(x => x.Id == Convert.ToInt32(stationid)).Select(x => x.StationName).FirstOrDefaultAsync();
+
+                                result.code = 200;
+                                result.status = "success";
+                                result.message = "Success Response";
+                                result.stationName = loc;
+                                return result;
+
+                            }
+                            else
+                            {
+                                result.code = 200;
+                                result.status = "error";
+                                result.message = "User Type ID Not Found";
+                                result.stationName = null;
+                                return result;
+                            }
+
+                            
+                        }
+                        else
+                        {
+                            result.code = 200;
+                            result.status = "error";
+                            result.message = "User Type Not Found!";
+                            result.stationName = null;
+                            return result;
+                        }
+
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "UserID Not Found!";
+                        return result;
+                    }
+
+                   
+                }
+                catch (Exception ex)
+                {
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+        }
+
+        
     }
 }

@@ -41,7 +41,9 @@ public partial class ApplicationDbContext : DbContext
 
 
     public DbSet<Hotel_CheckInList_Result> Hotel_CheckInList_Results { get; set; }
-
+    public DbSet<HotelLocForDepartDash_Result> HotelLocForDepartDash_Results { get; set; }
+    public DbSet<HotelListDetailsForDepart_Result> HotelListDetailsForDepart_Results { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<City>(entity =>
@@ -105,6 +107,9 @@ public partial class ApplicationDbContext : DbContext
         });
 
         modelBuilder.Entity<Hotel_CheckInList_Result>().HasNoKey();
+        modelBuilder.Entity<HotelLocForDepartDash_Result>().HasNoKey(); 
+        modelBuilder.Entity<HotelListDetailsForDepart_Result>().HasNoKey();
+
         OnModelCreatingPartial(modelBuilder);
     }
 

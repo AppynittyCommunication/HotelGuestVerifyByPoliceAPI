@@ -23,12 +23,12 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("GetStates")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<List<StatesList>>> getState()
+        public async Task<ActionResult<List<StatesList>>> GetState()
         {
             List<StatesList> statelist = new List<StatesList>();
             try
             {
-                statelist = await objRep.getStateListAsync();
+                statelist = await objRep.GetStateListAsync();
                 return statelist;
             }
             catch (Exception)
@@ -40,12 +40,12 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("GetDistrict")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<List<DistrictList>>> getDistrict([FromHeader] int stateID)
+        public async Task<ActionResult<List<DistrictList>>> GetDistrict([FromHeader] int stateID)
         {
             List<DistrictList> distlist = new List<DistrictList>();
             try
             {
-                distlist = await objRep.getDistrictListAsync(stateID);
+                distlist = await objRep.GetDistrictListAsync(stateID);
                 return distlist;
             }
             catch (Exception)
@@ -57,12 +57,12 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("GetCities")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<List<CityList>>> getCities([FromHeader] int stateID, [FromHeader] int distID)
+        public async Task<ActionResult<List<CityList>>> GetCities([FromHeader] int stateID, [FromHeader] int distID)
         {
             List<CityList> citylist = new List<CityList>();
             try
             {
-                citylist = await objRep.getCityListAsync(stateID, distID);
+                citylist = await objRep.GetCityListAsync(stateID, distID);
                 return citylist;
             }
             catch (Exception)
@@ -75,12 +75,12 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("GetPoliceStation")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<List<PoliceStationList>>> getPoliceStation([FromHeader] int stateID, [FromHeader] int distID, [FromHeader] int cityID)
+        public async Task<ActionResult<List<PoliceStationList>>> GetPoliceStation([FromHeader] int stateID, [FromHeader] int distID, [FromHeader] int cityID)
         {
             List<PoliceStationList> pslist = new List<PoliceStationList>();
             try
             {
-                pslist = await objRep.getPoliceStationListAsync(stateID, distID, cityID);
+                pslist = await objRep.GetPoliceStationListAsync(stateID, distID, cityID);
                 return pslist;
             }
             catch (Exception)
@@ -93,12 +93,12 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("GetDepartmentType")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<List<DepartmentTypeList>>> getDepartmentType()
+        public async Task<ActionResult<List<DepartmentTypeList>>> GetDepartmentType()
         {
             List<DepartmentTypeList> deptTypeList = new List<DepartmentTypeList>();
             try
             {
-                deptTypeList = await objRep.getDepartmentTypeListAsync();
+                deptTypeList = await objRep.GetDepartmentTypeListAsync();
                 return deptTypeList;
             }
             catch (Exception)

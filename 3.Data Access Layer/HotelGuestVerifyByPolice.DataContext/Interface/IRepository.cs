@@ -15,31 +15,35 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         Task<IEnumerable<State>> GetTestAsync();
         Task<CommonAPIResponse> SaveHotelReg(HotelRegBody obj);
         Task<CommonAPIResponse> SavePoliceReg(PoliceRegBody obj);
-        Task<List<StatesList>> getStateListAsync();
-        Task<List<DepartmentTypeList>> getDepartmentTypeListAsync();
+        Task<List<StatesList>> GetStateListAsync();
+        Task<List<DepartmentTypeList>> GetDepartmentTypeListAsync();
 
-        Task<List<DistrictList>> getDistrictListAsync(int stateID);
-        Task<List<CityList>> getCityListAsync(int stateID,int distID);
-        Task<List<PoliceStationList>> getPoliceStationListAsync(int stateID, int distID, int cityID);
+        Task<List<DistrictList>> GetDistrictListAsync(int stateID);
+        Task<List<CityList>> GetCityListAsync(int stateID,int distID);
+        Task<List<PoliceStationList>> GetPoliceStationListAsync(int stateID, int distID, int cityID);
         Task<DepartmentLoginRes> CheckDeptLogin(DepartmentLoginBody obj);
         Task<HotelLoginRes> CheckHotelLogin(HotelLoginBody obj);
         Task<CommonAPIResponse> ChangeHotelPassUsingOTP(SetHotelPassBody obj); 
         Task<CommonAPIResponse> ChangeDeptPassUsingOTP(SetDeptPassBody obj);
-        Task<CommonAPIResponse> resetHotelPass(ResetHotelPassBody obj);
-        Task<CommonAPIResponse> hotelPasswordRecoveryResponse(PasswordRecoveryBody obj);
-        Task<CommonAPIResponse> deptPasswordRecoveryResponse(DeptPasswordRecoveryBody obj);
-        Task<CommonAPIResponse> checkHotelRegExistAsync(string hotelRegNumber);
-        Task<CheckHotelUsernameRes> checkHotelUsernameExistAsync(string username,string mobileno);
-        Task<CheckDeptUsernameRes> checkDeptUsernameExistAsync(string username, string mobileno);
-        Task<CommonAPIResponse> checkDepartUsernameExistAsync(string userId);
-        Task<CommonAPIResponse> checkHotelUsernameExistAsync(string userId);
-        Task<VerifyMobileNo> sendOTPToMobile(string mobileno);
+        Task<CommonAPIResponse> ResetHotelPassAsync(ResetHotelPassBody obj);
+        Task<CommonAPIResponse> ForgetHotelPassStep2Async(PasswordRecoveryBody obj);
+        Task<CommonAPIResponse> ForgetDeptPassStep2Async(DeptPasswordRecoveryBody obj);
+        Task<CommonAPIResponse> CheckHotelRegExistAsync(string hotelRegNumber);
+        Task<CheckHotelUsernameRes> ForgetHotePassStep1Async(string username,string mobileno);
+        Task<CheckDeptUsernameRes> ForgetDeptPassStep1Async(string username, string mobileno);
+        Task<CommonAPIResponse> CheckDepartUsernameExistAsync(string userId);
+        Task<CommonAPIResponse> CheckHotelUsernameExistAsync(string userId);
+        Task<VerifyMobileNo> VerifyMobileNoAsync(string mobileno);
 
 
         //Hotel Guest
-        Task<CommonAPIResponse> saveHotelGuestReg(HotelGuestRegistration obj);
+        Task<CommonAPIResponse> SaveHotelGuestReg(HotelGuestRegistration obj);
 
-        Task<HotelCheckInListResult> checkGuestInOutStatusAsync(string hotelRegNo);
-       
+        Task<HotelCheckInListResult> CheckGuestInOutStatusAsync(string hotelRegNo); 
+
+
+        //Dashboard dept
+
+         Task<DeptDashboardRes> DepartmentDashboardAsync(string userID);
     }
 }

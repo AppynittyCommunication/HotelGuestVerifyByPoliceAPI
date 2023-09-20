@@ -89,27 +89,27 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<CommonAPIResponse>> ResetHotelPassword([FromBody] ResetHotelPassBody obj)
         {
-            CommonAPIResponse objresponse = await objRep.resetHotelPass(obj);
+            CommonAPIResponse objresponse = await objRep.ResetHotelPassAsync(obj);
 
             return objresponse;
         }
 
-        [Route("ForgetHotelPassword")]
+        [Route("ForgetHotelPasswordStep2")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CommonAPIResponse>>? forgetHotelPassword([FromBody] PasswordRecoveryBody obj)
+        public async Task<ActionResult<CommonAPIResponse>>? ForgetHotelPassStep2([FromBody] PasswordRecoveryBody obj)
         {
-            CommonAPIResponse objresponse = await objRep.hotelPasswordRecoveryResponse(obj);
+            CommonAPIResponse objresponse = await objRep.ForgetHotelPassStep2Async(obj);
 
             return objresponse;
         }
 
-        [Route("ForgetDeptPassword")]
+        [Route("ForgetDeptPassStep2")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CommonAPIResponse>>? forgetDeptPassword([FromBody] DeptPasswordRecoveryBody obj)
+        public async Task<ActionResult<CommonAPIResponse>>? ForgetDeptPassStep2([FromBody] DeptPasswordRecoveryBody obj)
         {
-            CommonAPIResponse objresponse = await objRep.deptPasswordRecoveryResponse(obj);
+            CommonAPIResponse objresponse = await objRep.ForgetDeptPassStep2Async(obj);
 
             return objresponse;
         }
@@ -118,9 +118,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("HotelRegExist")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CommonAPIResponse>>? checkHotelRegExist([FromHeader] string hotelRegNumber)
+        public async Task<ActionResult<CommonAPIResponse>>? CheckHotelRegExist([FromHeader] string hotelRegNumber)
         {
-            CommonAPIResponse objresponse = await objRep.checkHotelRegExistAsync(hotelRegNumber);
+            CommonAPIResponse objresponse = await objRep.CheckHotelRegExistAsync(hotelRegNumber);
 
             return objresponse;
         }
@@ -128,9 +128,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("DepartUsernameExist")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CommonAPIResponse>>? checkDepartUserExist([FromHeader] string userId)
+        public async Task<ActionResult<CommonAPIResponse>>? CheckDepartUserExist([FromHeader] string userId)
         {
-            CommonAPIResponse objresponse = await objRep.checkDepartUsernameExistAsync(userId);
+            CommonAPIResponse objresponse = await objRep.CheckDepartUsernameExistAsync(userId);
 
             return objresponse;
         }
@@ -138,32 +138,32 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("HotelUsernameExist")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CommonAPIResponse>>? checkHotelUserExist([FromHeader] string userId)
+        public async Task<ActionResult<CommonAPIResponse>>? CheckHotelUserExist([FromHeader] string userId)
         {
-            CommonAPIResponse objresponse = await objRep.checkHotelUsernameExistAsync(userId);
+            CommonAPIResponse objresponse = await objRep.CheckHotelUsernameExistAsync(userId);
 
             return objresponse;
         }
 
 
 
-        [Route("CheckHotelUsername")]
+        [Route("ForgetHotelPasswordStep1")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CheckHotelUsernameRes>> checkHotelUsername([FromHeader] string username, [FromHeader] string mobileno)
+        public async Task<ActionResult<CheckHotelUsernameRes>> ForgetHotePassStep1([FromHeader] string username, [FromHeader] string mobileno)
         {
-            CheckHotelUsernameRes objresponse = await objRep.checkHotelUsernameExistAsync(username,mobileno);
+            CheckHotelUsernameRes objresponse = await objRep.ForgetHotePassStep1Async(username,mobileno);
 
             return objresponse;
         }
 
 
-        [Route("CheckDeptUsername")]
+        [Route("ForgetDeptPassStep1")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CheckDeptUsernameRes>> checkDeptUsername([FromHeader] string username, [FromHeader] string mobileno)
+        public async Task<ActionResult<CheckDeptUsernameRes>> ForgetDeptPassStep1([FromHeader] string username, [FromHeader] string mobileno)
         {
-            CheckDeptUsernameRes objresponse = await objRep.checkDeptUsernameExistAsync(username, mobileno);
+            CheckDeptUsernameRes objresponse = await objRep.ForgetDeptPassStep1Async(username, mobileno);
 
             return objresponse;
         }
@@ -173,9 +173,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("VerifyMobileNo")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<VerifyMobileNo>> mobileNoVerification([FromHeader] string mobileno)
+        public async Task<ActionResult<VerifyMobileNo>> VerifyMobileNo([FromHeader] string mobileno)
         {
-            VerifyMobileNo objresponse = await objRep.sendOTPToMobile(mobileno);
+            VerifyMobileNo objresponse = await objRep.VerifyMobileNoAsync(mobileno);
 
             return objresponse;
         }

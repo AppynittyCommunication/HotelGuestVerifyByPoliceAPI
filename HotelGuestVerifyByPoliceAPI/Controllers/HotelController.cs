@@ -25,7 +25,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<CommonAPIResponse>> HotelRegistration([FromBody] HotelGuestRegistration obj)
         {
-            CommonAPIResponse objresponse = await objRep.saveHotelGuestReg(obj);
+            CommonAPIResponse objresponse = await objRep.SaveHotelGuestReg(obj);
 
             return objresponse;
         }
@@ -34,9 +34,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("GetGuestCheckInOutInfo")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<HotelCheckInListResult>> checkGuestInOutStatus([FromHeader] string hotelRegNo)
+        public async Task<ActionResult<HotelCheckInListResult>> CheckGuestInOutStatus([FromHeader] string hotelRegNo)
         {
-            HotelCheckInListResult objresponse = await objRep.checkGuestInOutStatusAsync(hotelRegNo);
+            HotelCheckInListResult objresponse = await objRep.CheckGuestInOutStatusAsync(hotelRegNo);
 
             return objresponse;
         }
