@@ -12,16 +12,19 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 {
     public interface IRepository
     {
-        Task<IEnumerable<State>> GetTestAsync();
-        Task<CommonAPIResponse> SaveHotelReg(HotelRegBody obj);
-        Task<CommonAPIResponse> SavePoliceReg(PoliceRegBody obj);
+
+        //Select Controller
         Task<List<StatesList>> GetStateListAsync();
         Task<List<DepartmentTypeList>> GetDepartmentTypeListAsync();
-
         Task<List<DistrictList>> GetDistrictListAsync(int stateID);
-        Task<List<CityList>> GetCityListAsync(int stateID,int distID);
+        Task<List<CityList>> GetCityListAsync(int stateID, int distID);
         Task<List<PoliceStationList>> GetPoliceStationListAsync(int stateID, int distID, int cityID);
         Task<DepartmentLoginRes> CheckDeptLogin(DepartmentLoginBody obj);
+
+        // Account Controller
+        Task<IEnumerable<State>> GetTestAsync();
+        Task<CommonAPIResponse> SaveHotelReg(HotelRegBody obj);
+        Task<CommonAPIResponse> SavePoliceReg(PoliceRegBody obj);    
         Task<HotelLoginRes> CheckHotelLogin(HotelLoginBody obj);
         Task<CommonAPIResponse> ChangeHotelPassUsingOTP(SetHotelPassBody obj); 
         Task<CommonAPIResponse> ChangeDeptPassUsingOTP(SetDeptPassBody obj);
@@ -36,14 +39,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         Task<VerifyMobileNo> VerifyMobileNoAsync(string mobileno);
 
 
-        //Hotel Guest
+        //Hotel Controller
         Task<CommonAPIResponse> SaveHotelGuestReg(HotelGuestRegistration obj);
-
         Task<HotelCheckInListResult> CheckGuestInOutStatusAsync(string hotelRegNo); 
 
 
-        //Dashboard dept
-
+        //Department Controller
          Task<DeptDashboardRes> DepartmentDashboardAsync(string userID);
     }
 }
