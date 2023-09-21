@@ -1605,6 +1605,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             List<HotelLocOnDashboard> hotelLocOnDashboard = new();
             List<HotelListDetailsForDashboard> hotelListDetailsForDashboard = new();
             List<HotelGuestDetails_DeptDash1> hotelGuestDetails_DeptDashes = new();
+
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
                 try
@@ -1616,7 +1617,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                     var checkuser = await db.Polices.Where(x => x.UserId == userID).FirstOrDefaultAsync();
                     var usertype = await db.Polices.Where(x => x.UserId == userID).Select(x => x.UserType).FirstOrDefaultAsync();
-
 
                     List<SqlParameter> parms = new List<SqlParameter>
                             {
@@ -1636,10 +1636,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             _long = i.Long,
                         });
                         result.hotelLocOnDashboard = hotelLocOnDashboard;
-
                     }
-
-
+                    
                     var details = await db.HotelListDetailsForDepart_Results.FromSqlRaw<HotelListDetailsForDepart_Result>("EXEC HotelListDetailsForDepart @DepartUsername", parms.ToArray()).ToListAsync();
                     foreach (var i in details)
                     {
@@ -1653,10 +1651,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                         });
                         result.hotelListDetailsForDashboards = hotelListDetailsForDashboard;
-
-                    }
-
-
+                    } 
+                    //Hotel Guest Dashboard Details
                     var hotelGuestDetails = await db.HotelGuestDetails_DeptDash1_Results.FromSqlRaw<HotelGuestDetails_DeptDash1_Result>("EXEC HotelGuestDetails_DeptDash1 @DepartUsername", parms.ToArray()).ToListAsync();
                     foreach (var i in hotelGuestDetails)
                     {
@@ -1675,19 +1671,14 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                            checkInDate = i.CheckInDate,
                         });
                         result.hotelGuestDetails_DeptDashes = hotelGuestDetails_DeptDashes;
-
-
                     }
 
-
                     if (checkuser != null)
-                    {
-                        
+                    {                        
                         if(usertype != null)
                         {
                             if(usertype == "1")
-                            {
-                                
+                            {                              
                                 var loc = await db.States.Where(x => x.StateId == stateid).Select(x => x.StateName).FirstOrDefaultAsync();
 
                                 result.code = 200;
@@ -1695,11 +1686,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 result.message = "Success Response";
                                 result.stationName = loc + " State";
                                 return result;
-
                             }
                             else if(usertype == "2")
-                            {
-                               
+                            {                            
                                 var loc = await db.Districts.Where(x => x.DistId == distid ).Select(x => x.DistName).FirstOrDefaultAsync();
 
                                 result.code = 200;
