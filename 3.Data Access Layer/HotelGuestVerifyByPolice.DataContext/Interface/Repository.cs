@@ -1605,6 +1605,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             List<HotelLocOnDashboard> hotelLocOnDashboard = new();
             List<HotelListDetailsForDashboard> hotelListDetailsForDashboard = new();
             List<HotelGuestDetails_DeptDash1> hotelGuestDetails_DeptDashes = new();
+            List<HotelGuestDetails_DeptDash2> hotelGuestDetails_DeptDash2 = new();
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
@@ -1671,6 +1672,24 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                            checkInDate = i.CheckInDate,
                         });
                         result.hotelGuestDetails_DeptDashes = hotelGuestDetails_DeptDashes;
+                    }
+
+                    var hotelGuestDetails2 = await db.HotelGuestDetails_DeptDash2_Results.FromSqlRaw<HotelGuestDetails_DeptDash2_Result>("EXEC HotelGuestDetails_DeptDash2 @DepartUsername", parms.ToArray()).ToListAsync();
+                    foreach (var i in hotelGuestDetails2)
+                    {
+                        hotelGuestDetails_DeptDash2.Add(new HotelGuestDetails_DeptDash2
+                        {
+                            hotelName = i.HotelName,
+                            guestName = i.GuestName,
+                            age = i.Age,
+                            visitPurpose=i.VisitPurpose,
+                            comingFrom=i.ComingFrom,
+                            reservation=i.Total_Adult.ToString() + " Adult" + i.Total_Child.ToString() + " Child",
+                            mobile = i.Mobile,
+                            city = i.City,
+                            checkInDate=i.CheckInDate,
+                        });
+                        result.hotelGuestDetails_DeptDash2 = hotelGuestDetails_DeptDash2;
                     }
 
                     if (checkuser != null)
