@@ -51,8 +51,10 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
         public string? city { get; set; }
         public string? visitPurpose { get; set; }
         public string? comingFrom { get; set; }
-        public int total_Adult { get; set; }
-        public int total_Child { get; set; }
+
+        public string? reservation { get; set; }
+        //public int total_Adult { get; set; }
+        //public int total_Child { get; set; }
         public string? hotelName { get; set; }
         public DateTime checkInDate { get; set; }
     }
@@ -65,8 +67,8 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
         public string? visitPurpose { get; set; }
 
         public string? comingFrom { get; set; }
-       // public int total_Adult { get; set; }
-      //  public int total_Child { get; set; }
+       //public int total_Adult { get; set; }
+       //public int total_Child { get; set; }
         
         public string? reservation { get; set; }
 

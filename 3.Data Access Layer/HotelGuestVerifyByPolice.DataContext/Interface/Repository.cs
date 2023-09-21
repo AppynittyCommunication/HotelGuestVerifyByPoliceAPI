@@ -1666,9 +1666,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                            city = i.City,
                            visitPurpose = i.VisitPurpose,
                            comingFrom = i.ComingFrom,
-                           total_Adult = i.Total_Adult,
-                           total_Child = i.Total_Child,
-                           hotelName = i.HotelName,
+                            reservation = i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child",
+                            hotelName = i.HotelName,
                            checkInDate = i.CheckInDate,
                         });
                         result.hotelGuestDetails_DeptDashes = hotelGuestDetails_DeptDashes;
@@ -1684,7 +1683,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             age = i.Age,
                             visitPurpose=i.VisitPurpose,
                             comingFrom=i.ComingFrom,
-                            reservation=i.Total_Adult.ToString() + " Adult" + i.Total_Child.ToString() + " Child",
+                            reservation=i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child",
                             mobile = i.Mobile,
                             city = i.City,
                             checkInDate=i.CheckInDate,
