@@ -1604,6 +1604,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             DeptDashboardRes result = new();
             List<HotelLocOnDashboard> hotelLocOnDashboard = new();
             List<HotelListDetailsForDashboard> hotelListDetailsForDashboard = new();
+            List<HotelGuestDetails_DeptDash1> hotelGuestDetails_DeptDashes = new();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
                 try
@@ -1612,7 +1613,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     var distid = await db.Polices.Where(x => x.UserId == userID).Select(x => x.DistId).FirstOrDefaultAsync();
                     var cityid = await db.Polices.Where(x => x.UserId == userID).Select(x => x.CityId).FirstOrDefaultAsync();
                     var stationid = await db.Polices.Where(x => x.UserId == userID).Select(x => x.StationCode).FirstOrDefaultAsync();
-
 
                     var checkuser = await db.Polices.Where(x => x.UserId == userID).FirstOrDefaultAsync();
                     var usertype = await db.Polices.Where(x => x.UserId == userID).Select(x => x.UserType).FirstOrDefaultAsync();
@@ -1660,6 +1660,35 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                         });
                         result.hotelListDetailsForDashboards = hotelListDetailsForDashboard;
+
+                    }
+
+
+                     List<SqlParameter> parms2 = new List<SqlParameter>
+                            {
+                            // Create parameter(s)
+                            new SqlParameter { ParameterName = "@DepartUsername", Value = userID },
+                            };
+
+                    var hotelGuestDetails = await db.HotelGuestDetails_DeptDash1_Results.FromSqlRaw<HotelGuestDetails_DeptDash1_Result>("EXEC HotelGuestDetails_DeptDash1 @DepartUsername", parms.ToArray()).ToListAsync();
+                    foreach (var i in hotelGuestDetails)
+                    {
+                        hotelGuestDetails_DeptDashes.Add(new HotelGuestDetails_DeptDash1
+                        { 
+                           roomBookingID = i.RoomBookingID,
+                           guestName = i.GuestName,
+                           guestPhoto = i.GuestPhoto,
+                           age = i.Age,
+                           city = i.City,
+                           visitPurpose = i.VisitPurpose,
+                           comingFrom = i.ComingFrom,
+                           total_Adult = i.Total_Adult,
+                           total_Child = i.Total_Child,
+                           hotelName = i.HotelName,
+                           checkInDate = i.CheckInDate,
+                        });
+                        result.hotelGuestDetails_DeptDashes = hotelGuestDetails_DeptDashes;
+
 
                     }
 

@@ -15,6 +15,8 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
 
         public List<HotelLocOnDashboard>? hotelLocOnDashboard { get; set; }
         public List<HotelListDetailsForDashboard>? hotelListDetailsForDashboards { get; set; }
+
+        public List<HotelGuestDetails_DeptDash1>? hotelGuestDetails_DeptDashes { get; set; }
     }
 
     public class HotelLocOnDashboard
@@ -34,7 +36,23 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
         public int totalCheckIn { get; set; }
 
         public int todaysCheckIn { get; set; }
-        public int todaysCheckOut { get; set;}
+        public int todaysCheckOut { get; set; }
+    }
+
+
+    public class HotelGuestDetails_DeptDash1
+    {
+        public string? roomBookingID { get; set; }
+        public byte[]? guestPhoto { get; set; }
+        public string? guestName { get; set; }
+        public int age { get; set; }
+        public string? city { get; set; }
+        public string? visitPurpose { get; set; }
+        public string? comingFrom { get; set; }
+        public int total_Adult { get; set; }
+        public int total_Child { get; set; }
+        public string? hotelName { get; set; }
+        public DateTime checkInDate { get; set; }
     }
 
 
