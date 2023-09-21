@@ -1640,13 +1640,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
 
 
-
-                    List<SqlParameter> parms1 = new List<SqlParameter>
-                            {
-                            // Create parameter(s)
-                            new SqlParameter { ParameterName = "@DepartUsername", Value = userID },
-                            };
-
                     var details = await db.HotelListDetailsForDepart_Results.FromSqlRaw<HotelListDetailsForDepart_Result>("EXEC HotelListDetailsForDepart @DepartUsername", parms.ToArray()).ToListAsync();
                     foreach (var i in details)
                     {
@@ -1663,12 +1656,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                     }
 
-
-                     List<SqlParameter> parms2 = new List<SqlParameter>
-                            {
-                            // Create parameter(s)
-                            new SqlParameter { ParameterName = "@DepartUsername", Value = userID },
-                            };
 
                     var hotelGuestDetails = await db.HotelGuestDetails_DeptDash1_Results.FromSqlRaw<HotelGuestDetails_DeptDash1_Result>("EXEC HotelGuestDetails_DeptDash1 @DepartUsername", parms.ToArray()).ToListAsync();
                     foreach (var i in hotelGuestDetails)
