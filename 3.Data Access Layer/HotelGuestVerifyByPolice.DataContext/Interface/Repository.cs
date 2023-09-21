@@ -1657,6 +1657,32 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     var hotelGuestDetails = await db.HotelGuestDetails_DeptDash1_Results.FromSqlRaw<HotelGuestDetails_DeptDash1_Result>("EXEC HotelGuestDetails_DeptDash1 @DepartUsername", parms.ToArray()).ToListAsync();
                     foreach (var i in hotelGuestDetails)
                     {
+                        var res = "";
+                        if (i.Total_Adult == 1 && i.Total_Child == 0)
+                        {
+                            res = i.Total_Adult.ToString() + " Adult ";
+                        }
+                        else if(i.Total_Adult == 1 && i.Total_Child==1) 
+                        {
+                            res = i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child";
+                        }
+                        else if(i.Total_Adult > 1 && i.Total_Child > 1)
+                        {
+                            res = i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Childs";
+                        }
+                        else if(i.Total_Adult > 1 && i.Total_Child == 1)
+                        {
+                            res = i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Child";
+                        }
+                        else if(i.Total_Adult > 1 && i.Total_Child == 0)
+                        {
+                            res = i.Total_Adult.ToString() + " Adults ";
+                        }
+                        else if(i.Total_Adult == 1 && i.Total_Child> 1)
+                        {
+                            res = i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Childs";
+                        }
+
                         hotelGuestDetails_DeptDashes.Add(new HotelGuestDetails_DeptDash1
                         { 
                            roomBookingID = i.RoomBookingID,
@@ -1666,8 +1692,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                            city = i.City,
                            visitPurpose = i.VisitPurpose,
                            comingFrom = i.ComingFrom,
-                            reservation = i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child",
-                            hotelName = i.HotelName,
+                           reservation=res,
+                           hotelName = i.HotelName,
                            checkInDate = i.CheckInDate,
                         });
                         result.hotelGuestDetails_DeptDashes = hotelGuestDetails_DeptDashes;
@@ -1676,6 +1702,31 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     var hotelGuestDetails2 = await db.HotelGuestDetails_DeptDash2_Results.FromSqlRaw<HotelGuestDetails_DeptDash2_Result>("EXEC HotelGuestDetails_DeptDash2 @DepartUsername", parms.ToArray()).ToListAsync();
                     foreach (var i in hotelGuestDetails2)
                     {
+                        var res = "";
+                        if (i.Total_Adult == 1 && i.Total_Child==0)
+                        {
+                            res = i.Total_Adult.ToString() + " Adult ";
+                        }
+                        else if (i.Total_Adult == 1 && i.Total_Child == 1)
+                        {
+                            res = i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child";
+                        }
+                        else if (i.Total_Adult > 1 && i.Total_Child > 1)
+                        {
+                            res = i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Childs";
+                        }
+                        else if (i.Total_Adult > 1 && i.Total_Child == 1)
+                        {
+                            res = i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Child";
+                        }
+                        else if (i.Total_Adult > 1 && i.Total_Child == 0)
+                        {
+                            res = i.Total_Adult.ToString() + " Adults ";
+                        }
+                        else if (i.Total_Adult == 1 && i.Total_Child > 1)
+                        {
+                            res = i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Childs";
+                        }
                         hotelGuestDetails_DeptDash2.Add(new HotelGuestDetails_DeptDash2
                         {
                             hotelName = i.HotelName,
@@ -1683,7 +1734,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             age = i.Age,
                             visitPurpose=i.VisitPurpose,
                             comingFrom=i.ComingFrom,
-                            reservation=i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child",
+                            reservation = res,
                             mobile = i.Mobile,
                             city = i.City,
                             checkInDate=i.CheckInDate,
