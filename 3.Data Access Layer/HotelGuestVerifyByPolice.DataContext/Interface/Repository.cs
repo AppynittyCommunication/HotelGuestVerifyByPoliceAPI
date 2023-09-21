@@ -1656,23 +1656,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     //Hotel Guest Dashboard Details
                     var hotelGuestDetails = await db.HotelGuestDetails_DeptDash1_Results.FromSqlRaw<HotelGuestDetails_DeptDash1_Result>("EXEC HotelGuestDetails_DeptDash1 @DepartUsername", parms.ToArray()).ToListAsync();
                     foreach (var i in hotelGuestDetails)
-                    {
-                        //var res = "";
-                        //if (i.Total_Adult == 1 && i.Total_Child == 0)
-                        //    res = i.Total_Adult.ToString() + " Adult ";
-                        //else if (i.Total_Adult == 1 && i.Total_Child == 1)
-                        //    res = i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child";
-                        //else if (i.Total_Adult > 1 && i.Total_Child > 1)
-                        //    res = i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Childs";
-                        //else if (i.Total_Adult > 1 && i.Total_Child == 1)
-                        //    res = i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Child";
-                        //else if (i.Total_Adult > 1 && i.Total_Child == 0)
-                        //    res = i.Total_Adult.ToString() + " Adults ";
-                        //else if (i.Total_Adult == 1 && i.Total_Child > 1)
-                        //    res = i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Childs";
-                        
-
-                       var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
+                    {                 
+                    var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
                               (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child" :
                               (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Childs" :
                               (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Child" :
@@ -1699,21 +1684,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     var hotelGuestDetails2 = await db.HotelGuestDetails_DeptDash2_Results.FromSqlRaw<HotelGuestDetails_DeptDash2_Result>("EXEC HotelGuestDetails_DeptDash2 @DepartUsername", parms.ToArray()).ToListAsync();
                     foreach (var i in hotelGuestDetails2)
                     {
-                        //var res = "";
-                        //if (i.Total_Adult == 1 && i.Total_Child==0)
-                        //    res = i.Total_Adult.ToString() + " Adult ";
-                        //else if (i.Total_Adult == 1 && i.Total_Child == 1)
-                        //    res = i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child";
-                        //else if (i.Total_Adult > 1 && i.Total_Child > 1)
-                        //    res = i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Childs";
-                        //else if (i.Total_Adult > 1 && i.Total_Child == 1)
-                        //    res = i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Child";
-                        //else if (i.Total_Adult > 1 && i.Total_Child == 0)
-                        //    res = i.Total_Adult.ToString() + " Adults ";
-                        //else if (i.Total_Adult == 1 && i.Total_Child > 1)
-                        //    res = i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Childs";
-
-
+                       
                        var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
                              (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child" :
                              (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Childs" :
