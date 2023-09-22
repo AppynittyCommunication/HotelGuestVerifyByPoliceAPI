@@ -1663,7 +1663,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                               (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Child" :
                               (i.Total_Adult > 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adults " :
                               (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Childs" :
-                              "Something Went Wrong";
+                              "No Guest Found!";
 
                         hotelGuestDetails_DeptDashes.Add(new HotelGuestDetails_DeptDash1
                         { 
