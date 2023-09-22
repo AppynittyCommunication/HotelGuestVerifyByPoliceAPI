@@ -68,6 +68,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         hoteldetails.DiviceIp = obj.diviceIp;
                         hoteldetails.IsActive = false;
                         hoteldetails.IsMobileVerify = obj.isMobileVerify;
+                        hoteldetails.Password = obj.password;
 
                         Random random = new Random();
                         string r = random.Next(000001, 999999).ToString();
@@ -145,7 +146,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         policedetails.Long = obj._long;
                         policedetails.DiviceIp = obj.deviceIp;
                         policedetails.IsActive = false;
-                        // policedetails.Password = obj.password;
+                        policedetails.Password = obj.password;
                         policedetails.IsMobileVerify = obj.isMobileVerify;
                         Random random = new Random();
                         string r = random.Next(000001, 999999).ToString();
@@ -906,7 +907,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         {
                             result.code = 200;
                             result.status = "error";
-                            result.message = authPin + " Is Alrady Used";
+                            result.message = authPin + " Is Already Used";
                             return result;
                         }
                         else
