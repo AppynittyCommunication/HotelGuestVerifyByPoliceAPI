@@ -119,6 +119,66 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
+
+        public async Task<CommonAPIResponse> SaveAuthUserAsync(SaveAuthUserBody obj)
+        {
+            CommonAPIResponse result = new CommonAPIResponse();
+         
+
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var checkauth = await db.AuthenticationPins.Where(c => c.AuthPin == obj.authPin).FirstOrDefaultAsync();
+
+                    if (checkauth != null)
+                    {
+                        checkauth.UserId = obj.userID;
+                        checkauth.UseFor = obj.useFor;
+                        checkauth.IsUse = obj.isUse;
+                        checkauth.UseDate = DateTime.Now;
+                       
+
+                        //db.AuthenticationPins.Add(checkauth);
+                        await db.SaveChangesAsync();
+
+                        result.code = 200;
+                        result.status = "success";
+                        result.message = "Authentication Data Saved Successfully!";
+                        return result;
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "Failed";
+                        return result;
+                    }
+                    //return result;
+                }
+                catch (Exception ex)
+                {
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+
+        }
+
+
+
         public async Task<CommonAPIResponse> SavePoliceReg(PoliceRegBody obj)
         {
             CommonAPIResponse result = new CommonAPIResponse();
@@ -975,6 +1035,10 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
             }
         }
+
+
+
+
 
         public async Task<CommonAPIResponse> CheckDepartUsernameExistAsync(string userid)
         {

@@ -38,7 +38,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         Task<CommonAPIResponse> CheckHotelUsernameExistAsync(string userId); 
         Task<VerifyMobileNo> VerifyMobileNoAsync(string mobileno);
         Task<CommonAPIResponse> CheckAuthPinAsync(string authPin);
-
+        Task<CommonAPIResponse> SaveAuthUserAsync(SaveAuthUserBody obj);
 
         //Hotel Controller
         Task<CommonAPIResponse> SaveHotelGuestReg(HotelGuestRegistration obj);

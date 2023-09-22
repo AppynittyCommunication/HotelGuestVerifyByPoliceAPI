@@ -191,5 +191,15 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
             return objresponse;
         }
 
+        [Route("SaveAuthUser")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<CommonAPIResponse>> SaveAuthUser([FromBody] SaveAuthUserBody obj)
+        {
+            CommonAPIResponse objresponse = await objRep.SaveAuthUserAsync(obj);
+
+            return objresponse;
+        }
+
     }
 }
