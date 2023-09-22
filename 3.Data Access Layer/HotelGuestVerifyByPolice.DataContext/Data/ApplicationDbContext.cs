@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using HotelGuestVerifyByPolice.DataContext.Entities.SPEntities;
 using HotelGuestVerifyByPolice.DataContext.Entities.TableEntities;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,6 +36,14 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<PoliceStation> PoliceStations { get; set; }
 
     public virtual DbSet<State> States { get; set; }
+
+
+    public DbSet<Hotel_CheckInList_Result> Hotel_CheckInList_Results { get; set; }
+    public DbSet<HotelLocForDepartDash_Result> HotelLocForDepartDash_Results { get; set; }
+
+    public DbSet<HotelListDetailsForDepart_Result> HotelListDetailsForDepart_Results { get; set; }
+
+    public DbSet<HotelGuestDetails_DeptDash_Result> HotelGuestDetails_DeptDash_Results { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -108,6 +117,11 @@ public partial class ApplicationDbContext : DbContext
         });
 
         OnModelCreatingPartial(modelBuilder);
+
+        modelBuilder.Entity<Hotel_CheckInList_Result>().HasNoKey();
+        modelBuilder.Entity<HotelLocForDepartDash_Result>().HasNoKey();
+        modelBuilder.Entity<HotelListDetailsForDepart_Result>().HasNoKey();
+        modelBuilder.Entity<HotelGuestDetails_DeptDash_Result>().HasNoKey();
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

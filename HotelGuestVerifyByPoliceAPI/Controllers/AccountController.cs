@@ -179,5 +179,17 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
             return objresponse;
         }
+
+
+        [Route("CheckAuthPin")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<CommonAPIResponse>> CheckAuthPin([FromHeader] string authPin)
+        {
+            CommonAPIResponse objresponse = await objRep.CheckAuthPinAsync(authPin);
+
+            return objresponse;
+        }
+
     }
 }

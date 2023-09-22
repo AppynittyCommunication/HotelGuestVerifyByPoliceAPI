@@ -35,8 +35,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         Task<CheckHotelUsernameRes> ForgetHotePassStep1Async(string username,string mobileno);
         Task<CheckDeptUsernameRes> ForgetDeptPassStep1Async(string username, string mobileno);
         Task<CommonAPIResponse> CheckDepartUsernameExistAsync(string userId);
-        Task<CommonAPIResponse> CheckHotelUsernameExistAsync(string userId);
+        Task<CommonAPIResponse> CheckHotelUsernameExistAsync(string userId); 
         Task<VerifyMobileNo> VerifyMobileNoAsync(string mobileno);
+        Task<CommonAPIResponse> CheckAuthPinAsync(string authPin);
 
 
         //Hotel Controller

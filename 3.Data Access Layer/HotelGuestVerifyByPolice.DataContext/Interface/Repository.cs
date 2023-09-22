@@ -891,7 +891,51 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
+        public async Task<CommonAPIResponse> CheckAuthPinAsync(string authPin)
+        {
+            CommonAPIResponse result = new CommonAPIResponse();
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var checkauthPin = await db.AuthenticationPins.Where(c => c.AuthPin == authPin).FirstOrDefaultAsync();
 
+                    if (checkauthPin != null)
+                    {
+                        if(checkauthPin.IsUse==true)
+                        {
+                            result.code = 200;
+                            result.status = "error";
+                            result.message = authPin + " Is Alrady Used";
+                            return result;
+                        }
+                        else
+                        {
+                            result.code = 200;
+                            result.status = "success";
+                            result.message = authPin + " Is Available";
+                            return result;
+                        }                
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = authPin + " Not Available";
+                        return result;
+                    }
+                    //return result;
+                }
+                catch (Exception ex)
+                {
+                    result.code = 200;
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+
+                }
+            }
+        }
 
 
         public async Task<CommonAPIResponse> CheckHotelRegExistAsync(string hotelRegNumber)
