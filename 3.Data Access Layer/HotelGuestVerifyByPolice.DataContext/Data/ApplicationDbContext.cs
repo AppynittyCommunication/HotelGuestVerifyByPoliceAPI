@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using HotelGuestVerifyByPolice.DataContext.Entities.SPEntities;
 using HotelGuestVerifyByPolice.DataContext.Entities.TableEntities;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +17,8 @@ public partial class ApplicationDbContext : DbContext
     }
 
     public virtual DbSet<AddHotelGuest> AddHotelGuests { get; set; }
+
+    public virtual DbSet<AuthenticationPin> AuthenticationPins { get; set; }
 
     public virtual DbSet<City> Cities { get; set; }
 
@@ -37,19 +38,15 @@ public partial class ApplicationDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=124.153.94.110;Initial Catalog=HotelGuestVerifyByPolice;Persist Security Info=False;User ID=sa;Password=sa@123;MultipleActiveResultSets=False;Connection Timeout=30;Encrypt=false;TrustServerCertificate=true;");
+        => optionsBuilder.UseSqlServer("Server=124.153.94.110;Initial Catalog=HotelGuestVerifyByPolice;Persist Security Info=False;User ID=appynitty;Password=BigV$Telecom;MultipleActiveResultSets=False;Connection Timeout=30;Encrypt=false;TrustServerCertificate=true;");
 
-
-    public DbSet<Hotel_CheckInList_Result> Hotel_CheckInList_Results { get; set; }
-    public DbSet<HotelLocForDepartDash_Result> HotelLocForDepartDash_Results { get; set; }
-    
-    public DbSet<HotelListDetailsForDepart_Result> HotelListDetailsForDepart_Results { get; set; }
-    
-    public DbSet<HotelGuestDetails_DeptDash_Result> HotelGuestDetails_DeptDash_Results { get; set; }
-   // public DbSet<HotelGuestDetails_DeptDash2_Result> HotelGuestDetails_DeptDash2_Results { get; set; }
-    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AuthenticationPin>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Authenti__3214EC276C28A4C4");
+        });
+
         modelBuilder.Entity<City>(entity =>
         {
             entity.HasKey(e => e.CityId).HasName("PK__City__F2D21A9673EB0303");
@@ -109,14 +106,6 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.StateId).ValueGeneratedNever();
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
         });
-
-        modelBuilder.Entity<Hotel_CheckInList_Result>().HasNoKey();
-        modelBuilder.Entity<HotelLocForDepartDash_Result>().HasNoKey(); 
-        modelBuilder.Entity<HotelListDetailsForDepart_Result>().HasNoKey(); 
-        modelBuilder.Entity<HotelGuestDetails_DeptDash_Result>().HasNoKey();
-        //modelBuilder.Entity<HotelGuestDetails_DeptDash2_Result>().HasNoKey();
-        
-        
 
         OnModelCreatingPartial(modelBuilder);
     }
