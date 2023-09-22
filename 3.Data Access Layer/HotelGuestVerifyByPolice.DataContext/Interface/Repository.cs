@@ -1654,7 +1654,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.hotelListDetailsForDashboards = hotelListDetailsForDashboard;
                     } 
                     //Hotel Guest Dashboard Details
-                    var hotelGuestDetails = await db.HotelGuestDetails_DeptDash1_Results.FromSqlRaw<HotelGuestDetails_DeptDash1_Result>("EXEC HotelGuestDetails_DeptDash1 @DepartUsername", parms.ToArray()).ToListAsync();
+                    var hotelGuestDetails = await db.HotelGuestDetails_DeptDash_Results.FromSqlRaw<HotelGuestDetails_DeptDash_Result>("EXEC HotelGuestDetails_DeptDash @DepartUsername", parms.ToArray()).ToListAsync();
                     foreach (var i in hotelGuestDetails)
                     {                 
                     var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
@@ -1679,35 +1679,23 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                            checkInDate = i.CheckInDate,
                         });
                         result.hotelGuestDetails_DeptDashes = hotelGuestDetails_DeptDashes;
-                    }
-
-                    var hotelGuestDetails2 = await db.HotelGuestDetails_DeptDash2_Results.FromSqlRaw<HotelGuestDetails_DeptDash2_Result>("EXEC HotelGuestDetails_DeptDash2 @DepartUsername", parms.ToArray()).ToListAsync();
-                    foreach (var i in hotelGuestDetails2)
-                    {
-                       
-                       var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
-                             (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child" :
-                             (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Childs" :
-                             (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Child" :
-                             (i.Total_Adult > 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adults " :
-                             (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Childs" :
-                             "Something Went Wrong";
-
 
                         hotelGuestDetails_DeptDash2.Add(new HotelGuestDetails_DeptDash2
                         {
                             hotelName = i.HotelName,
                             guestName = i.GuestName,
                             age = i.Age,
-                            visitPurpose=i.VisitPurpose,
-                            comingFrom=i.ComingFrom,
+                            visitPurpose = i.VisitPurpose,
+                            comingFrom = i.ComingFrom,
                             reservation = res,
                             mobile = i.Mobile,
                             city = i.City,
-                            checkInDate=i.CheckInDate,
+                            checkInDate = i.CheckInDate,
                         });
                         result.hotelGuestDetails_DeptDash2 = hotelGuestDetails_DeptDash2;
                     }
+
+                   
 
                     if (checkuser != null)
                     {                        

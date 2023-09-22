@@ -45,8 +45,8 @@ public partial class ApplicationDbContext : DbContext
     
     public DbSet<HotelListDetailsForDepart_Result> HotelListDetailsForDepart_Results { get; set; }
     
-    public DbSet<HotelGuestDetails_DeptDash1_Result> HotelGuestDetails_DeptDash1_Results { get; set; }
-    public DbSet<HotelGuestDetails_DeptDash2_Result> HotelGuestDetails_DeptDash2_Results { get; set; }
+    public DbSet<HotelGuestDetails_DeptDash_Result> HotelGuestDetails_DeptDash_Results { get; set; }
+   // public DbSet<HotelGuestDetails_DeptDash2_Result> HotelGuestDetails_DeptDash2_Results { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -113,8 +113,8 @@ public partial class ApplicationDbContext : DbContext
         modelBuilder.Entity<Hotel_CheckInList_Result>().HasNoKey();
         modelBuilder.Entity<HotelLocForDepartDash_Result>().HasNoKey(); 
         modelBuilder.Entity<HotelListDetailsForDepart_Result>().HasNoKey(); 
-        modelBuilder.Entity<HotelGuestDetails_DeptDash1_Result>().HasNoKey();
-        modelBuilder.Entity<HotelGuestDetails_DeptDash2_Result>().HasNoKey();
+        modelBuilder.Entity<HotelGuestDetails_DeptDash_Result>().HasNoKey();
+        //modelBuilder.Entity<HotelGuestDetails_DeptDash2_Result>().HasNoKey();
         
         
 

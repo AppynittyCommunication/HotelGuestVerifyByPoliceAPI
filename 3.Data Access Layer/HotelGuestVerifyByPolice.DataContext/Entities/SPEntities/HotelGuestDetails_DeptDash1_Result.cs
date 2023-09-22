@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HotelGuestVerifyByPolice.DataContext.Entities.SPEntities
 {
-    public class HotelGuestDetails_DeptDash1_Result
+    public class HotelGuestDetails_DeptDash_Result
     {
         public string? RoomBookingID { get; set; }
         public byte[]? GuestPhoto { get; set; }
@@ -20,6 +20,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Entities.SPEntities
         public string? HotelName { get; set; }
         public DateTime CheckInDate { get; set; }
 
+        public string? Mobile { get; set; }
 
     }
 }
