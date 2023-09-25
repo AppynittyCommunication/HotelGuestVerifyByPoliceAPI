@@ -7,6 +7,7 @@ using HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -123,7 +124,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         public async Task<CommonAPIResponse> SaveAuthUserAsync(SaveAuthUserBody obj)
         {
             CommonAPIResponse result = new CommonAPIResponse();
-         
+
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
@@ -962,7 +963,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                     if (checkauthPin != null)
                     {
-                        if(checkauthPin.IsUse==true)
+                        if (checkauthPin.IsUse == true)
                         {
                             result.code = 200;
                             result.status = "error";
@@ -975,7 +976,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             result.status = "success";
                             result.message = authPin + " Is Available";
                             return result;
-                        }                
+                        }
                     }
                     else
                     {
@@ -1139,8 +1140,14 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 Task<string> myTask = sendSMSasync(msg, mobileno);
                                 string[] myStr = myTask.Result.Split(" ");
 
-                                string mono = myStr[0];
-                                string status1 = myStr[1];
+                                string mono = "";
+                                string status1 = "";
+                                if (myStr.Length == 2)
+                                {
+                                    mono = myStr[0];
+                                    status1 = myStr[1];
+                                }
+
 
                                 string status = status1.Replace("<br>", "");
 
@@ -1150,7 +1157,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                     result.code = 200;
                                     result.otp = otp;
                                     result.status = "success";
-                                    result.message = "OTP sent successfully to your Registered Mobile Number.";
+                                    result.message = "OTP sent successfully to your Registered Mobile Number." + status;
                                     return result;
                                 }
                                 else if (status == "NCPR")
@@ -1158,7 +1165,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                     result.code = 200;
                                     result.otp = "";
                                     result.status = "error";
-                                    result.message = "Please Deactivate Do Not Disturb(DND) of your Registered Mobile Number.";
+                                    result.message = "Please Deactivate Do Not Disturb(DND) of your Registered Mobile Number." + status;
                                     return result;
                                 }
                                 else
@@ -1365,8 +1372,14 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 Task<string> myTask = sendSMSasync(msg, mobileno);
                 string[] myStr = myTask.Result.Split(" ");
 
-                string mono = myStr[0];
-                string status1 = myStr[1];
+                string mono = "";
+                string status1 = "";
+                if (myStr.Length == 2)
+                {
+                    mono = myStr[0];
+                    status1 = myStr[1];
+                }
+
 
                 string status = status1.Replace("<br>", "");
 
@@ -1375,7 +1388,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     result.code = 200;
                     result.otp = otp;
                     result.status = "success";
-                    result.message = "OTP sent successfully to your Registered Mobile Number.";
+                    result.message = "OTP sent successfully to your Registered Mobile Number." + status;
                     return result;
                 }
                 else if (status == "NCPR")
@@ -1383,7 +1396,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     result.code = 200;
                     result.otp = "";
                     result.status = "error";
-                    result.message = "Please Deactivate Do Not Disturb(DND) of your Registered Mobile Number.";
+                    result.message = "Please Deactivate Do Not Disturb(DND) of your Registered Mobile Number." + status;
                     return result;
                 }
                 else
@@ -1453,7 +1466,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         {
             CommonAPIResponse result = new CommonAPIResponse();
             HotelGuest hgdetails = new();
-           
+
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
@@ -1480,7 +1493,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         hgdetails.Country = obj.Country;
                         hgdetails.State = obj.State;
                         hgdetails.City = obj.City;
-                       // hgdetails.Address = obj.Address;
+                        // hgdetails.Address = obj.Address;
                         hgdetails.ComingFrom = obj.ComingFrom;
                         hgdetails.GuestIdType = obj.GuestIdType;
                         hgdetails.PaymentMode = obj.PaymentMode;
@@ -1512,7 +1525,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         db.HotelGuests.Add(hgdetails);
                         await db.SaveChangesAsync();
 
-                        if(add != null)
+                        if (add != null)
                         {
                             var checkBookingID = await db.HotelGuests.Where(c => c.RoomBookingId == roomb).FirstOrDefaultAsync();
                             if (checkBookingID != null)
@@ -1535,7 +1548,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                     addOnGuest.Country = c.Country;
                                     addOnGuest.State = c.State;
                                     addOnGuest.City = c.City;
-                                   // addOnGuest.Address = c.Address;
+                                    // addOnGuest.Address = c.Address;
                                     addOnGuest.ComingFrom = c.ComingFrom;
                                     addOnGuest.GuestType = c.GuestType;
                                     addOnGuest.RelationWithGuest = c.RelationWithGuest;
@@ -1579,7 +1592,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 result.message = "Booking ID Not Generated!";
                                 return result;
                             }
-                            
+
                         }
                         else
                         {
@@ -1588,8 +1601,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             result.message = "Registration Details Saved Successfully!";
                             return result;
                         }
-                       
-                        
+
+
                     }
                     else
                     {
@@ -1624,7 +1637,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         public async Task<HotelCheckInListResult> CheckGuestInOutStatusAsync(string hotelRegNo)
         {
             HotelCheckInListResult result = new();
-            List<GuestInOutStatusResponse> guestres = new ();
+            List<GuestInOutStatusResponse> guestres = new();
             List<GuestDetailsList> guestDetailsList = new();
             HotelGuest obj = new();
 
@@ -1707,6 +1720,85 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
+        public async Task<List<RelationsList>> GetRelationAsync()
+        {
+            List<RelationsList> result = new();
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var rel = await db.Relations.AsQueryable().Select(x => new RelationsList
+                    {
+                        id = x.Id,
+                        relation = x.Name,
+
+                    }).ToListAsync();
+                    result = rel;
+
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    return result;
+                }
+
+            }
+        }
+
+        public async Task<List<VisitPurposeList>> GetVisitPurposeAsync()
+        {
+            List<VisitPurposeList> result = new();
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var vp = await db.VisitPurposes.AsQueryable().Select(x => new VisitPurposeList
+                    {
+                        id = x.Id,
+                        visitPurpose = x.Purpose,
+
+                    }).ToListAsync();
+                    result = vp;
+
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    return result;
+                }
+
+            }
+        }
+
+        public async Task<List<SelectIDTypeList>> GetSelectIDTypeAsync()
+        {
+            List<SelectIDTypeList> result = new();
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var vp = await db.IdProofTypes.AsQueryable().Select(x => new SelectIDTypeList
+                    {
+                        id = x.Id,
+                        idProofType = x.IdType,
+
+                    }).ToListAsync();
+                    result = vp;
+
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    return result;
+                }
+
+            }
+        }
+
+
+
+
+
         public async Task<DeptDashboardRes> DepartmentDashboardAsync(string userID)
         {
             DeptDashboardRes result = new();
@@ -1746,7 +1838,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         });
                         result.hotelLocOnDashboard = hotelLocOnDashboard;
                     }
-                    
+
                     var details = await db.HotelListDetailsForDepart_Results.FromSqlRaw<HotelListDetailsForDepart_Result>("EXEC HotelListDetailsForDepart @DepartUsername", parms.ToArray()).ToListAsync();
                     foreach (var i in details)
                     {
@@ -1760,35 +1852,35 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                         });
                         result.hotelListDetailsForDashboards = hotelListDetailsForDashboard;
-                    } 
+                    }
                     //Hotel Guest Dashboard Details
                     var hotelGuestDetails = await db.HotelGuestDetails_DeptDash_Results.FromSqlRaw<HotelGuestDetails_DeptDash_Result>("EXEC HotelGuestDetails_DeptDash @DepartUsername", parms.ToArray()).ToListAsync();
                     foreach (var i in hotelGuestDetails)
-                    {                 
-                    var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
-                              (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child" :
-                              (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Childs" :
-                              (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Child" :
-                              (i.Total_Adult > 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adults " :
-                              (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Childs" :
-                              "No Guest Found!";
+                    {
+                        var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
+                                  (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child" :
+                                  (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Childs" :
+                                  (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Child" :
+                                  (i.Total_Adult > 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adults " :
+                                  (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Childs" :
+                                  "No Guest Found!";
 
                         hotelGuestDetails_DeptDashes.Add(new HotelGuestDetails_DeptDash1
-                        { 
-                           roomBookingID = i.RoomBookingID,
-                           guestName = i.GuestName,
-                           guestPhoto = i.GuestPhoto,
-                           age = i.Age,
-                           city = i.City,
-                           visitPurpose = i.VisitPurpose,
-                           comingFrom = i.ComingFrom,
-                           reservation=res,
-                           hotelName = i.HotelName,
-                           checkInDate = i.CheckInDate,
+                        {
+                            roomBookingID = i.RoomBookingID,
+                            guestName = i.GuestName,
+                            guestPhoto = i.GuestPhoto,
+                            age = i.Age,
+                            city = i.City,
+                            visitPurpose = i.VisitPurpose,
+                            comingFrom = i.ComingFrom,
+                            reservation = res,
+                            hotelName = i.HotelName,
+                            checkInDate = i.CheckInDate,
                         });
                         result.hotelGuestDetails_DeptDashes = hotelGuestDetails_DeptDashes;
 
-                  
+
                     }
 
                     var hotelGuestDetails1 = await db.HotelGuestDetails_DeptDash_Results1.FromSqlRaw<HotelGuestDetails_DeptDash_Result1>("EXEC HotelGuestDetails_DeptDash1 @DepartUsername", parms.ToArray()).ToListAsync();
@@ -1817,12 +1909,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.hotelGuestDetails_DeptDash2 = hotelGuestDetails_DeptDash2;
                     }
 
-                        if (checkuser != null)
-                    {                        
-                        if(usertype != null)
+                    if (checkuser != null)
+                    {
+                        if (usertype != null)
                         {
-                            if(usertype == "1")
-                            {                              
+                            if (usertype == "1")
+                            {
                                 var loc = await db.States.Where(x => x.StateId == stateid).Select(x => x.StateName).FirstOrDefaultAsync();
 
                                 result.code = 200;
@@ -1831,9 +1923,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 result.stationName = loc + " State";
                                 return result;
                             }
-                            else if(usertype == "2")
-                            {                            
-                                var loc = await db.Districts.Where(x => x.DistId == distid ).Select(x => x.DistName).FirstOrDefaultAsync();
+                            else if (usertype == "2")
+                            {
+                                var loc = await db.Districts.Where(x => x.DistId == distid).Select(x => x.DistName).FirstOrDefaultAsync();
 
                                 result.code = 200;
                                 result.status = "success";
@@ -1844,7 +1936,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             }
                             else if (usertype == "3")
                             {
-                               
+
                                 var loc = await db.Cities.Where(x => x.CityId == cityid).Select(x => x.CityName).FirstOrDefaultAsync();
 
                                 result.code = 200;
@@ -1854,9 +1946,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 return result;
 
                             }
-                            else if(usertype == "4")
+                            else if (usertype == "4")
                             {
-                               
+
                                 var loc = await db.PoliceStations.Where(x => x.Id == Convert.ToInt32(stationid)).Select(x => x.StationName).FirstOrDefaultAsync();
 
                                 result.code = 200;
@@ -1875,7 +1967,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 return result;
                             }
 
-                            
+
                         }
                         else
                         {
@@ -1895,7 +1987,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         return result;
                     }
 
-                   
+
                 }
                 catch (Exception ex)
                 {
@@ -1917,6 +2009,87 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
-        
+
+
+
+        public async Task<ShowHotelGuestDetailsRes> ShowHotelGuestDetailsAsync(string roomBookingID)
+        {
+            ShowHotelGuestDetailsRes result = new ShowHotelGuestDetailsRes();
+
+            List<GuestDetails> hotelGuestDetails = new List<GuestDetails>();
+            List<AddOnGuestDetails> addguestDetails = new List<AddOnGuestDetails>();
+
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                         new SqlParameter { ParameterName = "@RoomBookingID", Value = roomBookingID },
+                    };
+
+                    var data = await db.ShowHotelGuestDetails_Results.FromSqlRaw<ShowHotelGuestDetails_Result>("EXEC ShowHotelGuestDetails @RoomBookingID", parms.ToArray()).ToListAsync();
+                    {
+                        foreach (var i in data)
+                        {                     
+                            if(i.RelationWithGuest == "SELF") 
+                            {
+                                hotelGuestDetails.Add(new GuestDetails
+                                {
+                                    roomBookingId = i.RoomBookingId,
+                                    guestName = i.GuestName,
+                                    email = i.Email,
+                                    mobile = i.Mobile,
+                                    gender = i.Gender,
+                                    age = i.Age,
+                                    country = i.Country,
+                                    city = i.City,
+                                    address = i.Address,
+                                    guestPhoto = i.GuestPhoto,
+                                });
+                                result.hotelGuestDetails = hotelGuestDetails;
+                            }
+                            else
+                            {
+                                addguestDetails.Add(new AddOnGuestDetails
+                                {
+                                    relationWithGuest = i.RelationWithGuest,
+                                    guestName = i.GuestName,
+                                });
+                                result.addOnGuestDetails1 = addguestDetails;
+                            }
+                        }                      
+                    }                    
+                    result.code = 200;
+                    result.status = "success";
+                    result.message = "Success Response";
+                    result.hotelGuestDetails = hotelGuestDetails;
+                    result.addOnGuestDetails1 = addguestDetails;
+                    return result;
+
+                }
+
+                catch (Exception ex)
+                {
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+                }
+            }
+
+        }
+
+
+
     }
 }

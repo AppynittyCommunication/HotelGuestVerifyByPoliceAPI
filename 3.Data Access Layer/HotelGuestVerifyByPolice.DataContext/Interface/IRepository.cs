@@ -43,9 +43,13 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         //Hotel Controller
         Task<CommonAPIResponse> SaveHotelGuestReg(HotelGuestRegistration obj);
         Task<HotelCheckInListResult> CheckGuestInOutStatusAsync(string hotelRegNo); 
+        Task<List<RelationsList>> GetRelationAsync(); 
+        Task<List<VisitPurposeList>> GetVisitPurposeAsync(); 
+        Task<List<SelectIDTypeList>> GetSelectIDTypeAsync(); 
 
 
         //Department Controller
          Task<DeptDashboardRes> DepartmentDashboardAsync(string userID);
+         Task<ShowHotelGuestDetailsRes> ShowHotelGuestDetailsAsync(string roomBookingID);
     }
 }

@@ -41,5 +41,58 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
             return objresponse;
         }
 
+
+        [Route("SelectRelation")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<List<RelationsList>>> GetRelation()
+        {
+            List<RelationsList> objresponse = await objRep.GetRelationAsync();
+            try
+            {
+                objresponse = await objRep.GetRelationAsync();
+                return objresponse;
+            }
+            catch (Exception)
+            {
+                return objresponse;
+            }
+        }
+
+
+        [Route("SelectVisitPurpose")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<List<VisitPurposeList>>> GetVisitPurpose()
+        {
+            List<VisitPurposeList> objresponse = await objRep.GetVisitPurposeAsync();
+            try
+            {
+                objresponse = await objRep.GetVisitPurposeAsync();
+                return objresponse;
+            }
+            catch (Exception)
+            {
+                return objresponse;
+            }
+        }
+
+        [Route("SelectSelectIDType")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<List<SelectIDTypeList>>> GetSelectIDType()
+        {
+            List<SelectIDTypeList> objresponse = await objRep.GetSelectIDTypeAsync();
+            try
+            {
+                objresponse = await objRep.GetSelectIDTypeAsync();
+                return objresponse;
+            }
+            catch (Exception)
+            {
+                return objresponse;
+            }
+        }
+       
     }
 }

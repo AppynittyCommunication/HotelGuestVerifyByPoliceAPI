@@ -30,5 +30,15 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
             return objresponse;
         }
+
+        [Route("ShowHotelGuestDetails")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<ShowHotelGuestDetailsRes>> ShowHotelGuestDetails([FromHeader] string roomBookingID)
+        {
+            ShowHotelGuestDetailsRes objresponse = await objRep.ShowHotelGuestDetailsAsync(roomBookingID);
+
+            return objresponse;
+        }
     }
 }

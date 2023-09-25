@@ -31,12 +31,17 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<HotelGuest> HotelGuests { get; set; }
 
+    public virtual DbSet<IdProofType> IdProofTypes { get; set; }
+
     public virtual DbSet<Police> Polices { get; set; }
 
     public virtual DbSet<PoliceStation> PoliceStations { get; set; }
 
+    public virtual DbSet<Relation> Relations { get; set; }
+
     public virtual DbSet<State> States { get; set; }
 
+    public virtual DbSet<VisitPurpose> VisitPurposes { get; set; }
 
     public DbSet<Hotel_CheckInList_Result> Hotel_CheckInList_Results { get; set; }
     public DbSet<HotelLocForDepartDash_Result> HotelLocForDepartDash_Results { get; set; }
@@ -45,6 +50,8 @@ public partial class ApplicationDbContext : DbContext
 
     public DbSet<HotelGuestDetails_DeptDash_Result> HotelGuestDetails_DeptDash_Results { get; set; }
     public DbSet<HotelGuestDetails_DeptDash_Result1> HotelGuestDetails_DeptDash_Results1 { get; set; }
+    public DbSet<ShowHotelGuestDetails_Result> ShowHotelGuestDetails_Results { get; set; }
+    
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -97,6 +104,11 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
         });
 
+        modelBuilder.Entity<IdProofType>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__IdProofT__3214EC2725F3616B");
+        });
+
         modelBuilder.Entity<Police>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("PK__Police__1788CCAC87986454");
@@ -109,6 +121,11 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
         });
 
+        modelBuilder.Entity<Relation>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Relation__3214EC278EDF51F0");
+        });
+
         modelBuilder.Entity<State>(entity =>
         {
             entity.HasKey(e => e.StateId).HasName("PK__State__C3BA3B5AE571F19D");
@@ -117,13 +134,20 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
         });
 
-        OnModelCreatingPartial(modelBuilder);
+        modelBuilder.Entity<VisitPurpose>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__VisitPur__3214EC27E131EA7E");
+        });
 
         modelBuilder.Entity<Hotel_CheckInList_Result>().HasNoKey();
         modelBuilder.Entity<HotelLocForDepartDash_Result>().HasNoKey();
         modelBuilder.Entity<HotelListDetailsForDepart_Result>().HasNoKey();
         modelBuilder.Entity<HotelGuestDetails_DeptDash_Result>().HasNoKey();
         modelBuilder.Entity<HotelGuestDetails_DeptDash_Result1>().HasNoKey();
+        modelBuilder.Entity<ShowHotelGuestDetails_Result>().HasNoKey();
+
+
+        OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
