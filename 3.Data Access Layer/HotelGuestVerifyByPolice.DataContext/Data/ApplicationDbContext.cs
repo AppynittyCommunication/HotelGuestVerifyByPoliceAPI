@@ -44,6 +44,7 @@ public partial class ApplicationDbContext : DbContext
     public DbSet<HotelListDetailsForDepart_Result> HotelListDetailsForDepart_Results { get; set; }
 
     public DbSet<HotelGuestDetails_DeptDash_Result> HotelGuestDetails_DeptDash_Results { get; set; }
+    public DbSet<HotelGuestDetails_DeptDash_Result1> HotelGuestDetails_DeptDash_Results1 { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -122,6 +123,7 @@ public partial class ApplicationDbContext : DbContext
         modelBuilder.Entity<HotelLocForDepartDash_Result>().HasNoKey();
         modelBuilder.Entity<HotelListDetailsForDepart_Result>().HasNoKey();
         modelBuilder.Entity<HotelGuestDetails_DeptDash_Result>().HasNoKey();
+        modelBuilder.Entity<HotelGuestDetails_DeptDash_Result1>().HasNoKey();
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

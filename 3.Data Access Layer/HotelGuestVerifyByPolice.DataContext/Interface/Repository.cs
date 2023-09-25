@@ -137,7 +137,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         checkauth.UseFor = obj.useFor;
                         checkauth.IsUse = obj.isUse;
                         checkauth.UseDate = DateTime.Now;
-                       
 
                         //db.AuthenticationPins.Add(checkauth);
                         await db.SaveChangesAsync();
@@ -1789,6 +1788,20 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         });
                         result.hotelGuestDetails_DeptDashes = hotelGuestDetails_DeptDashes;
 
+                  
+                    }
+
+                    var hotelGuestDetails1 = await db.HotelGuestDetails_DeptDash_Results1.FromSqlRaw<HotelGuestDetails_DeptDash_Result1>("EXEC HotelGuestDetails_DeptDash1 @DepartUsername", parms.ToArray()).ToListAsync();
+                    foreach (var i in hotelGuestDetails1)
+                    {
+                        var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
+                           (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child" :
+                           (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Childs" :
+                           (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Child" :
+                           (i.Total_Adult > 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adults " :
+                           (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Childs" :
+                           "No Guest Found!";
+
                         hotelGuestDetails_DeptDash2.Add(new HotelGuestDetails_DeptDash2
                         {
                             hotelName = i.HotelName,
@@ -1804,9 +1817,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.hotelGuestDetails_DeptDash2 = hotelGuestDetails_DeptDash2;
                     }
 
-                   
-
-                    if (checkuser != null)
+                        if (checkuser != null)
                     {                        
                         if(usertype != null)
                         {
