@@ -1156,6 +1156,10 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                     // Output the result
                                     //Console.WriteLine(status);
                                 }
+                                else
+                                {
+                                    status = match.Groups[1].Value;
+                                }
 
                                 //string[] myStr = myTask.Result.Split(" ");
 
@@ -1176,6 +1180,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                     result.code = 200;
                                     result.otp = otp;
                                     result.status = "success";
+                                    result.userid = username;
                                     result.message = "OTP sent successfully to your Registered Mobile Number." + status;
                                     return result;
                                 }
@@ -1184,6 +1189,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                     result.code = 200;
                                     result.otp = "";
                                     result.status = "error";
+                                    result.userid = username;
                                     result.message = "Please Deactivate Do Not Disturb(DND) of your Registered Mobile Number." + status;
                                     return result;
                                 }
@@ -1192,6 +1198,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                     result.code = 200;
                                     result.otp = "";
                                     result.status = "error";
+                                    result.userid = username;
                                     result.message = "SMS Status is" + status;
                                     return result;
                                 }
@@ -1222,6 +1229,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     {
                         result.code = 200;
                         result.status = "error";
+                        result.userid = username;
                         result.message = username + " Is Not Exist";
                         return result;
                     }
@@ -1231,6 +1239,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 {
                     result.code = 200;
                     result.status = "error";
+                    result.userid = username;
                     result.message = ex.Message;
                     return result;
 
