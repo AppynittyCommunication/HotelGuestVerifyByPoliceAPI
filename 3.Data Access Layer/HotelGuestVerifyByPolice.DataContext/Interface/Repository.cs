@@ -1156,6 +1156,10 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                     // Output the result
                                     //Console.WriteLine(status);
                                 }
+                                else
+                                {
+                                    status = match.Groups[1].Value;
+                                }
 
                                 //string[] myStr = myTask.Result.Split(" ");
 
