@@ -1138,18 +1138,36 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 //sendSMS(msg, hotelrefdetails.Mobile);
 
                                 Task<string> myTask = sendSMSasync(msg, mobileno);
-                                string[] myStr = myTask.Result.Split(" ");
 
-                                string mono = "";
-                                string status1 = "";
-                                if (myStr.Length == 2)
+                                string input = myTask.Result;
+                                // Define a regular expression pattern
+                                string pattern = @"\d+\s+(.*?)<br>";
+                                string status = "";
+                                // Match the pattern in the input string
+                                Match match = Regex.Match(input, pattern);
+
+                                // Check if the match was successful
+                                if (match.Success)
                                 {
-                                    mono = myStr[0];
-                                    status1 = myStr[1];
+                                    // Extract the captured group
+                                    status = match.Groups[1].Value;
+
+                                    // Output the result
+                                    //Console.WriteLine(status);
                                 }
 
+                                //string[] myStr = myTask.Result.Split(" ");
 
-                                string status = status1.Replace("<br>", "");
+                                //string mono = "";
+                                //string status1 = "";
+                                //if (myStr.Length == 2)
+                                //{
+                                //    mono = myStr[0];
+                                //    status1 = myStr[1];
+                                //}
+
+
+                                
 
 
                                 if (status == "DELIVRD")
@@ -1245,12 +1263,32 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                                 Task<string> myTask = sendSMSasync(msg, mobileno);
 
-                                string[] myStr = myTask.Result.Split(" ");
+                                string input = myTask.Result;
+                                // Define a regular expression pattern
+                                string pattern = @"\d+\s+(.*?)<br>";
+                                string status = "";
+                                // Match the pattern in the input string
+                                Match match = Regex.Match(input, pattern);
 
-                                string mono = myStr[0];
-                                string status1 = myStr[1];
+                                // Check if the match was successful
+                                if (match.Success)
+                                {
+                                    // Extract the captured group
+                                    status = match.Groups[1].Value;
 
-                                string status = status1.Replace("<br>", "");
+                                    // Output the result
+                                    //Console.WriteLine(status);
+                                }
+
+                                //string[] myStr = myTask.Result.Split(" ");
+
+                                //string mono = "";
+                                //string status1 = "";
+                                //if (myStr.Length == 2)
+                                //{
+                                //    mono = myStr[0];
+                                //    status1 = myStr[1];
+                                //}
 
                                 if (status == "DELIVRD")
                                 {
@@ -1370,18 +1408,32 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 //string smsresult = await sendSMSasync(msg, mobileno);
 
                 Task<string> myTask = sendSMSasync(msg, mobileno);
-                string[] myStr = myTask.Result.Split(" ");
+                string input = myTask.Result;
+                // Define a regular expression pattern
+                string pattern = @"\d+\s+(.*?)<br>";
+                string status = "";
+                // Match the pattern in the input string
+                Match match = Regex.Match(input, pattern);
 
-                string mono = "";
-                string status1 = "";
-                if (myStr.Length == 2)
+                // Check if the match was successful
+                if (match.Success)
                 {
-                    mono = myStr[0];
-                    status1 = myStr[1];
+                    // Extract the captured group
+                    status = match.Groups[1].Value;
+
+                    // Output the result
+                    //Console.WriteLine(status);
                 }
 
+                //string[] myStr = myTask.Result.Split(" ");
 
-                string status = status1.Replace("<br>", "");
+                //string mono = "";
+                //string status1 = "";
+                //if (myStr.Length == 2)
+                //{
+                //    mono = myStr[0];
+                //    status1 = myStr[1];
+                //}
 
                 if (status == "DELIVRD")
                 {
