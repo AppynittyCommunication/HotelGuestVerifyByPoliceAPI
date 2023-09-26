@@ -1129,8 +1129,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         if (hotelrefdetails.Mobile == mobileno)
                         {
                             Random random = new Random();
-                            string otp = random.Next(000001, 999999).ToString();
-
+                            //string otp = random.Next(000001, 999999).ToString();
+                            int randomotp = random.Next(100000, 1000000);
+                            string otp = randomotp.ToString("D6");
                             string msg = "Your OTP is " + otp + ". Do not Share it with anyone by any means. This is confidential and to be used by you only. ICTSBM";
 
                             if (hotelrefdetails.Mobile != null)
@@ -1253,7 +1254,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         if (deptrefdetails.Mobile == mobileno)
                         {
                             Random random = new Random();
-                            string otp = random.Next(000001, 999999).ToString();
+                            //string otp = random.Next(000001, 999999).ToString();
+                            int randomotp = random.Next(100000, 1000000);
+                            string otp = randomotp.ToString("D6");
 
                             string msg = "Your OTP is " + otp + ". Do not Share it with anyone by any means. This is confidential and to be used by you only. ICTSBM";
 
@@ -1398,7 +1401,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
 
                 Random random = new();
-                string otp = random.Next(000001, 999999).ToString();
+                //string otp = random.Next(000001, 999999).ToString();
+                int randomotp = random.Next(100000, 1000000);
+                string otp = randomotp.ToString("D6");
 
                 string msg = "Your OTP is " + otp + ". Do not Share it with anyone by any means. This is confidential and to be used by you only. ICTSBM";
 
