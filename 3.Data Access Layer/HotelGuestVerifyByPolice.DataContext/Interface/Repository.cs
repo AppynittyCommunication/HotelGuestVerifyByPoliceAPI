@@ -2265,6 +2265,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
                 }
             }
