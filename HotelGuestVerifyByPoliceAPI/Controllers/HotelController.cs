@@ -93,6 +93,16 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
                 return objresponse;
             }
         }
-       
+
+
+        [Route("CheckOutGuest")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<CommonAPIResponse>> CheckOutGuest([FromHeader] string roomBookingID)
+        {
+            CommonAPIResponse objresponse = await objRep.CheckOutGuestAsync(roomBookingID);
+           
+             return objresponse;
+        }
     }
 }

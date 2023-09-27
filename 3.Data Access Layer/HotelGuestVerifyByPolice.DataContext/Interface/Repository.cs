@@ -1621,7 +1621,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         hgdetails.GuestIdType = obj.GuestIdType;
                         hgdetails.PaymentMode = obj.PaymentMode;
 
-                        List<AddOnGuest> add = obj.AddOnGuest;
+                        List<AddOnGuest>? add = obj.AddOnGuest;
 
                         if ((string.IsNullOrEmpty(obj.GuestPhoto)) == false)
                         {
@@ -1757,6 +1757,11 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
 
         }
+
+
+
+
+       // CheckOutGuestAsync
 
         public async Task<HotelCheckInListResult> CheckGuestInOutStatusAsync(string hotelRegNo)
         {
@@ -2219,7 +2224,50 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
         }
 
+        public async Task<CommonAPIResponse> CheckOutGuestAsync(string roomBookingID)
+        {
+            CommonAPIResponse result = new CommonAPIResponse();
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    var outguest = await db.HotelGuests.Where(c => c.RoomBookingId == roomBookingID && c.CheckOutDate == null).FirstOrDefaultAsync();
 
+                    if (outguest != null)
+                    {
+                        outguest.CheckOutDate = DateTime.Now;
+                        await db.SaveChangesAsync();
 
+                        result.code = 200;
+                        result.status = "success";
+                        result.message = "Cheking Out Successful";
+                        return result;
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "Check Out Failed";
+                        return result;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
+                    result.status = "error";
+                    result.message = ex.Message;
+                    return result;
+                }
+            }
+        }
     }
 }
