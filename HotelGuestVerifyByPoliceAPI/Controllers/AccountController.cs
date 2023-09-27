@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace HotelGuestVerifyByPoliceAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -46,7 +47,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<HotelLoginRes>> HotelLogin([FromBody] HotelLoginBody obj)
         {
             HotelLoginRes objresponse = await objRep.CheckHotelLogin(obj);
-           
+
             return objresponse;
         }
 

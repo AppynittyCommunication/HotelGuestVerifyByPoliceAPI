@@ -1,9 +1,19 @@
 global using HotelGuestVerifyByPolice.DataContext.Data;
 using HotelGuestVerifyByPolice.DataContext.Interface;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+//User this line to override the built-in loggers
+builder.Host.UseSerilog();
+//Use Serilog along with built-In loggers
+builder.Logging.AddSerilog();
 // Add services to the container.
 
 builder.Services.AddControllers();

@@ -6,6 +6,7 @@ using HotelGuestVerifyByPolice.ViewModel.Models.APIBodyModels;
 using HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -112,6 +113,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     result.status = "error";
                     result.message = ex.Message;
+
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -170,6 +173,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -249,6 +253,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -277,9 +282,17 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 return statelist;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var w32ex = ex as Win32Exception;
+                if (w32ex == null)
+                {
+                    w32ex = ex.InnerException as Win32Exception;
+                }
+               
+                Log.Error(ex.Message);
                 return statelist;
+               
             }
         }
 
@@ -300,8 +313,15 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 return depttypelist;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var w32ex = ex as Win32Exception;
+                if (w32ex == null)
+                {
+                    w32ex = ex.InnerException as Win32Exception;
+                }
+
+                Log.Error(ex.Message);
                 return depttypelist;
             }
         }
@@ -324,8 +344,15 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 return distlist;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var w32ex = ex as Win32Exception;
+                if (w32ex == null)
+                {
+                    w32ex = ex.InnerException as Win32Exception;
+                }
+
+                Log.Error(ex.Message);
                 return distlist;
             }
         }
@@ -350,8 +377,15 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 return citylist;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var w32ex = ex as Win32Exception;
+                if (w32ex == null)
+                {
+                    w32ex = ex.InnerException as Win32Exception;
+                }
+
+                Log.Error(ex.Message);
                 return citylist;
             }
         }
@@ -375,8 +409,15 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 return pslist;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var w32ex = ex as Win32Exception;
+                if (w32ex == null)
+                {
+                    w32ex = ex.InnerException as Win32Exception;
+                }
+
+                Log.Error(ex.Message);
                 return pslist;
             }
         }
@@ -474,6 +515,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     result.status = "error";
                     result.message = ex.Message;
+                  
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -574,6 +617,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -658,6 +702,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -740,6 +785,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -796,6 +842,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -870,6 +917,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -945,6 +993,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -992,6 +1041,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     result.code = 200;
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -1030,6 +1080,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     result.code = 200;
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -1071,6 +1122,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     result.code = 200;
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -1108,6 +1160,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     result.code = 200;
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -1241,6 +1294,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     result.status = "error";
                     result.userid = username;
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -1366,6 +1420,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     result.code = 200;
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -1399,6 +1454,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     int code = w32ex.ErrorCode;
                     // do stuff
                 }
+                Log.Error(ex.Message);
             }
 
         }
@@ -1489,6 +1545,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 result.otp = "";
                 result.status = "error";
                 result.message = "OTP sent Failed.";
+                Log.Error(ex.Message);
                 return result;
             }
         }
@@ -1693,6 +1750,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -1780,6 +1838,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -1805,6 +1864,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 catch (Exception ex)
                 {
+                    Log.Error(ex.Message);
                     return result;
                 }
 
@@ -1830,6 +1890,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 catch (Exception ex)
                 {
+                    Log.Error(ex.Message);
                     return result;
                 }
 
@@ -1855,6 +1916,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 catch (Exception ex)
                 {
+                    Log.Error(ex.Message);
                     return result;
                 }
 
@@ -2069,6 +2131,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
 
                 }
@@ -2149,6 +2212,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     result.status = "error";
                     result.message = ex.Message;
+                    Log.Error(ex.Message);
                     return result;
                 }
             }
