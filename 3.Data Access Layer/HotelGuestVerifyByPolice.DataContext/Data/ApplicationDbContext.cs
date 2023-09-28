@@ -23,6 +23,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<City> Cities { get; set; }
 
+    public virtual DbSet<Country> Countries { get; set; }
+
     public virtual DbSet<DepartmentType> DepartmentTypes { get; set; }
 
     public virtual DbSet<District> Districts { get; set; }
@@ -45,14 +47,11 @@ public partial class ApplicationDbContext : DbContext
 
     public DbSet<Hotel_CheckInList_Result> Hotel_CheckInList_Results { get; set; }
     public DbSet<HotelLocForDepartDash_Result> HotelLocForDepartDash_Results { get; set; }
-
     public DbSet<HotelListDetailsForDepart_Result> HotelListDetailsForDepart_Results { get; set; }
-
     public DbSet<HotelGuestDetails_DeptDash_Result> HotelGuestDetails_DeptDash_Results { get; set; }
     public DbSet<HotelGuestDetails_DeptDash_Result1> HotelGuestDetails_DeptDash_Results1 { get; set; }
     public DbSet<ShowHotelGuestDetails_Result> ShowHotelGuestDetails_Results { get; set; }
     public DbSet<Hotel_MonthlyCheckInOutCount_Result> Hotel_MonthlyCheckInOutCount_Results { get; set; }
-    
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -70,6 +69,14 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.CityId).HasName("PK__City__F2D21A9673EB0303");
 
             entity.Property(e => e.CityId).ValueGeneratedNever();
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+        });
+
+        modelBuilder.Entity<Country>(entity =>
+        {
+            entity.HasKey(e => e.CountryCode).HasName("PK__Country__5D9B0D2DE15D6B5C");
+
+            entity.Property(e => e.CountryCode).IsFixedLength();
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
         });
 
@@ -129,9 +136,10 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<State>(entity =>
         {
-            entity.HasKey(e => e.StateId).HasName("PK__State__C3BA3B5AE571F19D");
+            entity.HasKey(e => e.StateId).HasName("PK__States__C3BA3B5AF0C8045B");
 
             entity.Property(e => e.StateId).ValueGeneratedNever();
+            entity.Property(e => e.CountryCode).IsFixedLength();
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
         });
 
@@ -140,6 +148,8 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__VisitPur__3214EC27E131EA7E");
         });
 
+        OnModelCreatingPartial(modelBuilder);
+
         modelBuilder.Entity<Hotel_CheckInList_Result>().HasNoKey();
         modelBuilder.Entity<HotelLocForDepartDash_Result>().HasNoKey();
         modelBuilder.Entity<HotelListDetailsForDepart_Result>().HasNoKey();
@@ -147,9 +157,6 @@ public partial class ApplicationDbContext : DbContext
         modelBuilder.Entity<HotelGuestDetails_DeptDash_Result1>().HasNoKey();
         modelBuilder.Entity<ShowHotelGuestDetails_Result>().HasNoKey();
         modelBuilder.Entity<Hotel_MonthlyCheckInOutCount_Result>().HasNoKey();
-
-
-        OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

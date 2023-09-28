@@ -6,22 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HotelGuestVerifyByPolice.DataContext.Entities.TableEntities;
 
-public partial class State
+[Table("Country")]
+public partial class Country
 {
     [Column("ID")]
     public int Id { get; set; }
 
     [Key]
-    [Column("StateID")]
-    public int StateId { get; set; }
-
-    public string? StateName { get; set; }
-
-    public string? StateCode { get; set; }
-
     [StringLength(2)]
     [Unicode(false)]
-    public string? CountryCode { get; set; }
+    public string CountryCode { get; set; } = null!;
+
+    public string? CountryName { get; set; }
 
     public bool? IsActive { get; set; }
 }

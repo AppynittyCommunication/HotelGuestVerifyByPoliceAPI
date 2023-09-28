@@ -274,7 +274,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 {
                     var st = await db.States.AsQueryable().Where(c => c.IsActive == true).Select(x => new StatesList
                     {
-                        stateId = x.Id,
+                        stateId = x.StateId,
                         stateName = x.StateName,
 
                     }).ToListAsync();
