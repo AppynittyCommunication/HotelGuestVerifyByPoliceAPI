@@ -1794,7 +1794,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             guestDetailsList.Add(new GuestDetailsList
                             {
                                 guestName = i.GuestName,
-                                guestPhoto = i.GuestPhoto.ToString(),
+                                guestPhoto = Convert.ToBase64String(i.GuestPhoto),
                                 mobile = i.Mobile,
                                 country = i.Country,
                                 state = i.State,
