@@ -51,6 +51,7 @@ public partial class ApplicationDbContext : DbContext
     public DbSet<HotelGuestDetails_DeptDash_Result> HotelGuestDetails_DeptDash_Results { get; set; }
     public DbSet<HotelGuestDetails_DeptDash_Result1> HotelGuestDetails_DeptDash_Results1 { get; set; }
     public DbSet<ShowHotelGuestDetails_Result> ShowHotelGuestDetails_Results { get; set; }
+    public DbSet<Hotel_MonthlyCheckInOutCount_Result> Hotel_MonthlyCheckInOutCount_Results { get; set; }
     
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -145,6 +146,7 @@ public partial class ApplicationDbContext : DbContext
         modelBuilder.Entity<HotelGuestDetails_DeptDash_Result>().HasNoKey();
         modelBuilder.Entity<HotelGuestDetails_DeptDash_Result1>().HasNoKey();
         modelBuilder.Entity<ShowHotelGuestDetails_Result>().HasNoKey();
+        modelBuilder.Entity<Hotel_MonthlyCheckInOutCount_Result>().HasNoKey();
 
 
         OnModelCreatingPartial(modelBuilder);

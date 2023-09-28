@@ -289,10 +289,10 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 {
                     w32ex = ex.InnerException as Win32Exception;
                 }
-               
+
                 Log.Error(ex.Message);
                 return statelist;
-               
+
             }
         }
 
@@ -515,7 +515,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     result.status = "error";
                     result.message = ex.Message;
-                  
+
                     Log.Error(ex.Message);
                     return result;
 
@@ -1225,7 +1225,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 //}
 
 
-                                
+
 
 
                                 if (status == "DELIVRD")
@@ -1761,7 +1761,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
 
 
-       // CheckOutGuestAsync
+        // CheckOutGuestAsync
 
         public async Task<HotelCheckInListResult> CheckGuestInOutStatusAsync(string hotelRegNo)
         {
@@ -1777,10 +1777,10 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     var checkhregno = await db.Hotels.Where(x => x.HotelRegNo == hotelRegNo).FirstOrDefaultAsync();
                     if (checkhregno != null)
                     {
-                        DateTime date = DateTime.UtcNow.Date;
+                        DateTime date = DateTime.Now;
                         var totalGuest = await db.HotelGuests.Where(guest => guest.CheckOutDate == null && guest.HotelRegNo == hotelRegNo).Select(guest => guest.Id).ToListAsync();
                         var todayCIN = await db.HotelGuests.Where(guest => guest.CheckOutDate == null && DateTime.Compare(guest.CheckInDate.Value.Date, date) <= 0 && guest.HotelRegNo == hotelRegNo).Select(guest => guest.Id).ToListAsync();
-                        var todayCOUT = await db.HotelGuests.Where(guest => DateTime.Compare(guest.CheckOutDate.Value.Date, date) <= 0 && guest.HotelRegNo == hotelRegNo).Select(guest => guest.Id).ToListAsync();
+                        var todayCOUT = await db.HotelGuests.Where(guest => DateTime.Compare(guest.CheckOutDate.Value.Date, date) == 0 && guest.HotelRegNo == hotelRegNo).Select(guest => guest.Id).ToListAsync();
 
                         List<SqlParameter> parms = new List<SqlParameter>
                             {
@@ -1809,7 +1809,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 reservation = res,
                                 //  totalAdult = i.Total_Adult,
                                 // totalChild = i.Total_Child,
-                            }); 
+                            });
 
                         }
 
@@ -1837,6 +1837,61 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.message = "Hotel Registration Number Not Found!";
                         return result;
                     }
+                }
+                catch (Exception ex)
+                {
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
+                    result.status = "error";
+                    result.message = ex.Message;
+                    Log.Error(ex.Message);
+                    return result;
+
+                }
+            }
+        }
+
+
+
+
+        public async Task<MonthlyCheckInOutRes> MonthlyCheckInOuntAsync(string hotelRegNo)
+        {
+            //List<MonthlyCheckInOutCount> monthlyCheckInOutCounts = new();
+            MonthlyCheckInOutRes result = new MonthlyCheckInOutRes();
+            result.monthlyCheckInOutCounts = new();
+            
+
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    List<SqlParameter> parms = new List<SqlParameter>
+                            {
+                            // Create parameter(s)
+                            new SqlParameter { ParameterName = "@HotelRegNo", Value = hotelRegNo },
+
+                            };
+                    var count = await db.Hotel_MonthlyCheckInOutCount_Results.FromSqlRaw<Hotel_MonthlyCheckInOutCount_Result>("EXEC Hotel_MonthlyCheckInOutCount @HotelRegNo", parms.ToArray()).ToListAsync();
+                    foreach(var i in count)
+                    {
+                        result.monthlyCheckInOutCounts.Add(new MonthlyCheckInOutCount
+                        { 
+                            month = i.Month,
+                            monthName = i.MonthName,
+                            checkInCount = i.CheckInCount,
+                            checkOutCount = i.CheckOutCount,
+                        });
+                    }
+                    return result;
+
                 }
                 catch (Exception ex)
                 {
@@ -2174,8 +2229,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     var data = await db.ShowHotelGuestDetails_Results.FromSqlRaw<ShowHotelGuestDetails_Result>("EXEC ShowHotelGuestDetails @RoomBookingID", parms.ToArray()).ToListAsync();
                     {
                         foreach (var i in data)
-                        {                     
-                            if(i.RelationWithGuest == "SELF") 
+                        {
+                            if (i.RelationWithGuest == "SELF")
                             {
                                 hotelGuestDetails.Add(new GuestDetails
                                 {
@@ -2201,8 +2256,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 });
                                 result.addOnGuestDetails1 = addguestDetails;
                             }
-                        }                      
-                    }                    
+                        }
+                    }
                     result.code = 200;
                     result.status = "success";
                     result.message = "Success Response";

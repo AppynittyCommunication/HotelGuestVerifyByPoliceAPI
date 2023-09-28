@@ -42,6 +42,17 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         }
 
 
+        [Route("MonthlyCheckInOuuCount")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<MonthlyCheckInOutRes>> MonthlyCheckInOunt([FromHeader] string hotelRegNo)
+        {
+            MonthlyCheckInOutRes objresponse = await objRep.MonthlyCheckInOuntAsync(hotelRegNo);
+
+            return objresponse;
+        }
+
+
         [Route("SelectRelation")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
@@ -104,5 +115,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
            
              return objresponse;
         }
+
+
+
     }
 }

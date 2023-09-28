@@ -40,5 +40,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
             return objresponse;
         }
+
+     
+
     }
 }
