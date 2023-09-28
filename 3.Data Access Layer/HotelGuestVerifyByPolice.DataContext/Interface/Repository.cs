@@ -1794,13 +1794,14 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             guestDetailsList.Add(new GuestDetailsList
                             {
                                 guestName = i.GuestName,
+                                guestPhoto = i.GuestPhoto.ToString(),
                                 mobile = i.Mobile,
                                 country = i.Country,
                                 state = i.State,
-                                checkInDate = i.CheckInDate,
+                                checkInDate = i.CheckInDate.ToString("dd MMM ddd yyyy HH:mm tt"),
                                 totalAdult = i.Total_Adult,
                                 totalChild = i.Total_Child,
-                            });
+                            }); ;
 
                         }
 

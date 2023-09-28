@@ -27,6 +27,7 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
     public class GuestDetailsList
     {
         public string? guestName { get; set; }
+        public string? guestPhoto { get; set; }
        // public int roomNumber { get; set; }
         public int totalAdult { get; set; }
         public int totalChild { get; set; }       
@@ -34,7 +35,7 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
 
         public string? state { get; set; }
         public string? country { get; set; }
-        public DateTime checkInDate { get; set; }
+        public string? checkInDate { get; set; }
     }
 
 }
