@@ -1768,6 +1768,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             HotelCheckInListResult result = new();
             List<GuestInOutStatusResponse> guestres = new();
             List<GuestDetailsList> guestDetailsList = new();
+            List<MonthlyCheckInOutCount> monthlyCheckInOutCounts = new();
             HotelGuest obj = new();
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
@@ -1812,7 +1813,17 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             });
 
                         }
-
+                        var count = await db.Hotel_MonthlyCheckInOutCount_Results.FromSqlRaw<Hotel_MonthlyCheckInOutCount_Result>("EXEC Hotel_MonthlyCheckInOutCount @HotelRegNo", parms.ToArray()).ToListAsync();
+                        foreach (var i in count)
+                        {
+                            monthlyCheckInOutCounts.Add(new MonthlyCheckInOutCount
+                            {
+                                month = i.Month,
+                                monthName = i.MonthName,
+                                checkInCount = i.CheckInCount,
+                                checkOutCount = i.CheckOutCount,
+                            });
+                        }
 
                         guestres.Add(new GuestInOutStatusResponse
                         {
@@ -1820,6 +1831,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             todaysCheckIn = todayCIN.Count(),
                             todaysCheckOut = todayCOUT.Count(),
                             guestDetails = guestDetailsList,
+                            monthlyCheckInOutCounts = monthlyCheckInOutCounts,
                         });
 
                         result.code = 200;
@@ -1860,59 +1872,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
-
-
-        public async Task<MonthlyCheckInOutRes> MonthlyCheckInOuntAsync(string hotelRegNo)
-        {
-            //List<MonthlyCheckInOutCount> monthlyCheckInOutCounts = new();
-            MonthlyCheckInOutRes result = new MonthlyCheckInOutRes();
-            result.monthlyCheckInOutCounts = new();
-            
-
-            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
-            {
-                try
-                {
-                    List<SqlParameter> parms = new List<SqlParameter>
-                            {
-                            // Create parameter(s)
-                            new SqlParameter { ParameterName = "@HotelRegNo", Value = hotelRegNo },
-
-                            };
-                    var count = await db.Hotel_MonthlyCheckInOutCount_Results.FromSqlRaw<Hotel_MonthlyCheckInOutCount_Result>("EXEC Hotel_MonthlyCheckInOutCount @HotelRegNo", parms.ToArray()).ToListAsync();
-                    foreach(var i in count)
-                    {
-                        result.monthlyCheckInOutCounts.Add(new MonthlyCheckInOutCount
-                        { 
-                            month = i.Month,
-                            monthName = i.MonthName,
-                            checkInCount = i.CheckInCount,
-                            checkOutCount = i.CheckOutCount,
-                        });
-                    }
-                    return result;
-
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
-            }
-        }
 
         public async Task<List<RelationsList>> GetRelationAsync()
         {

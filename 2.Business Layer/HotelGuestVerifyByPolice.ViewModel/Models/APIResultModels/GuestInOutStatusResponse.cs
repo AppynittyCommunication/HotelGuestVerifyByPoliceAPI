@@ -22,6 +22,7 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
         public int todaysCheckOut { get; set; }
 
         public List<GuestDetailsList>? guestDetails { get; set; }
+        public List<MonthlyCheckInOutCount>? monthlyCheckInOutCounts { get; set; }
     }
 
     public class GuestDetailsList
@@ -39,5 +40,11 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
         public string? country { get; set; }
         public string? checkInDate { get; set; }
     }
-
+    public class MonthlyCheckInOutCount
+    {
+        public int month { get; set; }
+        public string? monthName { get; set; }
+        public int checkInCount { get; set; }
+        public int checkOutCount { get; set; }
+    }
 }
