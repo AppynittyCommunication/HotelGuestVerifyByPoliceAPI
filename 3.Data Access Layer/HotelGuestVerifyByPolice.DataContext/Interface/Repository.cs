@@ -264,7 +264,36 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
 
 
+        public async Task<List<CountryList>> GetCountryListAsync()
+        {
+            List<CountryList> countrylist = new List<CountryList>();
+            try
+            {
+                using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+                {
+                    var st = await db.Countries.AsQueryable().Where(c => c.IsActive == true).Select(x => new CountryList
+                    {
+                        countryCode = x.CountryCode,
+                        countryName = x.CountryName,
 
+                    }).ToListAsync();
+                    countrylist = st;
+                }
+                return countrylist;
+            }
+            catch (Exception ex)
+            {
+                var w32ex = ex as Win32Exception;
+                if (w32ex == null)
+                {
+                    w32ex = ex.InnerException as Win32Exception;
+                }
+
+                Log.Error(ex.Message);
+                return countrylist;
+
+            }
+        }
         public async Task<List<StatesList>> GetStateListAsync()
         {
             List<StatesList> statelist = new List<StatesList>();
@@ -296,6 +325,36 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
+        public async Task<List<StatesList>> GetCountryWiseStateListAsync(string countryCode)
+        {
+            List<StatesList> statelist = new List<StatesList>();
+            try
+            {
+                using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+                {
+                    var st = await db.States.AsQueryable().Where(c => c.IsActive == true && c.CountryCode == countryCode).Select(x => new StatesList
+                    {
+                        stateId = x.StateId,
+                        stateName = x.StateName,
+
+                    }).ToListAsync();
+                    statelist = st;
+                }
+                return statelist;
+            }
+            catch (Exception ex)
+            {
+                var w32ex = ex as Win32Exception;
+                if (w32ex == null)
+                {
+                    w32ex = ex.InnerException as Win32Exception;
+                }
+
+                Log.Error(ex.Message);
+                return statelist;
+
+            }
+        }
         public async Task<List<DepartmentTypeList>> GetDepartmentTypeListAsync()
         {
             List<DepartmentTypeList> depttypelist = new List<DepartmentTypeList>();

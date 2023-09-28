@@ -20,6 +20,40 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
             objRep = repository;
         }
 
+        [Route("GetCountry")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<List<CountryList>>> GetCountry()
+        {
+            List<CountryList> countrylist = new List<CountryList>();
+            try
+            {
+                countrylist = await objRep.GetCountryListAsync();
+                return countrylist;
+            }
+            catch (Exception)
+            {
+                return countrylist;
+            }
+        }
+
+
+        [Route("GetCountryWiseStates")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<List<StatesList>>> GetCountryWiseState([FromHeader] string countryCode)
+        {
+            List<StatesList> statelist = new List<StatesList>();
+            try
+            {
+                statelist = await objRep.GetCountryWiseStateListAsync(countryCode);
+                return statelist;
+            }
+            catch (Exception)
+            {
+                return statelist;
+            }
+        }
         [Route("GetStates")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
