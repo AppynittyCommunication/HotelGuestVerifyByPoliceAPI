@@ -1791,6 +1791,13 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         var checkInListdata = await db.Hotel_CheckInList_Results.FromSqlRaw<Hotel_CheckInList_Result>("EXEC Hotel_CheckInList @HotelRegNo", parms.ToArray()).ToListAsync();
                         foreach (var i in checkInListdata)
                         {
+                            var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
+                                 (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Child" :
+                                 (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Childs" :
+                                 (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Child" :
+                                 (i.Total_Adult > 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adults " :
+                                 (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Childs" :
+                                 "No Guest Found!";
                             guestDetailsList.Add(new GuestDetailsList
                             {
                                 guestName = i.GuestName,
@@ -1799,9 +1806,10 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 country = i.Country,
                                 state = i.State,
                                 checkInDate = i.CheckInDate.ToString("dd MMM ddd yyyy HH:mm tt"),
-                                totalAdult = i.Total_Adult,
-                                totalChild = i.Total_Child,
-                            }); ;
+                                reservation = res,
+                                //  totalAdult = i.Total_Adult,
+                                // totalChild = i.Total_Child,
+                            }); 
 
                         }
 
@@ -1992,11 +2000,11 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     foreach (var i in hotelGuestDetails)
                     {
                         var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
-                                  (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child" :
-                                  (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Childs" :
-                                  (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Child" :
+                                  (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Child" :
+                                  (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Childs" :
+                                  (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Child" :
                                   (i.Total_Adult > 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adults " :
-                                  (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Childs" :
+                                  (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Childs" :
                                   "No Guest Found!";
 
                         hotelGuestDetails_DeptDashes.Add(new HotelGuestDetails_DeptDash1
@@ -2021,11 +2029,11 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     foreach (var i in hotelGuestDetails1)
                     {
                         var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
-                           (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Child" :
-                           (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Childs" :
-                           (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults " + i.Total_Child.ToString() + " Child" :
+                           (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Child" :
+                           (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Childs" :
+                           (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Child" :
                            (i.Total_Adult > 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adults " :
-                           (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult " + i.Total_Child.ToString() + " Childs" :
+                           (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Childs" :
                            "No Guest Found!";
 
                         hotelGuestDetails_DeptDash2.Add(new HotelGuestDetails_DeptDash2

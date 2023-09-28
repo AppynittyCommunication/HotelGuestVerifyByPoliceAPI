@@ -28,9 +28,11 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
     {
         public string? guestName { get; set; }
         public string? guestPhoto { get; set; }
-       // public int roomNumber { get; set; }
-        public int totalAdult { get; set; }
-        public int totalChild { get; set; }       
+        // public int roomNumber { get; set; }
+
+        public string? reservation { get; set; }
+        //public int totalAdult { get; set; }
+        //public int totalChild { get; set; }       
         public string? mobile { get; set; }
 
         public string? state { get; set; }
