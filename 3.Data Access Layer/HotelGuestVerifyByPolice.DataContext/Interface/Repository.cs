@@ -360,7 +360,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = await db.DepartmentTypes.AsQueryable().Where(c => c.IsActive == true).Select(x => new { x.Id, x.DeptTypeName}).ToListAsync();
+                    var st = await db.DepartmentTypes.AsQueryable().Where(c => c.IsActive == true).Select(x => new { x.DeptTypeId, x.DeptTypeName}).ToListAsync();
                     
                     depttypelist.code = 200;
                     depttypelist.status = "success";
