@@ -49,9 +49,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         Task<HotelCheckInListResult> CheckGuestInOutStatusAsync(string hotelRegNo); 
    
 
-        Task<List<RelationsList>> GetRelationAsync(); 
-        Task<List<VisitPurposeList>> GetVisitPurposeAsync(); 
-        Task<List<SelectIDTypeList>> GetSelectIDTypeAsync(); 
+        Task<RelationsList> GetRelationAsync(); 
+        Task<VisitPurposeList> GetVisitPurposeAsync(); 
+        Task<SelectIDTypeList> GetSelectIDTypeAsync(); 
 
 
         //Department Controller

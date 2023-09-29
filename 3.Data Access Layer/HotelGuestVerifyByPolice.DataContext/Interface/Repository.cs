@@ -284,9 +284,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 if (w32ex == null)
                 {
                     w32ex = ex.InnerException as Win32Exception;
+                    countrylist.code = w32ex.ErrorCode;
                 }
 
                 Log.Error(ex.Message);
+                countrylist.status = "error";
+                countrylist.message = ex.Message;
                 return countrylist;
 
             }
@@ -314,9 +317,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 if (w32ex == null)
                 {
                     w32ex = ex.InnerException as Win32Exception;
+                    statelist.code = w32ex.ErrorCode;
                 }
 
                 Log.Error(ex.Message);
+                statelist.status = "error";
+                statelist.message = ex.Message;
                 return statelist;
 
             }
@@ -344,9 +350,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 if (w32ex == null)
                 {
                     w32ex = ex.InnerException as Win32Exception;
+                    statelist.code = w32ex.ErrorCode;
                 }
 
                 Log.Error(ex.Message);
+                statelist.status = "error";
+                statelist.message = ex.Message;
                 return statelist;
 
             }
@@ -375,9 +384,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 if (w32ex == null)
                 {
                     w32ex = ex.InnerException as Win32Exception;
+                    depttypelist.code = w32ex.ErrorCode;
                 }
 
                 Log.Error(ex.Message);
+                depttypelist.status = "error";
+                depttypelist.message = ex.Message;
                 return depttypelist;
             }
         }
@@ -408,9 +420,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 if (w32ex == null)
                 {
                     w32ex = ex.InnerException as Win32Exception;
+                    distlist.code = w32ex.ErrorCode;
                 }
 
                 Log.Error(ex.Message);
+                distlist.status = "error";
+                distlist.message = ex.Message;
                 return distlist;
             }
         }
@@ -1935,20 +1950,18 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
 
 
-        public async Task<List<RelationsList>> GetRelationAsync()
+        public async Task<RelationsList> GetRelationAsync()
         {
-            List<RelationsList> result = new();
+            RelationsList result = new();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
                 try
                 {
-                    var rel = await db.Relations.AsQueryable().Select(x => new RelationsList
-                    {
-                        id = x.Id,
-                        relation = x.Name,
-
-                    }).ToListAsync();
-                    result = rel;
+                    var rel = await db.Relations.AsQueryable().Select(x => new {x.Id, x.Name}).ToListAsync();
+                    result.code = 200;
+                    result.status= "success";
+                    result.message = "Relation List";
+                    result.data = rel;
 
                     return result;
                 }

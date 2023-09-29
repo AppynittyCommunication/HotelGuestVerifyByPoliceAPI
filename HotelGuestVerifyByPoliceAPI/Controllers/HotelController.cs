@@ -45,9 +45,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("SelectRelation")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<List<RelationsList>>> GetRelation()
+        public async Task<ActionResult<RelationsList>> GetRelation()
         {
-            List<RelationsList> objresponse = await objRep.GetRelationAsync();
+            RelationsList objresponse = new();
             try
             {
                 objresponse = await objRep.GetRelationAsync();
@@ -65,7 +65,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<List<VisitPurposeList>>> GetVisitPurpose()
         {
-            List<VisitPurposeList> objresponse = await objRep.GetVisitPurposeAsync();
+            List<VisitPurposeList> objresponse = new();
             try
             {
                 objresponse = await objRep.GetVisitPurposeAsync();
