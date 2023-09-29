@@ -23,9 +23,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("GetCountry")]
         [HttpGet]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<List<CountryList>>> GetCountry()
+        public async Task<ActionResult<CountryList>> GetCountry()
         {
-            List<CountryList> countrylist = new List<CountryList>();
+            CountryList countrylist = new CountryList();
             try
             {
                 countrylist = await objRep.GetCountryListAsync();
@@ -39,7 +39,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
 
         [Route("GetCountryWiseStates")]
-        [HttpPost]
+        [HttpGet]
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<StatesList>> GetCountryWiseState([FromHeader] string countryCode)
         {
@@ -72,11 +72,11 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         }
 
         [Route("GetDistrict")]
-        [HttpPost]
+        [HttpGet]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<List<DistrictList>>> GetDistrict([FromHeader] int stateID)
+        public async Task<ActionResult<DistrictList>> GetDistrict([FromHeader] int stateID)
         {
-            List<DistrictList> distlist = new List<DistrictList>();
+            DistrictList distlist = new DistrictList();
             try
             {
                 distlist = await objRep.GetDistrictListAsync(stateID);
@@ -89,11 +89,11 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         }
 
         [Route("GetCities")]
-        [HttpPost]
+        [HttpGet]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<List<CityList>>> GetCities([FromHeader] int stateID, [FromHeader] int distID)
+        public async Task<ActionResult<CityList>> GetCities([FromHeader] int stateID, [FromHeader] int distID)
         {
-            List<CityList> citylist = new List<CityList>();
+            CityList citylist = new CityList();
             try
             {
                 citylist = await objRep.GetCityListAsync(stateID, distID);
@@ -107,11 +107,11 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
 
         [Route("GetPoliceStation")]
-        [HttpPost]
+        [HttpGet]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<List<PoliceStationList>>> GetPoliceStation([FromHeader] int stateID, [FromHeader] int distID, [FromHeader] int cityID)
+        public async Task<ActionResult<PoliceStationList>> GetPoliceStation([FromHeader] int stateID, [FromHeader] int distID, [FromHeader] int cityID)
         {
-            List<PoliceStationList> pslist = new List<PoliceStationList>();
+            PoliceStationList pslist = new ();
             try
             {
                 pslist = await objRep.GetPoliceStationListAsync(stateID, distID, cityID);
@@ -125,11 +125,11 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
 
         [Route("GetDepartmentType")]
-        [HttpPost]
+        [HttpGet]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<List<DepartmentTypeList>>> GetDepartmentType()
+        public async Task<ActionResult<DepartmentTypeList>> GetDepartmentType()
         {
-            List<DepartmentTypeList> deptTypeList = new List<DepartmentTypeList>();
+            DepartmentTypeList deptTypeList = new ();
             try
             {
                 deptTypeList = await objRep.GetDepartmentTypeListAsync();

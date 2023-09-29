@@ -262,22 +262,19 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
-
-
-        public async Task<List<CountryList>> GetCountryListAsync()
+        public async Task<CountryList> GetCountryListAsync()
         {
-            List<CountryList> countrylist = new List<CountryList>();
+            CountryList countrylist = new CountryList();
             try
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = await db.Countries.AsQueryable().Where(c => c.IsActive == true).Select(x => new CountryList
-                    {
-                        countryCode = x.CountryCode,
-                        countryName = x.CountryName,
+                    var st = await db.Countries.AsQueryable().Where(c => c.IsActive == true).Select(x => new { x.CountryCode, x.CountryName, }).ToListAsync();
 
-                    }).ToListAsync();
-                    countrylist = st;
+                    countrylist.code = 200;
+                    countrylist.status = "success";
+                    countrylist.message = "Countries List";
+                    countrylist.data = st;
                 }
                 return countrylist;
             }
@@ -291,6 +288,36 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                 Log.Error(ex.Message);
                 return countrylist;
+
+            }
+        }
+
+        public async Task<StatesList> GetCountryWiseStateListAsync(string countryCode)
+        {
+            StatesList statelist = new();
+            try
+            {
+                using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+                {
+                    var st = await db.States.AsQueryable().Where(c => c.IsActive == true && c.CountryCode == countryCode).Select(x => new { x.StateId, x.StateName, }).ToListAsync();
+
+                    statelist.code = 200;
+                    statelist.status = "success";
+                    statelist.message = "Get State List As Per Country";
+                    statelist.data = st;
+                }
+                return statelist;
+            }
+            catch (Exception ex)
+            {
+                var w32ex = ex as Win32Exception;
+                if (w32ex == null)
+                {
+                    w32ex = ex.InnerException as Win32Exception;
+                }
+
+                Log.Error(ex.Message);
+                return statelist;
 
             }
         }
@@ -325,49 +352,20 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
-        public async Task<StatesList> GetCountryWiseStateListAsync(string countryCode)
+      
+        public async Task<DepartmentTypeList> GetDepartmentTypeListAsync()
         {
-           StatesList statelist = new ();
+            DepartmentTypeList depttypelist = new ();
             try
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = await db.States.AsQueryable().Where(c => c.IsActive == true && c.CountryCode == countryCode).Select(x => new  {x.StateId, x.StateName, }).ToListAsync();
-                   
-                    statelist.code = 200;
-                    statelist.status = "success";
-                    statelist.message = "Get State List As Per Country";
-                    statelist.data = st;
-                }
-                return statelist;
-            }
-            catch (Exception ex)
-            {
-                var w32ex = ex as Win32Exception;
-                if (w32ex == null)
-                {
-                    w32ex = ex.InnerException as Win32Exception;
-                }
-
-                Log.Error(ex.Message);
-                return statelist;
-
-            }
-        }
-        public async Task<List<DepartmentTypeList>> GetDepartmentTypeListAsync()
-        {
-            List<DepartmentTypeList> depttypelist = new List<DepartmentTypeList>();
-            try
-            {
-                using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
-                {
-                    var st = await db.DepartmentTypes.AsQueryable().Where(c => c.IsActive == true).Select(x => new DepartmentTypeList
-                    {
-                        departmentTypeID = x.Id,
-                        departmentTypeName = x.DeptTypeName,
-
-                    }).ToListAsync();
-                    depttypelist = st;
+                    var st = await db.DepartmentTypes.AsQueryable().Where(c => c.IsActive == true).Select(x => new { x.Id, x.DeptTypeName}).ToListAsync();
+                    
+                    depttypelist.code = 200;
+                    depttypelist.status = "success";
+                    depttypelist.message = "Department List";
+                    depttypelist.data = st;
                 }
                 return depttypelist;
             }
@@ -385,20 +383,22 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
-        public async Task<List<DistrictList>> GetDistrictListAsync(int stateID)
+        public async Task<DistrictList> GetDistrictListAsync(int stateID)
         {
-            List<DistrictList> distlist = new List<DistrictList>();
+            DistrictList distlist = new DistrictList();
             try
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = await db.Districts.AsQueryable().Where(c => c.StateId == stateID && c.IsActive == true).Select(x => new DistrictList
+                    var st = await db.Districts.AsQueryable().Where(c => c.StateId == stateID && c.IsActive == true).Select(x => new { x.DistId, x.DistName, }).ToListAsync();
                     {
-                        distId = x.Id,
-                        distName = x.DistName,
-
-                    }).ToListAsync();
-                    distlist = st;
+                        distlist.code = 200;
+                        distlist.status = "success";
+                        distlist.message = "District List";
+                        distlist.data = st;
+                        return distlist;
+                    }
+                    return distlist;
                 }
                 return distlist;
             }
@@ -418,20 +418,23 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
 
 
-        public async Task<List<CityList>> GetCityListAsync(int stateID, int distID)
+        public async Task<CityList> GetCityListAsync(int stateID, int distID)
         {
-            List<CityList> citylist = new List<CityList>();
+           CityList citylist = new CityList();
             try
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = await db.Cities.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.IsActive == true).Select(x => new CityList
+                    var st = await db.Cities.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.IsActive == true).Select(x => new { x.CityId, x.CityName, }).ToListAsync();
                     {
-                        cityId = x.Id,
-                        cityName = x.CityName,
+                       citylist.code = 200;
+                        citylist.status = "success";
+                        citylist.message = "City List";
+                        citylist.data = st;
+                        return citylist;
 
-                    }).ToListAsync();
-                    citylist = st;
+                    }
+                    return citylist;
                 }
                 return citylist;
             }
@@ -449,21 +452,22 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
-        public async Task<List<PoliceStationList>> GetPoliceStationListAsync(int stateID, int distID, int cityID)
+        public async Task<PoliceStationList> GetPoliceStationListAsync(int stateID, int distID, int cityID)
         {
-            List<PoliceStationList> pslist = new List<PoliceStationList>();
+            PoliceStationList pslist = new PoliceStationList();
             try
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = await db.PoliceStations.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.CityId == cityID && c.IsActive == true).Select(x => new PoliceStationList
+                    var st = await db.PoliceStations.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.CityId == cityID && c.IsActive == true).Select(x => new { x.StationCode, x.StationName }).ToListAsync();
                     {
-                        stationID = x.Id,
-                        // stationCode = x.StationCode,
-                        stationName = x.StationName,
-
-                    }).ToListAsync();
-                    pslist = st;
+                        pslist.code = 200;
+                        pslist.status = "success";
+                        pslist.message = "OK";
+                        pslist.data = st;
+                        return pslist;
+                    }
+                    
                 }
                 return pslist;
             }

@@ -8,7 +8,18 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
 {
     public class DepartmentTypeList
     {
-        public int departmentTypeID { get; set; }
-        public string? departmentTypeName { get; set;}
+        public int code { get; set; }
+        public string? status { get; set; }
+        public string? message { get; set; }
+
+        public dynamic? data { get; set; }
+      
     }
+
+    public class DeptList
+    {
+        public int departmentTypeID { get; set; }
+        public string? departmentTypeName { get; set; }
+    }
+
 }

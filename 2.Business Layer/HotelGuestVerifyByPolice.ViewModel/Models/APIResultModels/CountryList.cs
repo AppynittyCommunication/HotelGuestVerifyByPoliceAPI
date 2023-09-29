@@ -8,7 +8,20 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
 {
     public class CountryList
     {
-        public string? countryCode {  get; set; }
-        public string? countryName {  get; set; }
+        public int code { get; set; }
+        public string? status { get; set; }
+        public string? message { get; set; }
+
+        public dynamic? data { get; set; }
+
+
+        //public bool? IsActive { get; set; } 
+
+    }
+
+    public class Country
+    {
+        public int countryId { get; set; }
+        public string? countryName { get; set; }
     }
 }

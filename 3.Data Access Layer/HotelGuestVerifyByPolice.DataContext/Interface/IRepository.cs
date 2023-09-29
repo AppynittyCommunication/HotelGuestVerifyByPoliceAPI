@@ -15,13 +15,13 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
         //Select Controller
         Task<StatesList> GetStateListAsync();
-        Task<List<CountryList>> GetCountryListAsync();
+        Task<CountryList> GetCountryListAsync();
 
         Task<StatesList> GetCountryWiseStateListAsync(string countryId);
-        Task<List<DepartmentTypeList>> GetDepartmentTypeListAsync();
-        Task<List<DistrictList>> GetDistrictListAsync(int stateID);
-        Task<List<CityList>> GetCityListAsync(int stateID, int distID);
-        Task<List<PoliceStationList>> GetPoliceStationListAsync(int stateID, int distID, int cityID);
+        Task<DepartmentTypeList> GetDepartmentTypeListAsync();
+        Task<DistrictList> GetDistrictListAsync(int stateID);
+        Task<CityList> GetCityListAsync(int stateID, int distID);
+        Task<PoliceStationList> GetPoliceStationListAsync(int stateID, int distID, int cityID);
         Task<DepartmentLoginRes> CheckDeptLogin(DepartmentLoginBody obj);
 
         // Account Controller
