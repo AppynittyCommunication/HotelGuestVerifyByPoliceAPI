@@ -294,20 +294,20 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             }
         }
-        public async Task<List<StatesList>> GetStateListAsync()
+        public async Task<StatesList> GetStateListAsync()
         {
-            List<StatesList> statelist = new List<StatesList>();
+            StatesList statelist = new ();
             try
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = await db.States.AsQueryable().Where(c => c.IsActive == true).Select(x => new StatesList
-                    {
-                        stateId = x.StateId,
-                        stateName = x.StateName,
+                    var st = await db.States.AsQueryable().Where(c => c.IsActive == true).Select(x => new{ stateId = x.StateId,stateName = x.StateName,}).ToListAsync();
 
-                    }).ToListAsync();
-                    statelist = st;
+                    statelist.code = 200;
+                    statelist.status = "success";
+                    statelist.message = "Get State List Successfully";
+                    statelist.data = st;
+                    return statelist;
                 }
                 return statelist;
             }
@@ -325,20 +325,19 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
-        public async Task<List<StatesList>> GetCountryWiseStateListAsync(string countryCode)
+        public async Task<StatesList> GetCountryWiseStateListAsync(string countryCode)
         {
-            List<StatesList> statelist = new List<StatesList>();
+           StatesList statelist = new ();
             try
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = await db.States.AsQueryable().Where(c => c.IsActive == true && c.CountryCode == countryCode).Select(x => new StatesList
-                    {
-                        stateId = x.StateId,
-                        stateName = x.StateName,
-
-                    }).ToListAsync();
-                    statelist = st;
+                    var st = await db.States.AsQueryable().Where(c => c.IsActive == true && c.CountryCode == countryCode).Select(x => new  {x.StateId, x.StateName, }).ToListAsync();
+                   
+                    statelist.code = 200;
+                    statelist.status = "success";
+                    statelist.message = "Get State List As Per Country";
+                    statelist.data = st;
                 }
                 return statelist;
             }

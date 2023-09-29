@@ -14,10 +14,10 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
     {
 
         //Select Controller
-        Task<List<StatesList>> GetStateListAsync();
+        Task<StatesList> GetStateListAsync();
         Task<List<CountryList>> GetCountryListAsync();
 
-        Task<List<StatesList>> GetCountryWiseStateListAsync(string countryId);
+        Task<StatesList> GetCountryWiseStateListAsync(string countryId);
         Task<List<DepartmentTypeList>> GetDepartmentTypeListAsync();
         Task<List<DistrictList>> GetDistrictListAsync(int stateID);
         Task<List<CityList>> GetCityListAsync(int stateID, int distID);
