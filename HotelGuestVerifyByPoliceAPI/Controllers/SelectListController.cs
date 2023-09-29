@@ -21,7 +21,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         }
 
         [Route("GetCountry")]
-        [HttpPost]
+        [HttpGet]
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<List<CountryList>>> GetCountry()
         {
@@ -55,7 +55,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
             }
         }
         [Route("GetStates")]
-        [HttpPost]
+        [HttpGet]
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<List<StatesList>>> GetState()
         {
