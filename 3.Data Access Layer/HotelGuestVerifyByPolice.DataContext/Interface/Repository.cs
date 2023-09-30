@@ -1967,6 +1967,18 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 catch (Exception ex)
                 {
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
+                    result.status = "error";
+                    result.message = ex.Message;
                     Log.Error(ex.Message);
                     return result;
                 }
@@ -1974,25 +1986,35 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
-        public async Task<List<VisitPurposeList>> GetVisitPurposeAsync()
+        public async Task<VisitPurposeList> GetVisitPurposeAsync()
         {
-            List<VisitPurposeList> result = new();
+            VisitPurposeList result = new();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
                 try
                 {
-                    var vp = await db.VisitPurposes.AsQueryable().Select(x => new VisitPurposeList
-                    {
-                        id = x.Id,
-                        visitPurpose = x.Purpose,
-
-                    }).ToListAsync();
-                    result = vp;
+                    var vp = await db.VisitPurposes.AsQueryable().Select(x => new {x.Id,x.Purpose,}).ToListAsync();
+                    result.code = 200;
+                    result.status = "success";
+                    result.message = "Visit Purpose List";
+                    result.data = vp;
 
                     return result;
                 }
                 catch (Exception ex)
                 {
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
+                    result.status = "error";
+                    result.message = ex.Message;
                     Log.Error(ex.Message);
                     return result;
                 }
@@ -2000,25 +2022,35 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
-        public async Task<List<SelectIDTypeList>> GetSelectIDTypeAsync()
+        public async Task<SelectIDTypeList> GetSelectIDTypeAsync()
         {
-            List<SelectIDTypeList> result = new();
+            SelectIDTypeList result = new();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
                 try
                 {
-                    var vp = await db.IdProofTypes.AsQueryable().Select(x => new SelectIDTypeList
-                    {
-                        id = x.Id,
-                        idProofType = x.IdType,
-
-                    }).ToListAsync();
-                    result = vp;
+                    var vp = await db.IdProofTypes.AsQueryable().Select(x => new { id = x.Id, idProofType = x.IdType,}).ToListAsync();
+                    result.code = 200;
+                    result.status = "success";
+                    result.message = "ID Proof Type List";
+                    result.data = vp;
 
                     return result;
                 }
                 catch (Exception ex)
                 {
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
+                    result.status = "error";
+                    result.message = ex.Message;
                     Log.Error(ex.Message);
                     return result;
                 }

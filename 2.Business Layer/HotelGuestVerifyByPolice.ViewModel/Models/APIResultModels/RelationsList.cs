@@ -15,10 +15,5 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
         public dynamic? data { get; set; }
        
     }
-    public class RelationList
-    {
-        public int id { get; set; }
-
-        public string? Name { get; set; }
-    }
+    
 }
