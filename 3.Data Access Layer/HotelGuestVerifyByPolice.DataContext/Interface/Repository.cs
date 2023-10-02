@@ -1178,7 +1178,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     var hotelrefdetails = await db.Hotels.Where(c => c.UserId == userid).FirstOrDefaultAsync();
                     var detrefdetails = await db.Polices.Where(c => c.UserId == userid).FirstOrDefaultAsync();
 
-                    if (hotelrefdetails != null && detrefdetails != null)
+                    if (hotelrefdetails != null || detrefdetails != null)
                     {
                         result.code = 200;
                         result.status = "error";
