@@ -1168,45 +1168,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
 
 
-        public async Task<CommonAPIResponse> CheckDepartUsernameExistAsync(string userid)
-        {
-            CommonAPIResponse result = new CommonAPIResponse();
-            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
-            {
-                try
-                {
-                    var hotelrefdetails = await db.Polices.Where(c => c.UserId == userid).FirstOrDefaultAsync();
-
-                    if (hotelrefdetails != null)
-                    {
-                        result.code = 200;
-                        result.status = "error";
-                        result.message = userid + " Is Already Exist";
-                        return result;
-
-                    }
-                    else
-                    {
-                        result.code = 200;
-                        result.status = "success";
-                        result.message = userid + " Is Available";
-                        return result;
-                    }
-                    //return result;
-                }
-                catch (Exception ex)
-                {
-                    result.code = 200;
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
-            }
-        }
-
-        public async Task<CommonAPIResponse> CheckHotelUsernameExistAsync(string userid)
+        public async Task<CommonAPIResponse> CheckUsernameExistAsync(string userid)
         {
             CommonAPIResponse result = new CommonAPIResponse();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
@@ -1214,8 +1176,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 try
                 {
                     var hotelrefdetails = await db.Hotels.Where(c => c.UserId == userid).FirstOrDefaultAsync();
+                    var detrefdetails = await db.Polices.Where(c => c.UserId == userid).FirstOrDefaultAsync();
 
-                    if (hotelrefdetails != null)
+                    if (hotelrefdetails != null && detrefdetails != null)
                     {
                         result.code = 200;
                         result.status = "error";
