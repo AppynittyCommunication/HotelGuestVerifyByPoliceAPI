@@ -22,6 +22,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         Task<DistrictList> GetDistrictListAsync(int stateID);
         Task<CityList> GetCityListAsync(int stateID, int distID);
         Task<PoliceStationList> GetPoliceStationListAsync(int stateID, int distID, int cityID);
+
+        Task<HotelList> GetHotelListAsync(string psId);
         Task<DepartmentLoginRes> CheckDeptLogin(DepartmentLoginBody obj);
 
         // Account Controller

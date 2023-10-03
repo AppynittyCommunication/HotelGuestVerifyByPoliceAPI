@@ -124,6 +124,25 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         }
 
 
+
+        [Route("GetHotel")]
+        [HttpGet]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<HotelList>> GetHotel([FromHeader] string psId)
+        {
+            HotelList hlist = new();
+            try
+            {
+                hlist = await objRep.GetHotelListAsync(psId);
+                return hlist;
+            }
+            catch (Exception)
+            {
+                return hlist;
+            }
+        }
+
+
         [Route("GetDepartmentType")]
         [HttpGet]
         [EnableCors("MyCorsPolicy")]
