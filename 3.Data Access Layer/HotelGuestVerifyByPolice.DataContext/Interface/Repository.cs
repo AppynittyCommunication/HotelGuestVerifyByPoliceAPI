@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using static System.Net.WebRequestMethods;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
+
 namespace HotelGuestVerifyByPolice.DataContext.Interface
 {
     public class Repository : IRepository
@@ -268,14 +269,27 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             CountryList countrylist = new CountryList();
             try
             {
+
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
                     var st = await db.Countries.AsQueryable().Where(c => c.IsActive == true).Select(x => new { x.CountryCode, x.CountryName, }).ToListAsync();
 
-                    countrylist.code = 200;
-                    countrylist.status = "success";
-                    countrylist.message = "Countries List";
-                    countrylist.data = st;
+                    if (st != null)
+                    {
+                        countrylist.code = 200;
+                        countrylist.status = "success";
+                        countrylist.message = "Countries List";
+                        countrylist.data = st;
+                    }
+
+                    else
+                    {
+                        countrylist.code = 200;
+                        countrylist.status = "success";
+                        countrylist.message = "Countries List Not Found";
+                        countrylist.data = null;
+                    }
+
                 }
                 return countrylist;
             }
@@ -305,12 +319,24 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 {
                     var st = await db.States.AsQueryable().Where(c => c.IsActive == true && c.CountryCode == countryCode).Select(x => new { x.StateId, x.StateName, }).ToListAsync();
 
-                    statelist.code = 200;
-                    statelist.status = "success";
-                    statelist.message = "Get State List As Per Country";
-                    statelist.data = st;
+                    if (st.Count != 0)
+                    {
+                        statelist.code = 200;
+                        statelist.status = "success";
+                        statelist.message = "Get State List As Per Country";
+                        statelist.data = st;
+                        return statelist;
 
-                   
+                    }
+                    else
+                    {
+                        //throw new Exception("State List Not Found");
+                        statelist.code = 200;
+                        statelist.status = "success";
+                        statelist.message = "State List Not Found";
+                        statelist.data = null;
+                    }
+
                 }
                 return statelist;
             }
@@ -329,6 +355,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 return statelist;
 
             }
+
         }
         public async Task<StatesList> GetStateListAsync()
         {
@@ -338,7 +365,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
                     var st = await db.States.AsQueryable().Where(c => c.IsActive == true).Select(x => new { stateId = x.StateId, stateName = x.StateName, }).ToListAsync();
-                    if(st != null)
+                    if (st.Count != 0)
                     {
                         statelist.code = 200;
                         statelist.status = "success";
@@ -348,15 +375,16 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     else
                     {
+                        //throw new Exception("State List Not Found");
                         statelist.code = 200;
                         statelist.status = "success";
-                        statelist.message = "Get State Not Found";
+                        statelist.message = "State List Not Found";
                         statelist.data = null;
                         return statelist;
                     }
-                    
+
                 }
-                return statelist;
+                //return statelist;
             }
             catch (Exception ex)
             {
@@ -384,7 +412,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
                     var st = await db.DepartmentTypes.AsQueryable().Where(c => c.IsActive == true).Select(x => new { x.DeptTypeId, x.DeptTypeName }).ToListAsync();
-                    if(st !=null)
+                    if (st.Count != 0)
                     {
                         depttypelist.code = 200;
                         depttypelist.status = "success";
@@ -394,12 +422,13 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     else
                     {
+                        //throw new Exception("Data Not Found");
                         depttypelist.code = 200;
                         depttypelist.status = "success";
                         depttypelist.message = "Department List Not Found";
                         depttypelist.data = null;
                     }
-                  
+
                 }
                 return depttypelist;
             }
@@ -428,7 +457,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
                     var st = await db.Districts.AsQueryable().Where(c => c.StateId == stateID && c.IsActive == true).Select(x => new { x.DistId, x.DistName, }).ToListAsync();
-                    if(st != null)
+                    if (st.Count != 0)
                     {
                         distlist.code = 200;
                         distlist.status = "success";
@@ -444,9 +473,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         distlist.data = null;
                         return distlist;
                     }
-                    return distlist;
+
                 }
-                return distlist;
+
             }
             catch (Exception ex)
             {
@@ -475,7 +504,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
                     var st = await db.Cities.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.IsActive == true).Select(x => new { x.CityId, x.CityName, }).ToListAsync();
-                    if(st != null)
+                    if (st.Count != 0)
                     {
                         citylist.code = 200;
                         citylist.status = "success";
@@ -492,9 +521,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         citylist.data = null;
                         return citylist;
                     }
-                    return citylist;
+
                 }
-                return citylist;
+
             }
             catch (Exception ex)
             {
@@ -520,12 +549,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = await db.PoliceStations.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.CityId == cityID && c.IsActive == true).Select(x => new { x.StationCode, x.StationName }).ToListAsync();
-                    if (st != null)
+                    var st = await db.PoliceStations.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.CityId == cityID && c.IsActive == true).Select(x => new { x.Id, x.StationName }).ToListAsync();
+                    if (st.Count != 0)
                     {
                         pslist.code = 200;
                         pslist.status = "success";
-                        pslist.message = "OK";
+                        pslist.message = "Police Station List";
                         pslist.data = st;
                         return pslist;
                     }
@@ -567,11 +596,11 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 {
 
                     var st = await db.Hotels.AsQueryable().Where(c => c.StationCode == psId).Select(x => new { x.HotelRegNo, x.HotelName }).ToListAsync();
-                    if (st != null)
+                    if (st.Count != 0)
                     {
                         hlist.code = 200;
                         hlist.status = "success";
-                        hlist.message = "OK";
+                        hlist.message = "Hotel List";
                         hlist.data = st;
                         return hlist;
                     }
@@ -718,7 +747,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                     if (deptrefdetails != null)
                     {
-                        var deptDetailsRes = await db.Polices.Where(x => x.UserId == obj.dUsername).Select(x => new { x.PoliceId, x.UserId,x.UserType,x.StateId,x.DistId,x.CityId,x.StationCode }).ToListAsync();
+                        var deptDetailsRes = await db.Polices.Where(x => x.UserId == obj.dUsername).Select(x => new { x.PoliceId, x.UserId, x.UserType, x.StateId, x.DistId, x.CityId, x.StationCode }).ToListAsync();
 
                         if (deptrefdetails.Password == null || deptrefdetails.Password == "")
                         {

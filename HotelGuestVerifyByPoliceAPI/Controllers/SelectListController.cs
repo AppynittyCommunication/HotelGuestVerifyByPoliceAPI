@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Numerics;
 
 namespace HotelGuestVerifyByPoliceAPI.Controllers
 {
@@ -45,18 +46,16 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         {
            
             StatesList statelist = new ();
-            statelist = await objRep.GetCountryWiseStateListAsync(countryCode);
-            return statelist;
-
-            //try
-            //{
-            //    statelist = await objRep.GetCountryWiseStateListAsync(countryCode);
-            //    return statelist;
-            //}
-            //catch (Exception)
-            //{
-            //    return statelist;
-            //}
+            
+            try
+            {
+                statelist = await objRep.GetCountryWiseStateListAsync(countryCode);
+                return statelist;
+            }
+            catch (Exception)
+            {
+                return statelist;
+            }
         }
         [Route("GetStates")]
         [HttpGet]
@@ -163,6 +162,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
                 return deptTypeList;
             }
         }
+
+
+       
 
     }
 }

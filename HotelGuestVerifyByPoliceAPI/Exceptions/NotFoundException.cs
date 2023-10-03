@@ -18,5 +18,12 @@
 
     }
 
+    public class NullReferenceException : Exception
+    {
+        public NullReferenceException(string message) : base(message)
+        {
 
+        }
+
+    }
 }

@@ -38,7 +38,7 @@ namespace HotelGuestVerifyByPoliceAPI.Middlewares
                 case BadRequestException:
                     statusCode = StatusCodes.Status400BadRequest;
                     break;
-           
+                
             }
 
             var errorResonse = new ErrorResponse()
