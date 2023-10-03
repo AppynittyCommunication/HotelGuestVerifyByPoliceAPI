@@ -43,16 +43,20 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<StatesList>> GetCountryWiseState([FromHeader] string countryCode)
         {
+           
             StatesList statelist = new ();
-            try
-            {
-                statelist = await objRep.GetCountryWiseStateListAsync(countryCode);
-                return statelist;
-            }
-            catch (Exception)
-            {
-                return statelist;
-            }
+            statelist = await objRep.GetCountryWiseStateListAsync(countryCode);
+            return statelist;
+
+            //try
+            //{
+            //    statelist = await objRep.GetCountryWiseStateListAsync(countryCode);
+            //    return statelist;
+            //}
+            //catch (Exception)
+            //{
+            //    return statelist;
+            //}
         }
         [Route("GetStates")]
         [HttpGet]

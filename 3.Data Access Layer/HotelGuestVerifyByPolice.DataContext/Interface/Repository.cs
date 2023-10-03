@@ -4,6 +4,7 @@ using HotelGuestVerifyByPolice.DataContext.Entities.SPEntities;
 using HotelGuestVerifyByPolice.DataContext.Entities.TableEntities;
 using HotelGuestVerifyByPolice.ViewModel.Models.APIBodyModels;
 using HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -308,6 +309,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     statelist.status = "success";
                     statelist.message = "Get State List As Per Country";
                     statelist.data = st;
+
+                   
                 }
                 return statelist;
             }

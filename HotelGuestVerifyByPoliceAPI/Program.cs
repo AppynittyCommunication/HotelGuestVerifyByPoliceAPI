@@ -1,5 +1,6 @@
 global using HotelGuestVerifyByPolice.DataContext.Data;
 using HotelGuestVerifyByPolice.DataContext.Interface;
+using HotelGuestVerifyByPoliceAPI.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -15,6 +16,7 @@ builder.Host.UseSerilog();
 //Use Serilog along with built-In loggers
 builder.Logging.AddSerilog();
 // Add services to the container.
+builder.Services.AddTransient<ExceptionMiddleware>();
 
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
@@ -59,6 +61,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+//calling Exception Middleware
+app.ConfigureExceptionMiddleware();
 
 app.MapControllers();
 app.UseCors();
