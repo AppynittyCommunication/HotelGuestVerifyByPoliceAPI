@@ -614,7 +614,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                     if (deptrefdetails != null)
                     {
-                        var deptDetailsRes = await db.Polices.Where(x => x.UserId == obj.dUsername).Select(x => new { x.PoliceId, x.UserId }).ToListAsync();
+                        var deptDetailsRes = await db.Polices.Where(x => x.UserId == obj.dUsername).Select(x => new { x.PoliceId, x.UserId,x.UserType }).ToListAsync();
 
                         if (deptrefdetails.Password == null || deptrefdetails.Password == "")
                         {

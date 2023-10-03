@@ -16,10 +16,4 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
             public dynamic? data { get; set; }
          }
 
-        public class DepartmentLoginDetails
-        {
-            public string? dUsername { get; set; }
-            public string? dName { get; set; }
-        }
-    
 }
