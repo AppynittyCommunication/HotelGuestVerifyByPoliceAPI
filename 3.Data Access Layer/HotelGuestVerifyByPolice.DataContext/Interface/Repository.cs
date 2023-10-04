@@ -85,12 +85,34 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         hoteldetails.Otp = r;
 
                         db.Hotels.Add(hoteldetails);
-                        await db.SaveChangesAsync();
+                        var status = await db.SaveChangesAsync();
+                        if(status > 0)
+                        {
+                            var checkauth = await db.AuthenticationPins.Where(c => c.AuthPin == obj.authPin).FirstOrDefaultAsync();
 
-                        result.code = 200;
-                        result.status = "success";
-                        result.message = "Registration Details Saved Successfully!";
-                        return result;
+                            if (checkauth != null)
+                            {
+                                checkauth.UserId = obj.userId;
+                                checkauth.UseFor = obj.hotelName;
+                                checkauth.IsUse = true;
+                                checkauth.UseDate = DateTime.Now;
+
+                                //db.AuthenticationPins.Add(checkauth);
+                                await db.SaveChangesAsync();
+                            }
+                            result.code = 200;
+                            result.status = "success";
+                            result.message = "Registration Details Saved Successfully!";
+                            return result;
+                        }
+                        else
+                        {
+                            result.code = 200;
+                            result.status = "error";
+                            result.message = "Registration Failed";
+                            return result;
+                        }
+                        
                     }
                     else
                     {
@@ -123,66 +145,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
 
         }
-
-
-
-        public async Task<CommonAPIResponse> SaveAuthUserAsync(SaveAuthUserBody obj)
-        {
-            CommonAPIResponse result = new CommonAPIResponse();
-
-
-            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
-            {
-                try
-                {
-                    var checkauth = await db.AuthenticationPins.Where(c => c.AuthPin == obj.authPin).FirstOrDefaultAsync();
-
-                    if (checkauth != null)
-                    {
-                        checkauth.UserId = obj.userID;
-                        checkauth.UseFor = obj.useFor;
-                        checkauth.IsUse = obj.isUse;
-                        checkauth.UseDate = DateTime.Now;
-
-                        //db.AuthenticationPins.Add(checkauth);
-                        await db.SaveChangesAsync();
-
-                        result.code = 200;
-                        result.status = "success";
-                        result.message = "Authentication Data Saved Successfully!";
-                        return result;
-                    }
-                    else
-                    {
-                        result.code = 200;
-                        result.status = "error";
-                        result.message = "Failed";
-                        return result;
-                    }
-                    //return result;
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
-            }
-
-        }
-
 
 
         public async Task<CommonAPIResponse> SavePoliceReg(PoliceRegBody obj)
@@ -225,12 +187,34 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
 
                         db.Polices.Add(policedetails);
-                        await db.SaveChangesAsync();
+                        var status = await db.SaveChangesAsync();
+                        if(status > 0)
+                        {
+                            var checkauth = await db.AuthenticationPins.Where(c => c.AuthPin == obj.authPin).FirstOrDefaultAsync();
 
-                        result.code = 200;
-                        result.status = "success";
-                        result.message = "Registration Details Saved Successfully!";
-                        return result;
+                            if (checkauth != null)
+                            {
+                                checkauth.UserId = obj.userId;
+                                checkauth.UseFor = "Department";
+                                checkauth.IsUse = true;
+                                checkauth.UseDate = DateTime.Now;
+
+                                //db.AuthenticationPins.Add(checkauth);
+                                await db.SaveChangesAsync();
+                            }
+                            result.code = 200;
+                            result.status = "success";
+                            result.message = "Registration Details Saved Successfully!";
+                            return result;
+                        }
+                        else
+                        {
+                            result.code = 200;
+                            result.status = "error";
+                            result.message = "Registration Failed";
+                            return result;
+                        }
+                      
                     }
                     else
                     {

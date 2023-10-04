@@ -30,5 +30,7 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIBodyModels
         public bool ? isMobileVerify { get; set; }
 
         public string? password { get; set; }
+
+        public string? authPin { get; set; }
     }
 }

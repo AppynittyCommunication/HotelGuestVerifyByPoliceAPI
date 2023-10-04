@@ -174,7 +174,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
 
         [Route("CheckAuthPin")]
-        [HttpPost]
+        [HttpGet]
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<CommonAPIResponse>> CheckAuthPin([FromHeader] string authPin)
         {
@@ -183,15 +183,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
             return objresponse;
         }
 
-        [Route("SaveAuthUser")]
-        [HttpPost]
-        [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CommonAPIResponse>> SaveAuthUser([FromBody] SaveAuthUserBody obj)
-        {
-            CommonAPIResponse objresponse = await objRep.SaveAuthUserAsync(obj);
-
-            return objresponse;
-        }
+       
 
     }
 }
