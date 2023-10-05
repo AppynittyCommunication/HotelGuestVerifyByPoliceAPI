@@ -1960,7 +1960,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             guestDetailsList.Add(new GuestDetailsList
                             {
                                 guestName = i.GuestName,
-                                guestPhoto = Convert.ToBase64String(i.GuestPhoto),
+                                guestPhoto = i.GuestPhoto == null ? "" : Convert.ToBase64String(i.GuestPhoto),
                                 mobile = i.Mobile,
                                 country = i.Country,
                                 state = i.State,

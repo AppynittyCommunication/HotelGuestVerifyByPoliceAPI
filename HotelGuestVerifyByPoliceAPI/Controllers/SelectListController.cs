@@ -163,8 +163,5 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
             }
         }
 
-
-       
-
     }
 }
