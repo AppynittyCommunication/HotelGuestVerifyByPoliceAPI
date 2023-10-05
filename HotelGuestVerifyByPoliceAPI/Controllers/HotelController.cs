@@ -32,7 +32,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
 
         [Route("GetGuestCheckInOutInfo")]
-        [HttpPost]
+        [HttpGet]
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<HotelCheckInListResult>> CheckGuestInOutStatus([FromHeader] string hotelRegNo)
         {

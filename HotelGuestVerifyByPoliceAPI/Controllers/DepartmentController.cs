@@ -22,7 +22,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
 
         [Route("DeptDashboard")]
-        [HttpPost]
+        [HttpGet]
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<DeptDashboardRes>> DepartmentDashboard([FromHeader] string userID)
         {
@@ -32,7 +32,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         }
 
         [Route("ShowHotelGuestDetails")]
-        [HttpPost]
+        [HttpGet]
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<ShowHotelGuestDetailsRes>> ShowHotelGuestDetails([FromHeader] string roomBookingID)
         {
@@ -42,7 +42,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         }
 
         [Route("SearchHotel")]
-        [HttpPost]
+        [HttpGet]
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<SearchHotelResponse>> SearchHotel([FromHeader] string hotelRegNo)
         {
