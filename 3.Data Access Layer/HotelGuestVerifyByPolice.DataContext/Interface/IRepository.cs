@@ -57,5 +57,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         //Department Controller
          Task<DeptDashboardRes> DepartmentDashboardAsync(string userID);
          Task<ShowHotelGuestDetailsRes> ShowHotelGuestDetailsAsync(string roomBookingID);
+         Task<SearchHotelResponse> SearchHotelAsync(string hotelRegNo);
+
     }
 }
