@@ -17,6 +17,7 @@ using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -2170,89 +2171,132 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             };
 
                     var checkloc = await db.HotelLocForDepartDash_Results.FromSqlRaw<HotelLocForDepartDash_Result>("EXEC HotelLocForDepartDash @DepartUsername", parms.ToArray()).ToListAsync();
-                   
-                    foreach (var i in checkloc)
+                    if(checkuser != null)
                     {
-                        hotelLocOnDashboard.Add(new HotelLocOnDashboard
+                        foreach (var i in checkloc)
                         {
-                            hotelName = i.HotelName,
-                            Mobile = i.Mobile,
-                            Address = i.Address,
-                            lat = i.Lat,
-                            _long = i.Long,
-                        });
-                        result.hotelLocOnDashboard = hotelLocOnDashboard;
+                            hotelLocOnDashboard.Add(new HotelLocOnDashboard
+                            {
+                                hotelName = i.HotelName,
+                                Mobile = i.Mobile,
+                                Address = i.Address,
+                                lat = i.Lat,
+                                _long = i.Long,
+                            });
+                            result.hotelLocOnDashboard = hotelLocOnDashboard;
+                        }
                     }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "Data Not Found!";
+                        return result;
+                    }
+                    
+                    
 
                     var details = await db.HotelListDetailsForDepart_Results.FromSqlRaw<HotelListDetailsForDepart_Result>("EXEC HotelListDetailsForDepart @DepartUsername", parms.ToArray()).ToListAsync();
-                    foreach (var i in details)
+                    if(details != null)
                     {
-                        hotelListDetailsForDashboard.Add(new HotelListDetailsForDashboard
+                        foreach (var i in details)
                         {
-                            stationName = i.StationName,
-                            hotelCount = i.Hotel_Count,
-                            totalCheckIn = i.Total_CheckIn,
-                            todaysCheckIn = i.Today_CheckIn,
-                            todaysCheckOut = i.Today_CheckOut,
+                            hotelListDetailsForDashboard.Add(new HotelListDetailsForDashboard
+                            {
+                                stationName = i.StationName,
+                                hotelCount = i.Hotel_Count,
+                                totalCheckIn = i.Total_CheckIn,
+                                todaysCheckIn = i.Today_CheckIn,
+                                todaysCheckOut = i.Today_CheckOut,
 
-                        });
-                        result.hotelListDetailsForDashboards = hotelListDetailsForDashboard;
+                            });
+                            result.hotelListDetailsForDashboards = hotelListDetailsForDashboard;
+                        }
                     }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "Data Not Found!";
+                        return result;
+                    }
+
                     //Hotel Guest Dashboard Details
                     var hotelGuestDetails = await db.HotelGuestDetails_DeptDash_Results.FromSqlRaw<HotelGuestDetails_DeptDash_Result>("EXEC HotelGuestDetails_DeptDash @DepartUsername", parms.ToArray()).ToListAsync();
-                    foreach (var i in hotelGuestDetails)
+                    if(hotelGuestDetails != null)
                     {
-                        var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
-                                  (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Child" :
-                                  (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Childs" :
-                                  (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Child" :
-                                  (i.Total_Adult > 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adults " :
-                                  (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Childs" :
-                                  "No Guest Found!";
-
-                        hotelGuestDetails_DeptDashes.Add(new HotelGuestDetails_DeptDash1
+                        foreach (var i in hotelGuestDetails)
                         {
-                            roomBookingID = i.RoomBookingID,
-                            guestName = i.GuestName,
-                            guestPhoto = i.GuestPhoto,
-                            age = i.Age,
-                            city = i.City,
-                            visitPurpose = i.VisitPurpose,
-                            comingFrom = i.ComingFrom,
-                            reservation = res,
-                            hotelName = i.HotelName,
-                            checkInDate = i.CheckInDate,
-                        });
-                        result.hotelGuestDetails_DeptDashes = hotelGuestDetails_DeptDashes;
+                            var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
+                                      (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Child" :
+                                      (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Childs" :
+                                      (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Child" :
+                                      (i.Total_Adult > 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adults " :
+                                      (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Childs" :
+                                      "No Guest Found!";
+
+                            hotelGuestDetails_DeptDashes.Add(new HotelGuestDetails_DeptDash1
+                            {
+                                roomBookingID = i.RoomBookingID,
+                                guestName = i.GuestName,
+                                guestPhoto = i.GuestPhoto,
+                                age = i.Age,
+                                city = i.City,
+                                visitPurpose = i.VisitPurpose,
+                                comingFrom = i.ComingFrom,
+                                reservation = res,
+                                hotelName = i.HotelName,
+                                checkInDate = i.CheckInDate,
+                            });
+                            result.hotelGuestDetails_DeptDashes = hotelGuestDetails_DeptDashes;
 
 
+                        }
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "Data Not Found!";
+                        return result;
                     }
 
                     var hotelGuestDetails1 = await db.HotelGuestDetails_DeptDash_Results1.FromSqlRaw<HotelGuestDetails_DeptDash_Result1>("EXEC HotelGuestDetails_DeptDash1 @DepartUsername", parms.ToArray()).ToListAsync();
-                    foreach (var i in hotelGuestDetails1)
+                    if(hotelGuestDetails1 != null)
                     {
-                        var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
-                           (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Child" :
-                           (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Childs" :
-                           (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Child" :
-                           (i.Total_Adult > 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adults " :
-                           (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Childs" :
-                           "No Guest Found!";
-
-                        hotelGuestDetails_DeptDash2.Add(new HotelGuestDetails_DeptDash2
+                        foreach (var i in hotelGuestDetails1)
                         {
-                            hotelName = i.HotelName,
-                            guestName = i.GuestName,
-                            age = i.Age,
-                            visitPurpose = i.VisitPurpose,
-                            comingFrom = i.ComingFrom,
-                            reservation = res,
-                            mobile = i.Mobile,
-                            city = i.City,
-                            checkInDate = i.CheckInDate,
-                        });
-                        result.hotelGuestDetails_DeptDash2 = hotelGuestDetails_DeptDash2;
+                            var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
+                               (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Child" :
+                               (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Childs" :
+                               (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Child" :
+                               (i.Total_Adult > 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adults " :
+                               (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Childs" :
+                               "No Guest Found!";
+
+                            hotelGuestDetails_DeptDash2.Add(new HotelGuestDetails_DeptDash2
+                            {
+                                hotelName = i.HotelName,
+                                guestName = i.GuestName,
+                                age = i.Age,
+                                visitPurpose = i.VisitPurpose,
+                                comingFrom = i.ComingFrom,
+                                reservation = res,
+                                mobile = i.Mobile,
+                                city = i.City,
+                                checkInDate = i.CheckInDate,
+                            });
+                            result.hotelGuestDetails_DeptDash2 = hotelGuestDetails_DeptDash2;
+                        }
                     }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "Data Not Found!";
+                        return result;
+                    }
+
 
                     if (checkuser != null)
                     {
@@ -2441,9 +2485,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         {
             SearchHotelResponse result = new SearchHotelResponse();
 
-            List<HotelTitle> hotelTitle = new ();
+            HotelTitle hotelTitle = new ();
             List<HotelGuestInfo> hotelGuestInfo = new();
-            List<LastVisitor> lastVisitor = new();
+            LastVisitor lastVisitor = new();
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
@@ -2453,29 +2497,25 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     var hTitle = await db.Hotels.Where(c => c.HotelRegNo == hotelRegNo).ToListAsync();
                     if(hTitle != null)
                     {
-                        {
+                        
                             foreach (var h in hTitle)
                             {
-                                hotelTitle.Add(new HotelTitle
-                                {
-                                    hotelName = h.HotelName,
-                                    address = h.Address,
-                                    mobile = h.Mobile,
-                                    city = await db.Cities.Where(c => c.CityId == h.CityId).Select(c => c.CityName).FirstOrDefaultAsync(),
-                                    policeSation = await db.PoliceStations.Where(c => c.StationCode == h.StationCode).Select(c => c.StationName).FirstOrDefaultAsync()
 
-                                });
-                                result.hotelTitle = hotelTitle;
+                                hotelTitle.hotelName = h.HotelName;
+                                hotelTitle.address = h.Address;
+                                hotelTitle.mobile = h.Mobile;
+                                hotelTitle.city = await db.Cities.Where(c => c.CityId == h.CityId).Select(c => c.CityName).FirstOrDefaultAsync();
+                                hotelTitle.policeSation = await db.PoliceStations.Where(c => c.StationCode == h.StationCode).Select(c => c.StationName).FirstOrDefaultAsync();
+                               
                             }
-                        }
-
-
+                            result.hotelTitle = hotelTitle;
 
                         List<SqlParameter> parms = new List<SqlParameter>
-                    {
-                         new SqlParameter { ParameterName = "@HotelRegNo", Value = hotelRegNo },
-                    };
+                        {
+                            new SqlParameter { ParameterName = "@HotelRegNo", Value = hotelRegNo },
+                         };
                         var data = await db.SP_SearchHotel_Results.FromSqlRaw<SP_SearchHotel_Result>("EXEC SP_SearchHotel @HotelRegNo", parms.ToArray()).ToListAsync();
+                        if(data != null)
                         {
                             foreach (var i in data)
                             {
@@ -2499,6 +2539,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         }
 
                         var data1 = await db.SP_LastVisitorByHotel_Results.FromSqlRaw<SP_LastVisitorByHotel_Result>("EXEC SP_LastVisitorByHotel @HotelRegNo", parms.ToArray()).ToListAsync();
+
+                        if(data1 != null) 
                         {
                             foreach (var i in data1)
                             {
@@ -2510,28 +2552,24 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Childs" :
                                 "No Guest Found!";
 
-                                lastVisitor.Add(new LastVisitor
-                                {
-                                    guestName = i.GuestName,
-                                    age = i.Age,
-                                    city = i.City,
-                                    purpose = i.Visit_Purpose,
-                                    commingFrom = i.Visit_Purpose,
-                                    reservaion = res,
-                                    checkInDate = Convert.ToDateTime(i.CheckInDate).ToString("dd-MM-yyyy"),
-                                    photo = i.GuestPhoto
-                                    
 
-                                });
-                                result.lastVisitors = lastVisitor;
-
-
+                                lastVisitor.guestName = i.GuestName;
+                                lastVisitor.age = i.Age;
+                                lastVisitor.city = i.City;
+                                lastVisitor.purpose = i.Visit_Purpose;
+                                lastVisitor.commingFrom = i.Visit_Purpose;
+                                lastVisitor.reservaion = res;
+                                lastVisitor.checkInDate = Convert.ToDateTime(i.CheckInDate).ToString("dd-MM-yyyy");
+                                lastVisitor.photo = i.GuestPhoto;
+                              
                             }
+                            result.lastVisitors = lastVisitor;
+                        }
                             result.code = 200;
                             result.status = "success";
                             result.message = "Success Response";
                             return result;
-                        }
+                        
                     }
                     
                     else

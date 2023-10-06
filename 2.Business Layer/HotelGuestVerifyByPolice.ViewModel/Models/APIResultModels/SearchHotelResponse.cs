@@ -12,11 +12,11 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
         public string? status { get; set; }
         public string? message { get; set; }
 
-        public List<HotelTitle>? hotelTitle { get; set; }
+        public HotelTitle? hotelTitle { get; set; }
 
         public List<HotelGuestInfo>? hotelGuests { get; set; }
 
-         public List<LastVisitor>? lastVisitors { get; set; }
+         public LastVisitor? lastVisitors { get; set; }
 
     }
 
