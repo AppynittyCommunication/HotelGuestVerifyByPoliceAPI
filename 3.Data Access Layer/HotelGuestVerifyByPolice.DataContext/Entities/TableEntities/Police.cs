@@ -35,8 +35,7 @@ public partial class Police
     [Column("CityID")]
     public int? CityId { get; set; }
 
-    [StringLength(30)]
-    public string? StationCode { get; set; }
+    public int? StationCode { get; set; }
 
     [Column("PoliceID")]
     [StringLength(20)]

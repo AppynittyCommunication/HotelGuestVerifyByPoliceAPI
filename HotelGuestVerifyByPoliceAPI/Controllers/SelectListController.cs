@@ -131,7 +131,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [Route("GetHotel")]
         [HttpGet]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<HotelList>> GetHotel([FromHeader] string psId)
+        public async Task<ActionResult<HotelList>> GetHotel([FromHeader] int psId)
         {
             HotelList hlist = new();
             try
@@ -162,9 +162,6 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
                 return deptTypeList;
             }
         }
-
-
-       
 
     }
 }

@@ -22,7 +22,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
 
 
         [Route("DeptDashboard")]
-        [HttpPost]
+        [HttpGet]
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<DeptDashboardRes>> DepartmentDashboard([FromHeader] string userID)
         {
@@ -32,7 +32,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         }
 
         [Route("ShowHotelGuestDetails")]
-        [HttpPost]
+        [HttpGet]
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<ShowHotelGuestDetailsRes>> ShowHotelGuestDetails([FromHeader] string roomBookingID)
         {
@@ -41,8 +41,16 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
             return objresponse;
         }
 
+        [Route("SearchHotel")]
+        [HttpGet]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<SearchHotelResponse>> SearchHotel([FromHeader] string hotelRegNo)
+        {
+            SearchHotelResponse objresponse = await objRep.SearchHotelAsync(hotelRegNo);
 
-       
+            return objresponse;
+        }
+
 
     }
 }

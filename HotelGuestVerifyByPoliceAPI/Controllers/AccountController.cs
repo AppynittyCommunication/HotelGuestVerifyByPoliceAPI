@@ -27,7 +27,6 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<CommonAPIResponse>> HotelRegistration([FromBody] HotelRegBody obj)
         {
             CommonAPIResponse objresponse = await objRep.SaveHotelReg(obj);
-
             return objresponse;
         }
 

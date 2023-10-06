@@ -7,6 +7,7 @@ using HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using Serilog;
 using System;
 using System.Collections;
@@ -533,7 +534,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = await db.PoliceStations.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.CityId == cityID && c.IsActive == true).Select(x => new { x.Id, x.StationName }).ToListAsync();
+                    var st = await db.PoliceStations.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.CityId == cityID && c.IsActive == true).Select(x => new { x.StationCode, x.StationName }).ToListAsync();
                     if (st.Count != 0)
                     {
                         pslist.code = 200;
@@ -571,7 +572,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
-        public async Task<HotelList> GetHotelListAsync(string psId)
+        public async Task<HotelList> GetHotelListAsync(int psId)
         {
             HotelList hlist = new HotelList();
             try
@@ -1959,7 +1960,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             guestDetailsList.Add(new GuestDetailsList
                             {
                                 guestName = i.GuestName,
-                                guestPhoto = i.GuestPhoto != null ? Convert.ToBase64String(i.GuestPhoto) : null,
+                                guestPhoto = i.GuestPhoto == null ? "" : Convert.ToBase64String(i.GuestPhoto),
                                 mobile = i.Mobile,
                                 country = i.Country,
                                 state = i.State,
@@ -2169,6 +2170,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             };
 
                     var checkloc = await db.HotelLocForDepartDash_Results.FromSqlRaw<HotelLocForDepartDash_Result>("EXEC HotelLocForDepartDash @DepartUsername", parms.ToArray()).ToListAsync();
+                   
                     foreach (var i in checkloc)
                     {
                         hotelLocOnDashboard.Add(new HotelLocOnDashboard
@@ -2434,6 +2436,144 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
         }
 
+
+        public async Task<SearchHotelResponse> SearchHotelAsync(string hotelRegNo)
+        {
+            SearchHotelResponse result = new SearchHotelResponse();
+
+            List<HotelTitle> hotelTitle = new ();
+            List<HotelGuestInfo> hotelGuestInfo = new();
+            List<LastVisitor> lastVisitor = new();
+
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+
+                    var hTitle = await db.Hotels.Where(c => c.HotelRegNo == hotelRegNo).ToListAsync();
+                    if(hTitle != null)
+                    {
+                        {
+                            foreach (var h in hTitle)
+                            {
+                                hotelTitle.Add(new HotelTitle
+                                {
+                                    hotelName = h.HotelName,
+                                    address = h.Address,
+                                    mobile = h.Mobile,
+                                    city = await db.Cities.Where(c => c.CityId == h.CityId).Select(c => c.CityName).FirstOrDefaultAsync(),
+                                    policeSation = await db.PoliceStations.Where(c => c.StationCode == h.StationCode).Select(c => c.StationName).FirstOrDefaultAsync()
+
+                                });
+                                result.hotelTitle = hotelTitle;
+                            }
+                        }
+
+
+
+                        List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                         new SqlParameter { ParameterName = "@HotelRegNo", Value = hotelRegNo },
+                    };
+                        var data = await db.SP_SearchHotel_Results.FromSqlRaw<SP_SearchHotel_Result>("EXEC SP_SearchHotel @HotelRegNo", parms.ToArray()).ToListAsync();
+                        {
+                            foreach (var i in data)
+                            {
+
+                                hotelGuestInfo.Add(new HotelGuestInfo
+                                {
+                                    guestName = i.GuestName,
+                                    reservation = i.Reservation,
+                                    nightStayed = i.NightStyed,
+                                    lastVisit = Convert.ToDateTime(i.LastVisit).ToString("dd-MMM-yyyy"),
+                                    mobile = i.Mobile,
+                                    city = i.City,
+                                    address = i.Address,
+                                    country = i.Country,
+                                });
+                                result.hotelGuests = hotelGuestInfo;
+
+
+                            }
+
+                        }
+
+                        var data1 = await db.SP_LastVisitorByHotel_Results.FromSqlRaw<SP_LastVisitorByHotel_Result>("EXEC SP_LastVisitorByHotel @HotelRegNo", parms.ToArray()).ToListAsync();
+                        {
+                            foreach (var i in data1)
+                            {
+                                var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
+                                (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Child" :
+                                (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Childs" :
+                                (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Child" :
+                                (i.Total_Adult > 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adults " :
+                                (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Childs" :
+                                "No Guest Found!";
+
+                                lastVisitor.Add(new LastVisitor
+                                {
+                                    guestName = i.GuestName,
+                                    age = i.Age,
+                                    city = i.City,
+                                    purpose = i.Visit_Purpose,
+                                    commingFrom = i.Visit_Purpose,
+                                    reservaion = res,
+                                    checkInDate = Convert.ToDateTime(i.CheckInDate).ToString("dd-MM-yyyy"),
+
+                                });
+                                result.lastVisitors = lastVisitor;
+
+
+                            }
+                            result.code = 200;
+                            result.status = "success";
+                            result.message = "Success Response";
+                            return result;
+                        }
+                    }
+                    
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "Hotel Registration Number Not Matched.";
+                        return result;
+                    }
+
+
+
+
+                }
+
+                catch (Exception ex)
+                {
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
+                    result.status = "error";
+                    result.message = ex.Message;
+                    Log.Error(ex.Message);
+                    return result;
+                }
+            }
+
+        }
+
+
+
+
+
+
+
+
+
         public async Task<CommonAPIResponse> CheckOutGuestAsync(string roomBookingID)
         {
             CommonAPIResponse result = new CommonAPIResponse();
@@ -2481,6 +2621,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
-
+        
     }
 }

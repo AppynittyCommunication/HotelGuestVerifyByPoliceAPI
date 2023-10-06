@@ -56,8 +56,7 @@ public partial class Hotel
     [Column("CityID")]
     public int? CityId { get; set; }
 
-    [StringLength(30)]
-    public string? StationCode { get; set; }
+    public int? StationCode { get; set; }
 
     public double? Lat { get; set; }
 

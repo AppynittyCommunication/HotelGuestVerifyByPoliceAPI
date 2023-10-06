@@ -13,8 +13,7 @@ public partial class PoliceStation
     [Column("ID")]
     public int Id { get; set; }
 
-    [StringLength(30)]
-    public string? StationCode { get; set; }
+    public int? StationCode { get; set; }
 
     [StringLength(50)]
     public string? StationName { get; set; }
