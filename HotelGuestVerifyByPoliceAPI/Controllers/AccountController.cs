@@ -26,16 +26,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<CommonAPIResponse>> HotelRegistration([FromBody] HotelRegBody obj)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState); // Returns a 400 Bad Request with validation errors
-            }
-            else
-            {
-                CommonAPIResponse objresponse = await objRep.SaveHotelReg(obj);
-                return objresponse;
-            }
-          
+
+            CommonAPIResponse objresponse = await objRep.SaveHotelReg(obj);
+            return objresponse;
         }
 
 
