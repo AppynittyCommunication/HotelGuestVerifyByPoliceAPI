@@ -2519,6 +2519,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                     commingFrom = i.Visit_Purpose,
                                     reservaion = res,
                                     checkInDate = Convert.ToDateTime(i.CheckInDate).ToString("dd-MM-yyyy"),
+                                    photo = i.GuestPhoto
+                                    
 
                                 });
                                 result.lastVisitors = lastVisitor;

@@ -53,5 +53,7 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
         public string? reservaion { get; set; }
         public string? checkInDate { get; set; }
 
+        public byte[]? photo { get; set; }
+
     }
 }
