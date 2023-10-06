@@ -49,8 +49,7 @@ public partial class HotelGuest
     [Column(TypeName = "datetime")]
     public DateTime? CheckOutDate { get; set; }
 
-    [StringLength(100)]
-    public string? VisitPurpose { get; set; }
+    public int? VisitPurpose { get; set; }
 
     [StringLength(30)]
     public string? RoomType { get; set; }
@@ -60,11 +59,9 @@ public partial class HotelGuest
     [StringLength(30)]
     public string? Country { get; set; }
 
-    [StringLength(30)]
-    public string? State { get; set; }
+    public int? State { get; set; }
 
-    [StringLength(30)]
-    public string? City { get; set; }
+    public int? City { get; set; }
 
     [StringLength(100)]
     public string? Address { get; set; }
@@ -72,9 +69,7 @@ public partial class HotelGuest
     [StringLength(100)]
     public string? ComingFrom { get; set; }
 
-    [StringLength(30)]
-    [Unicode(false)]
-    public string? GuestIdType { get; set; }
+    public int? GuestIdType { get; set; }
 
     [Column("GuestIDProof")]
     public byte[]? GuestIdproof { get; set; }

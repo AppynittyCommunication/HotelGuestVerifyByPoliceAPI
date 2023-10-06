@@ -534,7 +534,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
-                    var st = await db.PoliceStations.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.CityId == cityID && c.IsActive == true).Select(x => new { x.Id, x.StationName }).ToListAsync();
+                    var st = await db.PoliceStations.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.CityId == cityID && c.IsActive == true).Select(x => new { x.StationCode, x.StationName }).ToListAsync();
                     if (st.Count != 0)
                     {
                         pslist.code = 200;
@@ -572,7 +572,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
-        public async Task<HotelList> GetHotelListAsync(string psId)
+        public async Task<HotelList> GetHotelListAsync(int psId)
         {
             HotelList hlist = new HotelList();
             try
@@ -2170,6 +2170,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             };
 
                     var checkloc = await db.HotelLocForDepartDash_Results.FromSqlRaw<HotelLocForDepartDash_Result>("EXEC HotelLocForDepartDash @DepartUsername", parms.ToArray()).ToListAsync();
+                   
                     foreach (var i in checkloc)
                     {
                         hotelLocOnDashboard.Add(new HotelLocOnDashboard

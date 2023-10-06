@@ -41,11 +41,9 @@ public partial class AddHotelGuest
     [StringLength(30)]
     public string? Country { get; set; }
 
-    [StringLength(30)]
-    public string? State { get; set; }
+    public int? State { get; set; }
 
-    [StringLength(30)]
-    public string? City { get; set; }
+    public int? City { get; set; }
 
     [StringLength(100)]
     public string? Address { get; set; }
@@ -56,13 +54,9 @@ public partial class AddHotelGuest
     [StringLength(20)]
     public string? GuestType { get; set; }
 
-    [StringLength(30)]
-    [Unicode(false)]
-    public string? RelationWithGuest { get; set; }
+    public int? RelationWithGuest { get; set; }
 
-    [StringLength(30)]
-    [Unicode(false)]
-    public string? GuestIdType { get; set; }
+    public int? GuestIdType { get; set; }
 
     [Column("GuestIDProof")]
     public byte[]? GuestIdproof { get; set; }

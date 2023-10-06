@@ -55,6 +55,7 @@ public partial class ApplicationDbContext : DbContext
     public DbSet<SP_SearchHotel_Result> SP_SearchHotel_Results { get; set; }
     public DbSet<SP_LastVisitorByHotel_Result> SP_LastVisitorByHotel_Results { get; set; }
 
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=124.153.94.110;Initial Catalog=HotelGuestVerifyByPolice;Persist Security Info=False;User ID=appynitty;Password=BigV$Telecom;MultipleActiveResultSets=False;Connection Timeout=30;Encrypt=false;TrustServerCertificate=true;");
@@ -150,8 +151,6 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__VisitPur__3214EC27E131EA7E");
         });
 
-        OnModelCreatingPartial(modelBuilder);
-
         modelBuilder.Entity<Hotel_CheckInList_Result>().HasNoKey();
         modelBuilder.Entity<HotelLocForDepartDash_Result>().HasNoKey();
         modelBuilder.Entity<HotelListDetailsForDepart_Result>().HasNoKey();
@@ -161,6 +160,8 @@ public partial class ApplicationDbContext : DbContext
         modelBuilder.Entity<Hotel_MonthlyCheckInOutCount_Result>().HasNoKey();
         modelBuilder.Entity<SP_SearchHotel_Result>().HasNoKey();
         modelBuilder.Entity<SP_LastVisitorByHotel_Result>().HasNoKey();
+
+        OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

@@ -23,7 +23,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         Task<CityList> GetCityListAsync(int stateID, int distID);
         Task<PoliceStationList> GetPoliceStationListAsync(int stateID, int distID, int cityID);
 
-        Task<HotelList> GetHotelListAsync(string psId);
+        Task<HotelList> GetHotelListAsync(int psId);
         Task<DepartmentLoginRes> CheckDeptLogin(DepartmentLoginBody obj);
 
         // Account Controller
