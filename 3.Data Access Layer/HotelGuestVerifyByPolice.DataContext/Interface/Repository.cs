@@ -1967,6 +1967,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 state = i.State,
                                 checkInDate = i.CheckInDate.ToString("dd MMM ddd yyyy HH:mm tt"),
                                 reservation = res,
+                                roomBookingID = i.RoomBookingID,
                                 //  totalAdult = i.Total_Adult,
                                 // totalChild = i.Total_Child,
                             });
@@ -2560,6 +2561,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 lastVisitor.commingFrom = i.Visit_Purpose;
                                 lastVisitor.reservaion = res;
                                 lastVisitor.checkInDate = Convert.ToDateTime(i.CheckInDate).ToString("dd-MM-yyyy");
+                                lastVisitor.hotelName = i.Hotel_Name;
                                 lastVisitor.photo = i.GuestPhoto;
                               
                             }

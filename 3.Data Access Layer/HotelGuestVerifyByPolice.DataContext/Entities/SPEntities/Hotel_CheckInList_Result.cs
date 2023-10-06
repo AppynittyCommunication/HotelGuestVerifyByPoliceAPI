@@ -9,7 +9,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Entities.SPEntities
     public class Hotel_CheckInList_Result
     {
         public string? GuestName { get; set; }
-
         public byte[]? GuestPhoto { get; set; }
         public string? Mobile { get; set; }
         public string? State { get; set; }
@@ -17,5 +16,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Entities.SPEntities
         public DateTime CheckInDate { get; set; }
         public int Total_Adult { get; set; }
         public int Total_Child { get; set;}
+
+        public string ? RoomBookingID { get; set; }
     }
 }

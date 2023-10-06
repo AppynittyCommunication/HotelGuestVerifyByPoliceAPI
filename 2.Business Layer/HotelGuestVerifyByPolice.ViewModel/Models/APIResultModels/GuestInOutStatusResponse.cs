@@ -27,6 +27,7 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
 
     public class GuestDetailsList
     {
+        public string? roomBookingID { get; set; }
         public string? guestName { get; set; }
         public string? guestPhoto { get; set; }
         // public int roomNumber { get; set; }
