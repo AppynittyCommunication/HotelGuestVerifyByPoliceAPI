@@ -2420,46 +2420,58 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     };
 
                     var data = await db.ShowHotelGuestDetails_Results.FromSqlRaw<ShowHotelGuestDetails_Result>("EXEC ShowHotelGuestDetails @RoomBookingID", parms.ToArray()).ToListAsync();
+                    if (data != null)
                     {
-                        foreach (var i in data)
                         {
-                            if (i.RelationWithGuest == "SELF")
+                            foreach (var i in data)
                             {
-                                hotelGuestDetails.Add(new GuestDetails
+                                if (i.RelationWithGuest == "SELF")
                                 {
-                                    roomBookingId = i.RoomBookingId,
-                                    guestName = i.GuestName,
-                                    email = i.Email,
-                                    mobile = i.Mobile,
-                                    gender = i.Gender,
-                                    age = i.Age,
-                                    country = i.Country,
-                                    city = i.City,
-                                    address = i.Address,
-                                    guestPhoto = i.GuestPhoto,
-                                });
-                                result.hotelGuestDetails = hotelGuestDetails;
-                            }
-                            else
-                            {
-                                addguestDetails.Add(new AddOnGuestDetails
+                                    hotelGuestDetails.Add(new GuestDetails
+                                    {
+                                        roomBookingId = i.RoomBookingId,
+                                        guestName = i.GuestName,
+                                        email = i.Email,
+                                        mobile = i.Mobile,
+                                        gender = i.Gender,
+                                        age = i.Age,
+                                        country = i.Country,
+                                        city = i.City,
+                                        address = i.Address,
+                                        guestPhoto = i.GuestPhoto,
+                                    });
+                                    result.hotelGuestDetails = hotelGuestDetails;
+                                }
+                                else
                                 {
-                                    relationWithGuest = i.RelationWithGuest,
-                                    guestName = i.GuestName,
-                                });
-                                result.addOnGuestDetails1 = addguestDetails;
+                                    addguestDetails.Add(new AddOnGuestDetails
+                                    {
+                                        relationWithGuest = i.RelationWithGuest,
+                                        guestName = i.GuestName,
+                                    });
+                                    result.addOnGuestDetails1 = addguestDetails;
+                                }
                             }
                         }
+                        result.code = 200;
+                        result.status = "success";
+                        result.message = "Success Response";
+                        result.hotelGuestDetails = hotelGuestDetails;
+                        result.addOnGuestDetails1 = addguestDetails;
+                        return result;
+
+                    
                     }
-                    result.code = 200;
-                    result.status = "success";
-                    result.message = "Success Response";
-                    result.hotelGuestDetails = hotelGuestDetails;
-                    result.addOnGuestDetails1 = addguestDetails;
-                    return result;
-
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "success";
+                        result.message = "No Data Found";
+                        result.hotelGuestDetails = null;
+                        result.addOnGuestDetails1 = null;
+                        return result;
+                    }
                 }
-
                 catch (Exception ex)
                 {
                     var w32ex = ex as Win32Exception;
