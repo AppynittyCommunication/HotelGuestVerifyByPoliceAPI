@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\**" />
+    <Compile Remove="Entities\**" />
+    <Content Remove="Data\**" />
+    <Content Remove="Entities\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <EmbeddedResource Remove="Entities\**" />
+    <None Remove="Data\**" />
+    <None Remove="Entities\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
       <PrivateAssets>all</PrivateAssets>
@@ -25,11 +36,6 @@
   <ItemGroup>
     <ProjectReference Include="..\2.Business Layer\HotelGuestVerifyByPolice.ViewModel\HotelGuestVerifyByPolice.ViewModel.csproj" />
     <ProjectReference Include="..\3.Data Access Layer\HotelGuestVerifyByPolice.DataContext\HotelGuestVerifyByPolice.DataContext.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\" />
-    <Folder Include="Entities\" />
   </ItemGroup>
 
 </Project>
