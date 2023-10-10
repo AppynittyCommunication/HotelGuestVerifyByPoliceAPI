@@ -1805,9 +1805,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         hgdetails.RoomBookingId = roomb;
 
                         db.HotelGuests.Add(hgdetails);
-                        await db.SaveChangesAsync();
+                        var status = await db.SaveChangesAsync();
 
-                        if (add != null)
+                        if (status > 0 && add != null)
                         {
                             var checkBookingID = await db.HotelGuests.Where(c => c.RoomBookingId == roomb).FirstOrDefaultAsync();
                             if (checkBookingID != null)
