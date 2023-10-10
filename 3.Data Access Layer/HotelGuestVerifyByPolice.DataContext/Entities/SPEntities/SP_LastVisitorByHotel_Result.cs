@@ -15,6 +15,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Entities.SPEntities
         public int Total_Adult { get; set; }
         public int Total_Child { get; set; }
         public DateTime CheckInDate { get; set; }
+
+        public string? Hotel_Name { get; set; }
         public byte[]? GuestPhoto { get; set; }
     }
 }
