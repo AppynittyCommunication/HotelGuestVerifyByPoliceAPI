@@ -21,6 +21,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
             objRep = repository;
         }
 
+
+        //Hotel
         [Route("HotelRegistration")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
@@ -31,86 +33,12 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
             return objresponse;
         }
 
-
-        [Route("PoliceRegistration")]
-        [HttpPost]
-        [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CommonAPIResponse>> PoliceRegistration([FromBody] PoliceRegBody obj)
-        {
-            CommonAPIResponse objresponse = await objRep.SavePoliceReg(obj);
-
-            return objresponse;
-        }
         [Route("HotelLogin")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<HotelLoginRes>> HotelLogin([FromBody] HotelLoginBody obj)
         {
             HotelLoginRes objresponse = await objRep.CheckHotelLogin(obj);
-
-            return objresponse;
-        }
-
-        [Route("DeptLogin")]
-        [HttpPost]
-        [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<DepartmentLoginRes>> DeptLogin([FromBody] DepartmentLoginBody obj)
-        {
-            DepartmentLoginRes objresponse = await objRep.CheckDeptLogin(obj);
-
-            return objresponse;
-        }
-
-
-
-        [Route("ResetHotelPasswordUsingOTP")]
-        [HttpPost]
-        [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CommonAPIResponse>> SetHotelLoginPassUsingOTP([FromBody] SetHotelPassBody obj)
-        {
-            CommonAPIResponse objresponse = await objRep.ChangeHotelPassUsingOTP(obj);
-
-            return objresponse;
-        }
-
-        [Route("ResetDeptPasswordUsingOTP")]
-        [HttpPost]
-        [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CommonAPIResponse>> SetDeptLoginPassUsingOTP([FromBody] SetDeptPassBody obj)
-        {
-            CommonAPIResponse objresponse = await objRep.ChangeDeptPassUsingOTP(obj);
-
-            return objresponse;
-        }
-
-
-
-        [Route("ResetHotelPassword")]
-        [HttpPost]
-        [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CommonAPIResponse>> ResetHotelPassword([FromBody] ResetHotelPassBody obj)
-        {
-            CommonAPIResponse objresponse = await objRep.ResetHotelPassAsync(obj);
-
-            return objresponse;
-        }
-
-        [Route("ForgetHotelPasswordStep2")]
-        [HttpPost]
-        [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CommonAPIResponse>>? ForgetHotelPassStep2([FromBody] PasswordRecoveryBody obj)
-        {
-            CommonAPIResponse objresponse = await objRep.ForgetHotelPassStep2Async(obj);
-
-            return objresponse;
-        }
-
-        [Route("ForgetDeptPassStep2")]
-        [HttpPost]
-        [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CommonAPIResponse>>? ForgetDeptPassStep2([FromBody] DeptPasswordRecoveryBody obj)
-        {
-            CommonAPIResponse objresponse = await objRep.ForgetDeptPassStep2Async(obj);
 
             return objresponse;
         }
@@ -126,17 +54,25 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
             return objresponse;
         }
 
-
-        [Route("UsernameExist")]
+        [Route("ResetHotelPasswordUsingOTP")]
         [HttpPost]
         [EnableCors("MyCorsPolicy")]
-        public async Task<ActionResult<CommonAPIResponse>>? CheckUserExist([FromHeader] string userId)
+        public async Task<ActionResult<CommonAPIResponse>> SetHotelLoginPassUsingOTP([FromBody] SetHotelPassBody obj)
         {
-            CommonAPIResponse objresponse = await objRep.CheckUsernameExistAsync(userId);
+            CommonAPIResponse objresponse = await objRep.ChangeHotelPassUsingOTP(obj);
 
             return objresponse;
         }
 
+        [Route("ResetHotelPassword")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<CommonAPIResponse>> ResetHotelPassword([FromBody] ResetHotelPassBody obj)
+        {
+            CommonAPIResponse objresponse = await objRep.ResetHotelPassAsync(obj);
+
+            return objresponse;
+        }
 
 
         [Route("ForgetHotelPasswordStep1")]
@@ -144,11 +80,54 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<CheckHotelUsernameRes>> ForgetHotePassStep1([FromHeader] string username, [FromHeader] string mobileno)
         {
-            CheckHotelUsernameRes objresponse = await objRep.ForgetHotePassStep1Async(username,mobileno);
+            CheckHotelUsernameRes objresponse = await objRep.ForgetHotePassStep1Async(username, mobileno);
 
             return objresponse;
         }
 
+        [Route("ForgetHotelPasswordStep2")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<CommonAPIResponse>>? ForgetHotelPassStep2([FromBody] PasswordRecoveryBody obj)
+        {
+            CommonAPIResponse objresponse = await objRep.ForgetHotelPassStep2Async(obj);
+
+            return objresponse;
+        }
+
+
+        //Department
+        [Route("PoliceRegistration")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<CommonAPIResponse>> PoliceRegistration([FromBody] PoliceRegBody obj)
+        {
+            CommonAPIResponse objresponse = await objRep.SavePoliceReg(obj);
+
+            return objresponse;
+        }
+     
+
+        [Route("DeptLogin")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<DepartmentLoginRes>> DeptLogin([FromBody] DepartmentLoginBody obj)
+        {
+            DepartmentLoginRes objresponse = await objRep.CheckDeptLogin(obj);
+
+            return objresponse;
+        }
+
+
+        [Route("ResetDeptPasswordUsingOTP")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<CommonAPIResponse>> SetDeptLoginPassUsingOTP([FromBody] SetDeptPassBody obj)
+        {
+            CommonAPIResponse objresponse = await objRep.ChangeDeptPassUsingOTP(obj);
+
+            return objresponse;
+        }
 
         [Route("ForgetDeptPassStep1")]
         [HttpPost]
@@ -160,7 +139,29 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
             return objresponse;
         }
 
+        [Route("ForgetDeptPassStep2")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<CommonAPIResponse>>? ForgetDeptPassStep2([FromBody] DeptPasswordRecoveryBody obj)
+        {
+            CommonAPIResponse objresponse = await objRep.ForgetDeptPassStep2Async(obj);
 
+            return objresponse;
+        }
+
+
+        //Others Comman API 
+
+
+        [Route("UsernameExist")]
+        [HttpPost]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<CommonAPIResponse>>? CheckUserExist([FromHeader] string userId)
+        {
+            CommonAPIResponse objresponse = await objRep.CheckUsernameExistAsync(userId);
+
+            return objresponse;
+        }
 
         [Route("VerifyMobileNo")]
         [HttpPost]
