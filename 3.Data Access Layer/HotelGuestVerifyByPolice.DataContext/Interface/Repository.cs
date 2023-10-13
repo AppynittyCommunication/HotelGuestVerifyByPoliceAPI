@@ -1763,7 +1763,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         {
                             result.code = 200;
                             result.status = "error";
-                            result.message = "Room Already Book For " + obj.GuestName + " . First Check-Out then try again.";
+                            result.message = "Room Already Book For " + obj.GuestName + " With Same Mobile Number. First Check-Out then try again.";
                             return result;
                         }
                         else
