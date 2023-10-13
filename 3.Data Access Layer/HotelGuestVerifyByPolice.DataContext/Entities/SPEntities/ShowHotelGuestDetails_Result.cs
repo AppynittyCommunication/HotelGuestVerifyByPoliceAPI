@@ -17,7 +17,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Entities.SPEntities
         public string? Country { get; set; }
         public string? City { get; set; }
         public int NightStyed { get; set; }
-        public DateTime? LastVisit { get; set; }
+        public DateTime? LastVisit { get; set; }    
         public string? Address { get; set; }
         public byte[]? GuestPhoto { get; set; }
         public string? RelationWithGuest { get; set; }
