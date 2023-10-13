@@ -1758,131 +1758,143 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                     if (guestreg != null)
                     {
-                        hgdetails.Date = DateTime.Now;
-                        hgdetails.HotelRegNo = obj.HotelRegNo;
-                        hgdetails.GuestName = obj.GuestName;
-                        hgdetails.NumberOfGuest = obj.NumberOfGuest;
-                        hgdetails.GuestType = obj.GuestType;
-                        hgdetails.Age = obj.Age;
-                        hgdetails.Gender = obj.Gender;
-                        hgdetails.Mobile = obj.Mobile;
-                        hgdetails.Email = obj.Email;
-                        hgdetails.CheckInDate = DateTime.Now;
-                        //hgdetails.CheckOutDate = Convert.ToDateTime(obj.CheckOutDate);
-                        hgdetails.VisitPurpose = obj.VisitPurpose;
-                        hgdetails.RoomType = obj.RoomType;
-                        hgdetails.RoomNo = obj.RoomNo;
-                        hgdetails.Country = obj.Country;
-                        hgdetails.State = obj.State;
-                        hgdetails.City = obj.City;
-                        // hgdetails.Address = obj.Address;
-                        hgdetails.ComingFrom = obj.ComingFrom;
-                        hgdetails.GuestIdType = obj.GuestIdType;
-                        hgdetails.PaymentMode = obj.PaymentMode;
-
-                        List<AddOnGuest>? add = obj.AddOnGuest;
-
-                        if ((string.IsNullOrEmpty(obj.GuestPhoto)) == false)
+                        var guestNameCheckIn = await db.HotelGuests.Where(c => c.GuestName == obj.GuestName && c.Mobile == obj.Mobile && c.CheckOutDate == null).FirstOrDefaultAsync();
+                        if (guestNameCheckIn != null)
                         {
-                            // house.BinaryQrCodeImage = Convert.FromBase64String(obj.QRCodeImage.Substring(obj.QRCodeImage.LastIndexOf(',') + 1));
-                            Regex regex = new Regex(@"^[\w/\:.-]+;base64,");
-                            obj.GuestPhoto = regex.Replace(obj.GuestPhoto, string.Empty);
-                            obj.GuestPhoto = obj.GuestPhoto.Replace("data:image/jpeg;base64,", string.Empty);
-                            hgdetails.GuestPhoto = Convert.FromBase64String(obj.GuestPhoto);
+                            result.code = 200;
+                            result.status = "error";
+                            result.message = "Room Already Book For " + obj.GuestName + " . First Check-Out then try again.";
+                            return result;
                         }
-                        if ((string.IsNullOrEmpty(obj.GuestIDProof)) == false)
+                        else
                         {
-                            // house.BinaryQrCodeImage = Convert.FromBase64String(obj.QRCodeImage.Substring(obj.QRCodeImage.LastIndexOf(',') + 1));
-                            Regex regex = new Regex(@"^[\w/\:.-]+;base64,");
-                            obj.GuestIDProof = regex.Replace(obj.GuestIDProof, string.Empty);
-                            obj.GuestIDProof = obj.GuestIDProof.Replace("data:image/jpeg;base64,", string.Empty);
-                            hgdetails.GuestIdproof = Convert.FromBase64String(obj.GuestIDProof);
-                        }
+                            hgdetails.Date = DateTime.Now;
+                            hgdetails.HotelRegNo = obj.HotelRegNo;
+                            hgdetails.GuestName = obj.GuestName;
+                            hgdetails.NumberOfGuest = obj.NumberOfGuest;
+                            hgdetails.GuestType = obj.GuestType;
+                            hgdetails.Age = obj.Age;
+                            hgdetails.Gender = obj.Gender;
+                            hgdetails.Mobile = obj.Mobile;
+                            hgdetails.Email = obj.Email;
+                            hgdetails.CheckInDate = DateTime.Now;
+                            //hgdetails.CheckOutDate = Convert.ToDateTime(obj.CheckOutDate);
+                            hgdetails.VisitPurpose = obj.VisitPurpose;
+                            hgdetails.RoomType = obj.RoomType;
+                            hgdetails.RoomNo = obj.RoomNo;
+                            hgdetails.Country = obj.Country;
+                            hgdetails.State = obj.State;
+                            hgdetails.City = obj.City;
+                            // hgdetails.Address = obj.Address;
+                            hgdetails.ComingFrom = obj.ComingFrom;
+                            hgdetails.GuestIdType = obj.GuestIdType;
+                            hgdetails.PaymentMode = obj.PaymentMode;
 
-                        Random random = new();
-                        string roomb = random.Next(0000000001, 999999999).ToString();
+                            List<AddOnGuest>? add = obj.AddOnGuest;
 
-                        hgdetails.RoomBookingId = roomb;
-
-                        db.HotelGuests.Add(hgdetails);
-                        var status = await db.SaveChangesAsync();
-
-                        if (status > 0 && add != null)
-                        {
-                            var checkBookingID = await db.HotelGuests.Where(c => c.RoomBookingId == roomb).FirstOrDefaultAsync();
-                            if (checkBookingID != null)
+                            if ((string.IsNullOrEmpty(obj.GuestPhoto)) == false)
                             {
-                                var regno = checkBookingID.RoomBookingId.ToString();
-                                DateTime date = Convert.ToDateTime(checkBookingID.Date);
+                                // house.BinaryQrCodeImage = Convert.FromBase64String(obj.QRCodeImage.Substring(obj.QRCodeImage.LastIndexOf(',') + 1));
+                                Regex regex = new Regex(@"^[\w/\:.-]+;base64,");
+                                obj.GuestPhoto = regex.Replace(obj.GuestPhoto, string.Empty);
+                                obj.GuestPhoto = obj.GuestPhoto.Replace("data:image/jpeg;base64,", string.Empty);
+                                hgdetails.GuestPhoto = Convert.FromBase64String(obj.GuestPhoto);
+                            }
+                            if ((string.IsNullOrEmpty(obj.GuestIDProof)) == false)
+                            {
+                                // house.BinaryQrCodeImage = Convert.FromBase64String(obj.QRCodeImage.Substring(obj.QRCodeImage.LastIndexOf(',') + 1));
+                                Regex regex = new Regex(@"^[\w/\:.-]+;base64,");
+                                obj.GuestIDProof = regex.Replace(obj.GuestIDProof, string.Empty);
+                                obj.GuestIDProof = obj.GuestIDProof.Replace("data:image/jpeg;base64,", string.Empty);
+                                hgdetails.GuestIdproof = Convert.FromBase64String(obj.GuestIDProof);
+                            }
 
-                                foreach (var c in add)
+                            Random random = new();
+                            string roomb = random.Next(0000000001, 999999999).ToString();
+
+                            hgdetails.RoomBookingId = roomb;
+
+                            db.HotelGuests.Add(hgdetails);
+                            var status = await db.SaveChangesAsync();
+
+                            if (status > 0 && add != null)
+                            {
+                                var checkBookingID = await db.HotelGuests.Where(c => c.RoomBookingId == roomb).FirstOrDefaultAsync();
+                                if (checkBookingID != null)
                                 {
-                                    AddHotelGuest addOnGuest = new();
+                                    var regno = checkBookingID.RoomBookingId.ToString();
+                                    DateTime date = Convert.ToDateTime(checkBookingID.Date);
 
-                                    addOnGuest.RoomBookingId = regno;
-                                    addOnGuest.Date = date;
-                                    addOnGuest.HotelRegNo = obj.HotelRegNo;
-                                    addOnGuest.GuestName = c.GuestName;
-                                    addOnGuest.Age = c.Age;
-                                    addOnGuest.Gender = c.Gender;
-                                    addOnGuest.Mobile = c.Mobile;
-                                    addOnGuest.Email = c.Email;
-                                    addOnGuest.Country = c.Country;
-                                    addOnGuest.State = c.State;
-                                    addOnGuest.City = c.City;
-                                    // addOnGuest.Address = c.Address;
-                                    addOnGuest.ComingFrom = c.ComingFrom;
-                                    addOnGuest.GuestType = c.GuestType;
-                                    addOnGuest.RelationWithGuest = c.RelationWithGuest;
-                                    addOnGuest.GuestIdType = c.GuestIdType;
-
-                                    if ((string.IsNullOrEmpty(c.GuestPhoto)) == false)
+                                    foreach (var c in add)
                                     {
-                                        // house.BinaryQrCodeImage = Convert.FromBase64String(obj.QRCodeImage.Substring(obj.QRCodeImage.LastIndexOf(',') + 1));
-                                        Regex regex = new Regex(@"^[\w/\:.-]+;base64,");
-                                        c.GuestPhoto = regex.Replace(c.GuestPhoto, string.Empty);
-                                        c.GuestPhoto = c.GuestPhoto.Replace("data:image/jpeg;base64,", string.Empty);
-                                        addOnGuest.GuestPhoto = Convert.FromBase64String(c.GuestPhoto);
+                                        AddHotelGuest addOnGuest = new();
+
+                                        addOnGuest.RoomBookingId = regno;
+                                        addOnGuest.Date = date;
+                                        addOnGuest.HotelRegNo = obj.HotelRegNo;
+                                        addOnGuest.GuestName = c.GuestName;
+                                        addOnGuest.Age = c.Age;
+                                        addOnGuest.Gender = c.Gender;
+                                        addOnGuest.Mobile = c.Mobile;
+                                        addOnGuest.Email = c.Email;
+                                        addOnGuest.Country = c.Country;
+                                        addOnGuest.State = c.State;
+                                        addOnGuest.City = c.City;
+                                        // addOnGuest.Address = c.Address;
+                                        addOnGuest.ComingFrom = c.ComingFrom;
+                                        addOnGuest.GuestType = c.GuestType;
+                                        addOnGuest.RelationWithGuest = c.RelationWithGuest;
+                                        addOnGuest.GuestIdType = c.GuestIdType;
+
+                                        if ((string.IsNullOrEmpty(c.GuestPhoto)) == false)
+                                        {
+                                            // house.BinaryQrCodeImage = Convert.FromBase64String(obj.QRCodeImage.Substring(obj.QRCodeImage.LastIndexOf(',') + 1));
+                                            Regex regex = new Regex(@"^[\w/\:.-]+;base64,");
+                                            c.GuestPhoto = regex.Replace(c.GuestPhoto, string.Empty);
+                                            c.GuestPhoto = c.GuestPhoto.Replace("data:image/jpeg;base64,", string.Empty);
+                                            addOnGuest.GuestPhoto = Convert.FromBase64String(c.GuestPhoto);
+                                        }
+                                        if ((string.IsNullOrEmpty(c.GuestIDProof)) == false)
+                                        {
+                                            // house.BinaryQrCodeImage = Convert.FromBase64String(obj.QRCodeImage.Substring(obj.QRCodeImage.LastIndexOf(',') + 1));
+                                            Regex regex = new Regex(@"^[\w/\:.-]+;base64,");
+                                            c.GuestIDProof = regex.Replace(c.GuestIDProof, string.Empty);
+                                            c.GuestIDProof = c.GuestIDProof.Replace("data:image/jpeg;base64,", string.Empty);
+                                            addOnGuest.GuestIdproof = Convert.FromBase64String(c.GuestIDProof);
+                                        }
+
+
+
+                                        db.AddHotelGuests.Add(addOnGuest);
+                                        await db.SaveChangesAsync();
+
+
                                     }
-                                    if ((string.IsNullOrEmpty(c.GuestIDProof)) == false)
-                                    {
-                                        // house.BinaryQrCodeImage = Convert.FromBase64String(obj.QRCodeImage.Substring(obj.QRCodeImage.LastIndexOf(',') + 1));
-                                        Regex regex = new Regex(@"^[\w/\:.-]+;base64,");
-                                        c.GuestIDProof = regex.Replace(c.GuestIDProof, string.Empty);
-                                        c.GuestIDProof = c.GuestIDProof.Replace("data:image/jpeg;base64,", string.Empty);
-                                        addOnGuest.GuestIdproof = Convert.FromBase64String(c.GuestIDProof);
-                                    }
 
-
-
-                                    db.AddHotelGuests.Add(addOnGuest);
-                                    await db.SaveChangesAsync();
-
+                                    result.code = 200;
+                                    result.status = "success";
+                                    result.message = "Registration Details Saved Successfully!";
+                                    return result;
 
                                 }
-
-                                result.code = 200;
-                                result.status = "success";
-                                result.message = "Registration Details Saved Successfully!";
-                                return result;
+                                else
+                                {
+                                    result.code = 200;
+                                    result.status = "error";
+                                    result.message = "Booking ID Not Generated!";
+                                    return result;
+                                }
 
                             }
                             else
                             {
                                 result.code = 200;
-                                result.status = "error";
-                                result.message = "Booking ID Not Generated!";
+                                result.status = "success";
+                                result.message = "Registration Details Saved Successfully!";
                                 return result;
                             }
-
                         }
-                        else
-                        {
-                            result.code = 200;
-                            result.status = "success";
-                            result.message = "Registration Details Saved Successfully!";
-                            return result;
-                        }
+                        
 
 
                     }
