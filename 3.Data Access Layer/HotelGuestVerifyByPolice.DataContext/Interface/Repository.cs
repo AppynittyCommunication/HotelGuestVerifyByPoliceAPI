@@ -1949,11 +1949,10 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     var checkhregno = await db.Hotels.Where(x => x.HotelRegNo == hotelRegNo).FirstOrDefaultAsync();
                     if (checkhregno != null)
                     {
-                        DateTime date = DateTime.Now;
+                        DateTime date = DateTime.Now.Date;
                         var totalGuest = await db.HotelGuests.Where(guest => guest.CheckOutDate == null && guest.HotelRegNo == hotelRegNo).Select(guest => guest.Id).ToListAsync();
-                        var todayCIN = await db.HotelGuests.Where(guest => guest.CheckOutDate == null && DateTime.Compare(guest.CheckInDate.Value.Date, date) <= 0 && guest.HotelRegNo == hotelRegNo).Select(guest => guest.Id).ToListAsync();
-                        var todayCOUT = await db.HotelGuests.Where(guest => DateTime.Compare(guest.CheckOutDate.Value.Date, date) == 0 && guest.HotelRegNo == hotelRegNo).Select(guest => guest.Id).ToListAsync();
-                        //var todayCOUT = await db.HotelGuests.Where(gt => gt.CheckOutDate >= date) && guest.HotelRegNo == hotelRegNo).Select(guest => guest.Id).ToListAsync();
+                        var todayCIN = await db.HotelGuests.Where(guest => guest.CheckOutDate == null && guest.CheckInDate.Value.Date == date && guest.HotelRegNo == hotelRegNo).Select(guest => guest.Id).ToListAsync();
+                        var todayCOUT = await db.HotelGuests.Where(guest => guest.CheckOutDate.Value.Date == date && guest.HotelRegNo == hotelRegNo).Select(guest => guest.Id).ToListAsync();
 
                         List<SqlParameter> parms = new List<SqlParameter>
                             {
