@@ -27,6 +27,8 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
         public int ? age { get; set; }
         public string? country { get; set; }
         public string? city { get; set; }
+        public int NightStyed { get; set; }
+        public string? LastVisit { get; set; }
         public string? address { get; set; }
         public byte[]? guestPhoto { get; set; }
 

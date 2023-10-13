@@ -2460,6 +2460,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                             age = i.Age,
                                             country = i.Country,
                                             city = i.City,
+                                            NightStyed = i.NightStyed,
+                                            LastVisit  = Convert.ToDateTime(i.LastVisit).ToString("dd-MMM-yyyy"),
                                             address = i.Address,
                                             guestPhoto = i.GuestPhoto,
                                         });
@@ -2557,7 +2559,10 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         {
                             foreach (var i in data)
                             {
-
+                                if(i.NightStyed==0)
+                                {
+                                    i.NightStyed = 1;
+                                }
                                 hotelGuestInfo.Add(new HotelGuestInfo
                                 {
                                     guestName = i.GuestName,
