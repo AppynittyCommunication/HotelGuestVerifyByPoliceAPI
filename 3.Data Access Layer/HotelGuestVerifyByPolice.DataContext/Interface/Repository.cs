@@ -2534,28 +2534,42 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 try
                 {
 
-                    var hTitle = await db.Hotels.Where(c => c.HotelRegNo == hotelRegNo).ToListAsync();
+                    var hTitle = await db.Hotels.Where(c => c.HotelRegNo == hotelRegNo).FirstOrDefaultAsync();
                     if(hTitle != null)
                     {
                         
-                            foreach (var h in hTitle)
-                            {
+                            //foreach (var h in hTitle)
+                            //{
 
-                                hotelTitle.hotelName = h.HotelName;
-                                hotelTitle.address = h.Address;
-                                hotelTitle.mobile = h.Mobile;
-                                hotelTitle.city = await db.Cities.Where(c => c.CityId == h.CityId).Select(c => c.CityName).FirstOrDefaultAsync();
-                                hotelTitle.policeSation = await db.PoliceStations.Where(c => c.StationCode == h.StationCode).Select(c => c.StationName).FirstOrDefaultAsync();
+                            //    hotelTitle.hotelName = h.HotelName;
+                            //    hotelTitle.address = h.Address;
+                            //    hotelTitle.mobile = h.Mobile;
+                            //    hotelTitle.city = await db.Cities.Where(c => c.CityId == h.CityId).Select(c => c.CityName).FirstOrDefaultAsync();
+                            //    hotelTitle.policeSation = await db.PoliceStations.Where(c => c.StationCode == h.StationCode).Select(c => c.StationName).FirstOrDefaultAsync();
                                
-                            }
+                            //}
+                        hotelTitle.hotelName = hTitle.HotelName;
+                        hotelTitle.address = hTitle.Address;
+                        hotelTitle.mobile = hTitle.Mobile;
+                        hotelTitle.city = await db.Cities.Where(c => c.CityId == hTitle.CityId).Select(c => c.CityName).FirstOrDefaultAsync();
+                        hotelTitle.policeSation = await db.PoliceStations.Where(c => c.StationCode == hTitle.StationCode).Select(c => c.StationName).FirstOrDefaultAsync();
+
+                        if(hTitle != null)
+                        {
                             result.hotelTitle = hotelTitle;
+                        }
+                        else
+                        {
+                            result.hotelTitle = null;
+                        }
+                       
 
                         List<SqlParameter> parms = new List<SqlParameter>
                         {
                             new SqlParameter { ParameterName = "@HotelRegNo", Value = hotelRegNo },
                          };
                         var data = await db.SP_SearchHotel_Results.FromSqlRaw<SP_SearchHotel_Result>("EXEC SP_SearchHotel @HotelRegNo", parms.ToArray()).ToListAsync();
-                        if(data != null)
+                        if(data.Count > 0)
                         {
                             foreach (var i in data)
                             {
@@ -2580,10 +2594,13 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             }
 
                         }
-
+                        else
+                        {
+                            result.hotelGuests = null;
+                        }
                         var data1 = await db.SP_LastVisitorByHotel_Results.FromSqlRaw<SP_LastVisitorByHotel_Result>("EXEC SP_LastVisitorByHotel @HotelRegNo", parms.ToArray()).ToListAsync();
 
-                        if(data1 != null) 
+                        if(data1.Count > 0) 
                         {
                             foreach (var i in data1)
                             {
@@ -2608,6 +2625,10 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                               
                             }
                             result.lastVisitors = lastVisitor;
+                        }
+                        else
+                        {
+                            result.lastVisitors = null;
                         }
                             result.code = 200;
                             result.status = "success";
