@@ -2418,7 +2418,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         public async Task<ShowHotelGuestDetailsRes> ShowHotelGuestDetailsAsync(string roomBookingID)
         {
             ShowHotelGuestDetailsRes result = new ShowHotelGuestDetailsRes();
-
+            ShowHotelGuestDetailsResData dataresult = new();
             List<GuestDetails> hotelGuestDetails = new List<GuestDetails>();
             List<AddOnGuestDetails> addguestDetails = new List<AddOnGuestDetails>();
 
@@ -2464,8 +2464,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                             LastVisit  = Convert.ToDateTime(i.LastVisit).ToString("dd-MMM-yyyy"),
                                             address = i.Address,
                                             guestPhoto = i.GuestPhoto,
+                                            guestIdPhoto = i.GuestIDProof,
                                         });
-                                        result.hotelGuestDetails = hotelGuestDetails;
+                                        dataresult.hotelGuestDetails = hotelGuestDetails;
                                     }
                                     else
                                     {
@@ -2473,16 +2474,19 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                         {
                                             relationWithGuest = i.RelationWithGuest,
                                             guestName = i.GuestName,
+                                            guestPhoto = i.GuestPhoto,
+                                            guestIdPhoto = i.GuestIDProof,
                                         });
-                                        result.addOnGuestDetails1 = addguestDetails;
+                                        dataresult.addOnGuestDetails1 = addguestDetails;
                                     }
                                 }
                             }
                             result.code = 200;
                             result.status = "success";
                             result.message = "Success Response";
-                            result.hotelGuestDetails = hotelGuestDetails;
-                            result.addOnGuestDetails1 = addguestDetails;
+                            result.data = dataresult;
+                            //result.hotelGuestDetails = hotelGuestDetails;
+                            //result.addOnGuestDetails1 = addguestDetails;
                             return result;
 
 
@@ -2492,8 +2496,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             result.code = 200;
                             result.status = "success";
                             result.message = "No Data Found";
-                            result.hotelGuestDetails = null;
-                            result.addOnGuestDetails1 = null;
+                            result.data = null;
+                            //result.hotelGuestDetails = null;
+                            //result.addOnGuestDetails1 = null;
                             return result;
                         }
                     }
