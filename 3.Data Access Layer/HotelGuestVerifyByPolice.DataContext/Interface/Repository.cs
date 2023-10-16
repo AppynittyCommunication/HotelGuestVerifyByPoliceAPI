@@ -2573,16 +2573,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         {
                             foreach (var i in data)
                             {
-                                if(i.NightStyed==0)
-                                {
-                                    i.NightStyed = 1;
-                                }
-                                hotelGuestInfo.Add(new HotelGuestInfo
+                               hotelGuestInfo.Add(new HotelGuestInfo
                                 {
                                     guestName = i.GuestName,
                                     reservation = i.Reservation,
-                                    nightStayed = i.NightStyed,
-                                    lastVisit = Convert.ToDateTime(i.LastVisit).ToString("dd-MMM-yyyy"),
+                                    nightStayed = i.NightStyed == 0 ? 1 : i.NightStyed,
+                                    lastVisit = i.LastVisit==null? "Record Not Found" : Convert.ToDateTime(i.LastVisit).ToString("dd-MMM-yyyy"),
                                     mobile = i.Mobile,
                                     city = i.City,
                                     address = i.Address,
