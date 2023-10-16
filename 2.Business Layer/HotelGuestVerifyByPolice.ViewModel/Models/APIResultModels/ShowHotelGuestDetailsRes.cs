@@ -12,11 +12,16 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
         public string? status { get; set; }
         public string? message { get; set; }
 
+        public ShowHotelGuestDetailsResData? data { get; set; }
+     
+    }
+
+    public class ShowHotelGuestDetailsResData
+    {
         public List<GuestDetails>? hotelGuestDetails { get; set; }
 
         public List<AddOnGuestDetails>? addOnGuestDetails1 { get; set; }
     }
-
     public class GuestDetails
     {
         public string? roomBookingId { get; set; }
@@ -31,14 +36,15 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
         public string? LastVisit { get; set; }
         public string? address { get; set; }
         public byte[]? guestPhoto { get; set; }
-
-       
+        public byte[]? guestIdPhoto { get; set; }
     }
 
     public class AddOnGuestDetails
     {
         public string? relationWithGuest { get; set; }
         public string? guestName { get; set; }
+        public byte[]? guestPhoto { get; set; }
+        public byte[]? guestIdPhoto { get; set; }
     }
 
 }
