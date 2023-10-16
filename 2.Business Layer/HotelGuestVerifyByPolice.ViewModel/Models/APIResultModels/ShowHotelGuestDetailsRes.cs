@@ -37,8 +37,6 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
         public string? address { get; set; }
         public byte[]? guestPhoto { get; set; }
         public byte[]? guestIdPhoto { get; set; }
-
-       
     }
 
     public class AddOnGuestDetails
