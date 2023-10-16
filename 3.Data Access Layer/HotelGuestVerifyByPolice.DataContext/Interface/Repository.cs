@@ -2460,8 +2460,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                             age = i.Age,
                                             country = i.Country,
                                             city = i.City,
-                                            NightStyed = i.NightStyed,
-                                            LastVisit  = Convert.ToDateTime(i.LastVisit).ToString("dd-MMM-yyyy"),
+                                            NightStyed = i.NightStyed == 0 ? 1 : i.NightStyed,
+                                            LastVisit  = i.LastVisit == null ? "Record Not Found" : Convert.ToDateTime(i.LastVisit).ToString("dd-MMM-yyyy"),
                                             address = i.Address,
                                             guestPhoto = i.GuestPhoto,
                                         });
