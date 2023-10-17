@@ -1,4 +1,6 @@
-﻿namespace HotelGuestVerifyByPoliceAPI.Middlewares
+﻿using Newtonsoft.Json;
+
+namespace HotelGuestVerifyByPoliceAPI.Middlewares
 {
     public class ApiKeyMiddleware
     {
@@ -15,21 +17,38 @@
             if (!context.Request.Headers.TryGetValue(APIKEY, out
                     var extractedApiKey))
             {
-                context.Response.StatusCode = 401;
-                context.Response.ContentType = "text/plain";
-                await context.Response.WriteAsync("Api Key was not provided ");
+                //context.Response.StatusCode = 401;
+                //context.Response.ContentType = "text/plain";
+                //await context.Response.WriteAsync("{\"error\": \"Api Key was not provided\"}");
+
+                SendError(context, 401, "Api Key was not provided");
                 return;
             }
             var appSettings = context.RequestServices.GetRequiredService<IConfiguration>();
             var apiKey = appSettings.GetValue<string>(APIKEY);
             if (!apiKey.Equals(extractedApiKey))
             {
-                context.Response.StatusCode = 401;
-                context.Response.ContentType = "text/plain";
-                await context.Response.WriteAsync("Unauthorized client");
+                //context.Response.StatusCode = 401;
+                //context.Response.ContentType = "text/plain";
+                //await context.Response.WriteAsync("{\"error\": \"Unauthorized client\");
+                SendError(context, 401, "Unauthorized client");
                 return;
             }
             await _next(context);
+        }
+
+        private void SendError(HttpContext context, int statusCode, string errorMessage)
+        {
+            context.Response.StatusCode = statusCode;
+            context.Response.ContentType = "application/json";
+            var errorResponse = new
+            {
+                code = statusCode,
+                status = "error",
+                message = errorMessage
+            };
+            string jsonError = JsonConvert.SerializeObject(errorResponse);
+            context.Response.WriteAsync(jsonError);
         }
     }
 }
