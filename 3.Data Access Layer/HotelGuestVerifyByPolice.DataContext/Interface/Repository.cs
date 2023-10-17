@@ -88,7 +88,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                         db.Hotels.Add(hoteldetails);
                         var status = await db.SaveChangesAsync();
-                        if(status > 0)
+                        if (status > 0)
                         {
                             var checkauth = await db.AuthenticationPins.Where(c => c.AuthPin == obj.authPin).FirstOrDefaultAsync();
 
@@ -114,7 +114,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             result.message = "Registration Failed";
                             return result;
                         }
-                        
+
                     }
                     else
                     {
@@ -190,7 +190,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                         db.Polices.Add(policedetails);
                         var status = await db.SaveChangesAsync();
-                        if(status > 0)
+                        if (status > 0)
                         {
                             var checkauth = await db.AuthenticationPins.Where(c => c.AuthPin == obj.authPin).FirstOrDefaultAsync();
 
@@ -216,7 +216,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             result.message = "Registration Failed";
                             return result;
                         }
-                      
+
                     }
                     else
                     {
@@ -1894,7 +1894,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 return result;
                             }
                         }
-                        
+
 
 
                     }
@@ -2184,7 +2184,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             };
 
                     var checkloc = await db.HotelLocForDepartDash_Results.FromSqlRaw<HotelLocForDepartDash_Result>("EXEC HotelLocForDepartDash @DepartUsername", parms.ToArray()).ToListAsync();
-                    if(checkuser != null)
+                    if (checkuser != null)
                     {
                         foreach (var i in checkloc)
                         {
@@ -2206,11 +2206,11 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.message = "Data Not Found!";
                         return result;
                     }
-                    
-                    
+
+
 
                     var details = await db.HotelListDetailsForDepart_Results.FromSqlRaw<HotelListDetailsForDepart_Result>("EXEC HotelListDetailsForDepart @DepartUsername", parms.ToArray()).ToListAsync();
-                    if(details != null)
+                    if (details != null)
                     {
                         foreach (var i in details)
                         {
@@ -2236,7 +2236,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                     //Hotel Guest Dashboard Details
                     var hotelGuestDetails = await db.HotelGuestDetails_DeptDash_Results.FromSqlRaw<HotelGuestDetails_DeptDash_Result>("EXEC HotelGuestDetails_DeptDash @DepartUsername", parms.ToArray()).ToListAsync();
-                    if(hotelGuestDetails != null)
+                    if (hotelGuestDetails != null)
                     {
                         foreach (var i in hotelGuestDetails)
                         {
@@ -2275,7 +2275,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
 
                     var hotelGuestDetails1 = await db.HotelGuestDetails_DeptDash_Results1.FromSqlRaw<HotelGuestDetails_DeptDash_Result1>("EXEC HotelGuestDetails_DeptDash1 @DepartUsername", parms.ToArray()).ToListAsync();
-                    if(hotelGuestDetails1 != null)
+                    if (hotelGuestDetails1 != null)
                     {
                         foreach (var i in hotelGuestDetails1)
                         {
@@ -2413,8 +2413,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
-
-
         public async Task<ShowHotelGuestDetailsRes> ShowHotelGuestDetailsAsync(string roomBookingID)
         {
             ShowHotelGuestDetailsRes result = new ShowHotelGuestDetailsRes();
@@ -2426,9 +2424,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 try
                 {
-                    var ExistRoomId = db.HotelGuests.Where(c=> c.RoomBookingId == roomBookingID).FirstOrDefault();
+                    var ExistRoomId = db.HotelGuests.Where(c => c.RoomBookingId == roomBookingID).FirstOrDefault();
 
-                    if(ExistRoomId == null)
+                    if (ExistRoomId == null)
                     {
                         result.code = 200;
                         result.status = "error";
@@ -2461,7 +2459,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                             country = i.Country,
                                             city = i.City,
                                             NightStyed = i.NightStyed == 0 ? 1 : i.NightStyed,
-                                            LastVisit  = i.LastVisit == null ? "Record Not Found" : Convert.ToDateTime(i.LastVisit).ToString("dd-MMM-yyyy"),
+                                            LastVisit = i.LastVisit == null ? "Record Not Found" : Convert.ToDateTime(i.LastVisit).ToString("dd-MMM-yyyy"),
                                             address = i.Address,
                                             guestPhoto = i.GuestPhoto,
                                             guestIdPhoto = i.GuestIDProof,
@@ -2502,7 +2500,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             return result;
                         }
                     }
-                   
+
                 }
                 catch (Exception ex)
                 {
@@ -2530,7 +2528,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         {
             SearchHotelResponse result = new SearchHotelResponse();
 
-            HotelTitle hotelTitle = new ();
+            HotelTitle hotelTitle = new();
             List<HotelGuestInfo> hotelGuestInfo = new();
             LastVisitor lastVisitor = new();
 
@@ -2538,28 +2536,27 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             {
                 try
                 {
-
                     var hTitle = await db.Hotels.Where(c => c.HotelRegNo == hotelRegNo).FirstOrDefaultAsync();
-                    if(hTitle != null)
+                    if (hTitle != null)
                     {
-                        
-                            //foreach (var h in hTitle)
-                            //{
 
-                            //    hotelTitle.hotelName = h.HotelName;
-                            //    hotelTitle.address = h.Address;
-                            //    hotelTitle.mobile = h.Mobile;
-                            //    hotelTitle.city = await db.Cities.Where(c => c.CityId == h.CityId).Select(c => c.CityName).FirstOrDefaultAsync();
-                            //    hotelTitle.policeSation = await db.PoliceStations.Where(c => c.StationCode == h.StationCode).Select(c => c.StationName).FirstOrDefaultAsync();
-                               
-                            //}
+                        //foreach (var h in hTitle)
+                        //{
+
+                        //    hotelTitle.hotelName = h.HotelName;
+                        //    hotelTitle.address = h.Address;
+                        //    hotelTitle.mobile = h.Mobile;
+                        //    hotelTitle.city = await db.Cities.Where(c => c.CityId == h.CityId).Select(c => c.CityName).FirstOrDefaultAsync();
+                        //    hotelTitle.policeSation = await db.PoliceStations.Where(c => c.StationCode == h.StationCode).Select(c => c.StationName).FirstOrDefaultAsync();
+
+                        //}
                         hotelTitle.hotelName = hTitle.HotelName;
                         hotelTitle.address = hTitle.Address;
                         hotelTitle.mobile = hTitle.Mobile;
                         hotelTitle.city = await db.Cities.Where(c => c.CityId == hTitle.CityId).Select(c => c.CityName).FirstOrDefaultAsync();
                         hotelTitle.policeSation = await db.PoliceStations.Where(c => c.StationCode == hTitle.StationCode).Select(c => c.StationName).FirstOrDefaultAsync();
 
-                        if(hTitle != null)
+                        if (hTitle != null)
                         {
                             result.hotelTitle = hotelTitle;
                         }
@@ -2567,33 +2564,30 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         {
                             result.hotelTitle = null;
                         }
-                       
+
 
                         List<SqlParameter> parms = new List<SqlParameter>
                         {
                             new SqlParameter { ParameterName = "@HotelRegNo", Value = hotelRegNo },
                          };
                         var data = await db.SP_SearchHotel_Results.FromSqlRaw<SP_SearchHotel_Result>("EXEC SP_SearchHotel @HotelRegNo", parms.ToArray()).ToListAsync();
-                        if(data.Count > 0)
+                        if (data.Count > 0)
                         {
                             foreach (var i in data)
                             {
-                               hotelGuestInfo.Add(new HotelGuestInfo
+                                hotelGuestInfo.Add(new HotelGuestInfo
                                 {
                                     guestName = i.GuestName,
                                     reservation = i.Reservation,
                                     nightStayed = i.NightStyed == 0 ? 1 : i.NightStyed,
-                                    lastVisit = i.LastVisit==null? "Record Not Found" : Convert.ToDateTime(i.LastVisit).ToString("dd-MMM-yyyy"),
+                                    lastVisit = i.LastVisit == null ? "Record Not Found" : Convert.ToDateTime(i.LastVisit).ToString("dd-MMM-yyyy"),
                                     mobile = i.Mobile,
                                     city = i.City,
                                     address = i.Address,
                                     country = i.Country,
                                 });
                                 result.hotelGuests = hotelGuestInfo;
-
-
                             }
-
                         }
                         else
                         {
@@ -2601,7 +2595,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         }
                         var data1 = await db.SP_LastVisitorByHotel_Results.FromSqlRaw<SP_LastVisitorByHotel_Result>("EXEC SP_LastVisitorByHotel @HotelRegNo", parms.ToArray()).ToListAsync();
 
-                        if(data1.Count > 0) 
+                        if (data1.Count > 0)
                         {
                             foreach (var i in data1)
                             {
@@ -2623,7 +2617,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 lastVisitor.checkInDate = Convert.ToDateTime(i.CheckInDate).ToString("dd-MM-yyyy");
                                 lastVisitor.hotelName = i.Hotel_Name;
                                 lastVisitor.photo = i.GuestPhoto;
-                              
+
                             }
                             result.lastVisitors = lastVisitor;
                         }
@@ -2631,13 +2625,11 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         {
                             result.lastVisitors = null;
                         }
-                            result.code = 200;
-                            result.status = "success";
-                            result.message = "Success Response";
-                            return result;
-                        
+                        result.code = 200;
+                        result.status = "success";
+                        result.message = "Success Response";
+                        return result;
                     }
-                    
                     else
                     {
                         result.code = 200;
@@ -2645,9 +2637,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.message = "Hotel Registration Number Not Matched.";
                         return result;
                     }
-
-
-
 
                 }
 
@@ -2672,14 +2661,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
         }
 
-
-
-
-
-
-
-
-
         public async Task<CommonAPIResponse> CheckOutGuestAsync(string roomBookingID)
         {
             CommonAPIResponse result = new CommonAPIResponse();
@@ -2696,7 +2677,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                         result.code = 200;
                         result.status = "success";
-                        result.message = "Cheking Out Successful";
+                        result.message = "Checked Out Successfully";
                         return result;
                     }
                     else
@@ -2727,6 +2708,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             }
         }
 
-        
+
     }
 }
