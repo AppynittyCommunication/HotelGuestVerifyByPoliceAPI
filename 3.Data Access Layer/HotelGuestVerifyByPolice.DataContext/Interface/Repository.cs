@@ -2460,8 +2460,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                             age = i.Age,
                                             country = i.Country,
                                             city = i.City,
-                                            NightStyed = i.NightStyed,
-                                            LastVisit  = Convert.ToDateTime(i.LastVisit).ToString("dd-MMM-yyyy"),
+                                            NightStyed = i.NightStyed == 0 ? 1 : i.NightStyed,
+                                            LastVisit  = i.LastVisit == null ? "Record Not Found" : Convert.ToDateTime(i.LastVisit).ToString("dd-MMM-yyyy"),
                                             address = i.Address,
                                             guestPhoto = i.GuestPhoto,
                                             guestIdPhoto = i.GuestIDProof,
@@ -2578,16 +2578,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         {
                             foreach (var i in data)
                             {
-                                if(i.NightStyed==0)
-                                {
-                                    i.NightStyed = 1;
-                                }
-                                hotelGuestInfo.Add(new HotelGuestInfo
+                               hotelGuestInfo.Add(new HotelGuestInfo
                                 {
                                     guestName = i.GuestName,
                                     reservation = i.Reservation,
-                                    nightStayed = i.NightStyed,
-                                    lastVisit = Convert.ToDateTime(i.LastVisit).ToString("dd-MMM-yyyy"),
+                                    nightStayed = i.NightStyed == 0 ? 1 : i.NightStyed,
+                                    lastVisit = i.LastVisit==null? "Record Not Found" : Convert.ToDateTime(i.LastVisit).ToString("dd-MMM-yyyy"),
                                     mobile = i.Mobile,
                                     city = i.City,
                                     address = i.Address,
