@@ -13,11 +13,14 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
     {
         private readonly IRepository objRep;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<DepartmentController> _logger;
 
-        public DepartmentController(IRepository repository, IConfiguration configuration)
+        public DepartmentController(IRepository repository, IConfiguration configuration, ILogger<DepartmentController> logger)
         {
             _configuration = configuration;
             objRep = repository;
+            _logger = logger;
+            _logger.LogInformation("\n\nDepartmentController Logs : \n");
         }
 
 

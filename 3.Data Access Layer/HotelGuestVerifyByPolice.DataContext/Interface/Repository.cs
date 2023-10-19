@@ -326,6 +326,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
                 return statelist;
             }
+
             catch (Exception ex)
             {
                 var w32ex = ex as Win32Exception;
@@ -2042,6 +2043,94 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                 }
             }
         }
+
+        public async Task<GuestCheckedInList> CheckGuestInListAsync(string hotelRegNo)
+        {
+            GuestCheckedInList result = new();
+            List<CheckedInList> data = new();
+
+            // HotelGuest obj = new();
+
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                try
+                {
+                    //var dlist = await db.HotelGuests.Where(c => c.HotelRegNo == hotelRegNo).Select(x => new {x.GuestName,x.RoomNo,x.CheckInDate,x.Mobile,x.Address}).ToListAsync();
+
+                    List<SqlParameter> parms = new List<SqlParameter>
+                            {
+                            // Create parameter(s)
+                            new SqlParameter { ParameterName = "@HotelRegNo", Value = hotelRegNo },
+
+                            };
+                    var checkInListdata = await db.Hotel_CheckInList_Results.FromSqlRaw<Hotel_CheckInList_Result>("EXEC Hotel_CheckInList @HotelRegNo", parms.ToArray()).ToListAsync();
+                    if (checkInListdata != null)
+                    {
+                        foreach (var i in checkInListdata)
+                        {
+                            var res = (i.Total_Adult == 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adult " :
+                                 (i.Total_Adult == 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Child" :
+                                 (i.Total_Adult > 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Childs" :
+                                 (i.Total_Adult > 1 && i.Total_Child == 1) ? i.Total_Adult.ToString() + " Adults & " + i.Total_Child.ToString() + " Child" :
+                                 (i.Total_Adult > 1 && i.Total_Child == 0) ? i.Total_Adult.ToString() + " Adults " :
+                                 (i.Total_Adult == 1 && i.Total_Child > 1) ? i.Total_Adult.ToString() + " Adult & " + i.Total_Child.ToString() + " Childs" :
+                                 "No Guest Found!";
+                            data.Add(new CheckedInList
+                            {
+                                guestName = i.GuestName,                               
+                                mobile = i.Mobile,
+                                country = i.Country,
+                                state = i.State,
+                                checkInDate = i.CheckInDate.ToString("dd MMM ddd yyyy HH:mm tt"),
+                                reservation = res,
+                                roomBookingID = i.RoomBookingID,
+                                guestPhoto = i.GuestPhoto == null ? "" : Convert.ToBase64String(i.GuestPhoto),
+                                // totalAdult = i.Total_Adult,
+                                // totalChild = i.Total_Child,
+                            });
+                            
+                        }
+                        result.code = 200;
+                        result.status = "success";
+                        result.message = "Success Response";
+                        result.data = data;
+                        return result;
+
+
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "error";
+                        result.message = "No Data Found";
+                        result.data = null;
+                        return result;
+                    }
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        result.code = w32ex.ErrorCode;
+                        // do stuff
+                    }
+                    result.status = "error";
+                    result.message = ex.Message;
+                    Log.Error(ex.Message);
+                    return result;
+
+                }
+            }
+        }
+
 
 
 

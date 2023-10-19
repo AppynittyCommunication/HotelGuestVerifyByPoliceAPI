@@ -13,11 +13,14 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
     {
         private readonly IRepository objRep;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<HotelController> _logger;
 
-        public HotelController(IRepository repository, IConfiguration configuration)
+        public HotelController(IRepository repository, IConfiguration configuration, ILogger<HotelController> logger)
         {
             _configuration = configuration;
             objRep = repository;
+            _logger = logger;
+            _logger.LogInformation("\n\nHotelController Logs : \n");
         }
 
         [Route("HotelGuestRegistration")]
@@ -39,6 +42,24 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
             HotelCheckInListResult objresponse = await objRep.CheckGuestInOutStatusAsync(hotelRegNo);
 
             return objresponse;
+        }
+
+        [Route("GetGuestCheckInList")]
+        [HttpGet]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<GuestCheckedInList>> CheckGuestInList([FromHeader] string hotelRegNo)
+        {
+            GuestCheckedInList objresponse = new();
+            try
+            {
+                objresponse = await objRep.CheckGuestInListAsync(hotelRegNo);
+                return objresponse;
+            }
+            catch (Exception ex)
+            {
+                return objresponse;
+            }
+           
         }
 
 

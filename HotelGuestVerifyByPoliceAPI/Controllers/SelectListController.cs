@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System.Numerics;
 
 namespace HotelGuestVerifyByPoliceAPI.Controllers
@@ -14,18 +15,24 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
     {
         private readonly IRepository objRep;
         private readonly IConfiguration _configuration;
-
-        public SelectListController(IRepository repository, IConfiguration configuration)
+        private readonly ILogger<SelectListController> _logger;
+        
+        public SelectListController(IRepository repository, IConfiguration configuration, ILogger<SelectListController> logger)
         {
             _configuration = configuration;
             objRep = repository;
+            _logger = logger;
+            _logger.LogInformation("\n\nSelectListController Logs : \n");
         }
+        
+
 
         [Route("GetCountry")]
         [HttpGet]
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<CountryList>> GetCountry()
         {
+            
             CountryList countrylist = new CountryList();
             try
             {
@@ -44,7 +51,6 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<StatesList>> GetCountryWiseState([FromHeader] string countryCode)
         {
-           
             StatesList statelist = new ();
             
             try
@@ -57,6 +63,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
                 return statelist;
             }
         }
+
+
+
         [Route("GetStates")]
         [HttpGet]
         [EnableCors("MyCorsPolicy")]
