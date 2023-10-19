@@ -698,6 +698,14 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
                     //return result;
                 }
+                catch (TimeoutException)
+                {
+                    Log.Error("Database timeout exception occurred.");
+                    result.code = 408;
+                    result.status = "error";
+                    result.message = "Database timeout exception occurred.";
+                    return result;
+                }
                 catch (Exception ex)
                 {
                     var w32ex = ex as Win32Exception;
@@ -799,6 +807,14 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         return result;
                     }
                     //return result;
+                }
+                catch (TimeoutException)
+                {
+                    Log.Error("Database timeout exception occurred.");
+                    result.code = 408;
+                    result.status = "error";
+                    result.message = "Database timeout exception occurred.";
+                    return result;
                 }
                 catch (Exception ex)
                 {

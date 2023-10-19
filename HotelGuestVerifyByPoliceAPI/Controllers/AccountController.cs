@@ -41,9 +41,25 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<HotelLoginRes>> HotelLogin([FromBody] HotelLoginBody obj)
         {
-            HotelLoginRes objresponse = await objRep.CheckHotelLogin(obj);
+            HotelLoginRes objresponse = new HotelLoginRes();
+            try
+            {
+                 objresponse = await objRep.CheckHotelLogin(obj);
 
-            return objresponse;
+                return objresponse;
+            }
+            catch (TimeoutException)
+            {
+                _logger.LogError("Database timeout exception occurred.");
+                //context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                //await context.Response.WriteAsync("Database timeout error occurred.");
+                return objresponse;
+            }
+            catch(Exception ex) {
+                return objresponse;
+            }
+
+
         }
 
 
