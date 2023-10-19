@@ -9,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
+    .MinimumLevel.Debug()
+    .MinimumLevel.Error()
+    .MinimumLevel.Fatal()
     .WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 //User this line to override the built-in loggers

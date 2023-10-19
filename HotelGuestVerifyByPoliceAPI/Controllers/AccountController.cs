@@ -31,8 +31,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<CommonAPIResponse>> HotelRegistration([FromBody] HotelRegBody obj)
         {
-
             CommonAPIResponse objresponse = await objRep.SaveHotelReg(obj);
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured During Registration.");
             return objresponse;
         }
 
@@ -42,23 +43,11 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<HotelLoginRes>> HotelLogin([FromBody] HotelLoginBody obj)
         {
             HotelLoginRes objresponse = new HotelLoginRes();
-            try
-            {
-                 objresponse = await objRep.CheckHotelLogin(obj);
-
-                return objresponse;
-            }
-            catch (TimeoutException)
-            {
-                _logger.LogError("Database timeout exception occurred.");
-                //context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                //await context.Response.WriteAsync("Database timeout error occurred.");
-                return objresponse;
-            }
-            catch(Exception ex) {
-                return objresponse;
-            }
-
+            
+            objresponse = await objRep.CheckHotelLogin(obj);
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured While Login.");
+            return objresponse;
 
         }
 
@@ -69,7 +58,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<CommonAPIResponse>>? CheckHotelRegExist([FromHeader] string hotelRegNumber)
         {
             CommonAPIResponse objresponse = await objRep.CheckHotelRegExistAsync(hotelRegNumber);
-
+            objresponse = await objRep.CheckHotelRegExistAsync(hotelRegNumber);
             return objresponse;
         }
 
@@ -79,7 +68,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<CommonAPIResponse>> SetHotelLoginPassUsingOTP([FromBody] SetHotelPassBody obj)
         {
             CommonAPIResponse objresponse = await objRep.ChangeHotelPassUsingOTP(obj);
-
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured while sending OTP.");
             return objresponse;
         }
 
@@ -89,7 +79,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<CommonAPIResponse>> ResetHotelPassword([FromBody] ResetHotelPassBody obj)
         {
             CommonAPIResponse objresponse = await objRep.ResetHotelPassAsync(obj);
-
+            objresponse = await objRep.ResetHotelPassAsync(obj);
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured while Recovering Hotel Password.");
             return objresponse;
         }
 
@@ -100,7 +92,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<CheckHotelUsernameRes>> ForgetHotePassStep1([FromHeader] string username, [FromHeader] string mobileno)
         {
             CheckHotelUsernameRes objresponse = await objRep.ForgetHotePassStep1Async(username, mobileno);
-
+            objresponse = await objRep.ForgetHotePassStep1Async(username, mobileno);
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured while Recovering Hotel Password.");
             return objresponse;
         }
 
@@ -110,7 +104,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<CommonAPIResponse>>? ForgetHotelPassStep2([FromBody] PasswordRecoveryBody obj)
         {
             CommonAPIResponse objresponse = await objRep.ForgetHotelPassStep2Async(obj);
-
+            objresponse = await objRep.ForgetHotelPassStep2Async(obj);
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured while Recovering Hotel Password.");
             return objresponse;
         }
 
@@ -122,7 +118,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<CommonAPIResponse>> PoliceRegistration([FromBody] PoliceRegBody obj)
         {
             CommonAPIResponse objresponse = await objRep.SavePoliceReg(obj);
-
+            objresponse = await objRep.SavePoliceReg(obj);
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured During Registration.");
             return objresponse;
         }
      
@@ -133,7 +131,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<DepartmentLoginRes>> DeptLogin([FromBody] DepartmentLoginBody obj)
         {
             DepartmentLoginRes objresponse = await objRep.CheckDeptLogin(obj);
-
+            objresponse = await objRep.CheckDeptLogin(obj);
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception occured while login.");
             return objresponse;
         }
 
@@ -144,7 +144,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<CommonAPIResponse>> SetDeptLoginPassUsingOTP([FromBody] SetDeptPassBody obj)
         {
             CommonAPIResponse objresponse = await objRep.ChangeDeptPassUsingOTP(obj);
-
+            objresponse = await objRep.ChangeDeptPassUsingOTP(obj);
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured During Registration.");
             return objresponse;
         }
 
@@ -154,7 +156,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<CheckDeptUsernameRes>> ForgetDeptPassStep1([FromHeader] string username, [FromHeader] string mobileno)
         {
             CheckDeptUsernameRes objresponse = await objRep.ForgetDeptPassStep1Async(username, mobileno);
-
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception occured during password recovery.");
             return objresponse;
         }
 
@@ -164,7 +167,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<CommonAPIResponse>>? ForgetDeptPassStep2([FromBody] DeptPasswordRecoveryBody obj)
         {
             CommonAPIResponse objresponse = await objRep.ForgetDeptPassStep2Async(obj);
-
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception occured during password recovery.");
             return objresponse;
         }
 
@@ -178,7 +182,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<CommonAPIResponse>>? CheckUserExist([FromHeader] string userId)
         {
             CommonAPIResponse objresponse = await objRep.CheckUsernameExistAsync(userId);
-
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception occuered while checking username.");
             return objresponse;
         }
 
@@ -188,7 +193,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<VerifyMobileNo>> VerifyMobileNo([FromHeader] string mobileno)
         {
             VerifyMobileNo objresponse = await objRep.VerifyMobileNoAsync(mobileno);
-
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception occure while verifying mobile number.");
             return objresponse;
         }
 
@@ -199,7 +205,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<CommonAPIResponse>> CheckAuthPin([FromHeader] string authPin)
         {
             CommonAPIResponse objresponse = await objRep.CheckAuthPinAsync(authPin);
-
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured While Getting Authentication PIN.");
             return objresponse;
         }
 

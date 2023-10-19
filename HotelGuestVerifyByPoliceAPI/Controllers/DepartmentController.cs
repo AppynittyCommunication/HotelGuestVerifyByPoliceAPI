@@ -30,7 +30,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<DeptDashboardRes>> DepartmentDashboard([FromHeader] string userID)
         {
             DeptDashboardRes objresponse = await objRep.DepartmentDashboardAsync(userID);
-
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
             return objresponse;
         }
 
@@ -40,7 +41,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<ShowHotelGuestDetailsRes>> ShowHotelGuestDetails([FromHeader] string roomBookingID)
         {
             ShowHotelGuestDetailsRes objresponse = await objRep.ShowHotelGuestDetailsAsync(roomBookingID);
-
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
             return objresponse;
         }
 
@@ -50,7 +52,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<SearchHotelResponse>> SearchHotel([FromHeader] string hotelRegNo)
         {
             SearchHotelResponse objresponse = await objRep.SearchHotelAsync(hotelRegNo);
-
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
             return objresponse;
         }
 

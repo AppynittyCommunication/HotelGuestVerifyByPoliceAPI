@@ -39,4 +39,8 @@
     <ProjectReference Include="..\3.Data Access Layer\HotelGuestVerifyByPolice.DataContext\HotelGuestVerifyByPolice.DataContext.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
+
 </Project>

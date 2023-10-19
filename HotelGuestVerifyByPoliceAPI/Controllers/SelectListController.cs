@@ -1,4 +1,5 @@
-﻿using HotelGuestVerifyByPolice.DataContext.Interface;
+﻿using HotelGuestVerifyByPolice.DataContext.Entities.TableEntities;
+using HotelGuestVerifyByPolice.DataContext.Interface;
 using HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -16,7 +17,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         private readonly IRepository objRep;
         private readonly IConfiguration _configuration;
         private readonly ILogger<SelectListController> _logger;
-        
+
         public SelectListController(IRepository repository, IConfiguration configuration, ILogger<SelectListController> logger)
         {
             _configuration = configuration;
@@ -24,7 +25,7 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
             _logger = logger;
             _logger.LogInformation("\n\nSelectListController Logs : \n");
         }
-        
+
 
 
         [Route("GetCountry")]
@@ -32,17 +33,11 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<CountryList>> GetCountry()
         {
-            
             CountryList countrylist = new CountryList();
-            try
-            {
-                countrylist = await objRep.GetCountryListAsync();
-                return countrylist;
-            }
-            catch (Exception)
-            {
-                return countrylist;
-            }
+            countrylist = await objRep.GetCountryListAsync();
+            if (countrylist.status == "error" && countrylist.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
+            return countrylist;
         }
 
 
@@ -51,19 +46,12 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<StatesList>> GetCountryWiseState([FromHeader] string countryCode)
         {
-            StatesList statelist = new ();
-            
-            try
-            {
-                statelist = await objRep.GetCountryWiseStateListAsync(countryCode);
-                return statelist;
-            }
-            catch (Exception)
-            {
-                return statelist;
-            }
+            StatesList statelist = new();
+            statelist = await objRep.GetCountryWiseStateListAsync(countryCode);
+            if (statelist.status == "error" && statelist.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
+            return statelist;
         }
-
 
 
         [Route("GetStates")]
@@ -71,16 +59,11 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<StatesList>> GetState()
         {
-            StatesList statelist = new ();
-            try
-            {
-                statelist = await objRep.GetStateListAsync();
-                return statelist;
-            }
-            catch (Exception)
-            {
-                return statelist;
-            }
+            StatesList statelist = new();
+            statelist = await objRep.GetStateListAsync();
+            if (statelist.status == "error" && statelist.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
+            return statelist;
         }
 
         [Route("GetDistrict")]
@@ -89,15 +72,10 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<DistrictList>> GetDistrict([FromHeader] int stateID)
         {
             DistrictList distlist = new DistrictList();
-            try
-            {
-                distlist = await objRep.GetDistrictListAsync(stateID);
-                return distlist;
-            }
-            catch (Exception)
-            {
-                return distlist;
-            }
+            distlist = await objRep.GetDistrictListAsync(stateID);
+            if (distlist.status == "error" && distlist.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
+            return distlist;
         }
 
         [Route("GetCities")]
@@ -106,15 +84,11 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<CityList>> GetCities([FromHeader] int stateID, [FromHeader] int distID)
         {
             CityList citylist = new CityList();
-            try
-            {
-                citylist = await objRep.GetCityListAsync(stateID, distID);
-                return citylist;
-            }
-            catch (Exception)
-            {
-                return citylist;
-            }
+            citylist = await objRep.GetCityListAsync(stateID, distID);
+            if (citylist.status == "error" && citylist.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
+            return citylist;
+
         }
 
 
@@ -123,16 +97,11 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<PoliceStationList>> GetPoliceStation([FromHeader] int stateID, [FromHeader] int distID, [FromHeader] int cityID)
         {
-            PoliceStationList pslist = new ();
-            try
-            {
-                pslist = await objRep.GetPoliceStationListAsync(stateID, distID, cityID);
-                return pslist;
-            }
-            catch (Exception)
-            {
-                return pslist;
-            }
+            PoliceStationList pslist = new();
+            pslist = await objRep.GetPoliceStationListAsync(stateID, distID, cityID);
+            if (pslist.status == "error" && pslist.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
+            return pslist;
         }
 
 
@@ -143,15 +112,10 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<HotelList>> GetHotel([FromHeader] int psId)
         {
             HotelList hlist = new();
-            try
-            {
-                hlist = await objRep.GetHotelListAsync(psId);
-                return hlist;
-            }
-            catch (Exception)
-            {
-                return hlist;
-            }
+             hlist = await objRep.GetHotelListAsync(psId);
+            if (hlist.status == "error" && hlist.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
+            return hlist;
         }
 
 
@@ -160,16 +124,11 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         [EnableCors("MyCorsPolicy")]
         public async Task<ActionResult<DepartmentTypeList>> GetDepartmentType()
         {
-            DepartmentTypeList deptTypeList = new ();
-            try
-            {
-                deptTypeList = await objRep.GetDepartmentTypeListAsync();
-                return deptTypeList;
-            }
-            catch (Exception)
-            {
-                return deptTypeList;
-            }
+            DepartmentTypeList deptTypeList = new();
+            deptTypeList = await objRep.GetDepartmentTypeListAsync();
+            if (deptTypeList.status == "error" && deptTypeList.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
+            return deptTypeList;
         }
 
     }

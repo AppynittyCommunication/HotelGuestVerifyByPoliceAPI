@@ -40,7 +40,8 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<HotelCheckInListResult>> CheckGuestInOutStatus([FromHeader] string hotelRegNo)
         {
             HotelCheckInListResult objresponse = await objRep.CheckGuestInOutStatusAsync(hotelRegNo);
-
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
             return objresponse;
         }
 
@@ -50,16 +51,11 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<GuestCheckedInList>> CheckGuestInList([FromHeader] string hotelRegNo)
         {
             GuestCheckedInList objresponse = new();
-            try
-            {
-                objresponse = await objRep.CheckGuestInListAsync(hotelRegNo);
-                return objresponse;
-            }
-            catch (Exception ex)
-            {
-                return objresponse;
-            }
-           
+            objresponse = await objRep.CheckGuestInListAsync(hotelRegNo);
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
+            return objresponse;
+
         }
 
 
@@ -69,15 +65,11 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<RelationsList>> GetRelation()
         {
             RelationsList objresponse = new();
-            try
-            {
-                objresponse = await objRep.GetRelationAsync();
-                return objresponse;
-            }
-            catch (Exception)
-            {
-                return objresponse;
-            }
+            objresponse = await objRep.GetRelationAsync();
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
+            return objresponse;
+
         }
 
 
@@ -87,15 +79,11 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<VisitPurposeList>> GetVisitPurpose()
         {
             VisitPurposeList objresponse = new();
-            try
-            {
-                objresponse = await objRep.GetVisitPurposeAsync();
-                return objresponse;
-            }
-            catch (Exception)
-            {
-                return objresponse;
-            }
+
+            objresponse = await objRep.GetVisitPurposeAsync();
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
+            return objresponse;
         }
 
         [Route("SelectSelectIDType")]
@@ -104,15 +92,11 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<SelectIDTypeList>> GetSelectIDType()
         {
             SelectIDTypeList objresponse = new();
-            try
-            {
-                objresponse = await objRep.GetSelectIDTypeAsync();
-                return objresponse;
-            }
-            catch (Exception)
-            {
-                return objresponse;
-            }
+
+            objresponse = await objRep.GetSelectIDTypeAsync();
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
+            return objresponse;
         }
 
 
@@ -122,8 +106,9 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         public async Task<ActionResult<CommonAPIResponse>> CheckOutGuest([FromHeader] string roomBookingID)
         {
             CommonAPIResponse objresponse = await objRep.CheckOutGuestAsync(roomBookingID);
-           
-             return objresponse;
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured While Checking Out Guest.");
+            return objresponse;
         }
 
 

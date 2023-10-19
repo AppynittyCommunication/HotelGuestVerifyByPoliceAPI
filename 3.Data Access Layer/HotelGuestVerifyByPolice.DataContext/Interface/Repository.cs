@@ -13,6 +13,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
@@ -49,8 +50,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
                     var hotelrefdetails = await db.Hotels.Where(c => c.HotelRegNo == obj.hotelRegNo).FirstOrDefaultAsync();
 
                     if (hotelrefdetails == null)
@@ -122,28 +121,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.status = "error";
                         result.message = "Registration Failed";
                         return result;
-                    }
-                    //return result;
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
+                    }            
             }
 
         }
@@ -156,8 +134,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
+       
                     var policerefdetails = await db.Polices.Where(c => c.StationCode == obj.stationCode && obj.stationCode != null).FirstOrDefaultAsync();
 
                     if (policerefdetails == null)
@@ -225,26 +202,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.message = "Registration Failed";
                         return result;
                     }
-                    //return result;
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
             }
 
         }
@@ -253,10 +210,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         public async Task<CountryList> GetCountryListAsync()
         {
             CountryList countrylist = new CountryList();
-            try
-            {
-
-                using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
                     var st = await db.Countries.AsQueryable().Where(c => c.IsActive == true).Select(x => new { x.CountryCode, x.CountryName, }).ToListAsync();
 
@@ -277,31 +231,13 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
 
                 }
-                return countrylist;
-            }
-            catch (Exception ex)
-            {
-                var w32ex = ex as Win32Exception;
-                if (w32ex == null)
-                {
-                    w32ex = ex.InnerException as Win32Exception;
-                    countrylist.code = w32ex.ErrorCode;
-                }
-
-                Log.Error(ex.Message);
-                countrylist.status = "error";
-                countrylist.message = ex.Message;
-                return countrylist;
-
-            }
+                return countrylist;     
         }
 
         public async Task<StatesList> GetCountryWiseStateListAsync(string countryCode)
         {
             StatesList statelist = new();
-            try
-            {
-                using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
                     var st = await db.States.AsQueryable().Where(c => c.IsActive == true && c.CountryCode == countryCode).Select(x => new { x.StateId, x.StateName, }).ToListAsync();
 
@@ -324,32 +260,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
 
                 }
-                return statelist;
-            }
-
-            catch (Exception ex)
-            {
-                var w32ex = ex as Win32Exception;
-                if (w32ex == null)
-                {
-                    w32ex = ex.InnerException as Win32Exception;
-                    statelist.code = w32ex.ErrorCode;
-                }
-
-                Log.Error(ex.Message);
-                statelist.status = "error";
-                statelist.message = ex.Message;
-                return statelist;
-
-            }
-
+            return statelist;
         }
         public async Task<StatesList> GetStateListAsync()
         {
             StatesList statelist = new();
-            try
-            {
-                using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
                     var st = await db.States.AsQueryable().Where(c => c.IsActive == true).Select(x => new { stateId = x.StateId, stateName = x.StateName, }).ToListAsync();
                     if (st.Count != 0)
@@ -371,31 +287,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
 
                 }
-                //return statelist;
-            }
-            catch (Exception ex)
-            {
-                var w32ex = ex as Win32Exception;
-                if (w32ex == null)
-                {
-                    w32ex = ex.InnerException as Win32Exception;
-                    statelist.code = w32ex.ErrorCode;
-                }
-
-                Log.Error(ex.Message);
-                statelist.status = "error";
-                statelist.message = ex.Message;
-                return statelist;
-
-            }
         }
 
 
         public async Task<DepartmentTypeList> GetDepartmentTypeListAsync()
         {
             DepartmentTypeList depttypelist = new();
-            try
-            {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
                     var st = await db.DepartmentTypes.AsQueryable().Where(c => c.IsActive == true).Select(x => new { x.DeptTypeId, x.DeptTypeName }).ToListAsync();
@@ -418,29 +315,12 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                 }
                 return depttypelist;
-            }
-            catch (Exception ex)
-            {
-                var w32ex = ex as Win32Exception;
-                if (w32ex == null)
-                {
-                    w32ex = ex.InnerException as Win32Exception;
-                    depttypelist.code = w32ex.ErrorCode;
-                }
-
-                Log.Error(ex.Message);
-                depttypelist.status = "error";
-                depttypelist.message = ex.Message;
-                return depttypelist;
-            }
         }
 
 
         public async Task<DistrictList> GetDistrictListAsync(int stateID)
         {
             DistrictList distlist = new DistrictList();
-            try
-            {
                 using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
                     var st = await db.Districts.AsQueryable().Where(c => c.StateId == stateID && c.IsActive == true).Select(x => new { x.DistId, x.DistName, }).ToListAsync();
@@ -461,23 +341,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         return distlist;
                     }
 
-                }
-
-            }
-            catch (Exception ex)
-            {
-                var w32ex = ex as Win32Exception;
-                if (w32ex == null)
-                {
-                    w32ex = ex.InnerException as Win32Exception;
-                    distlist.code = w32ex.ErrorCode;
-                }
-
-                Log.Error(ex.Message);
-                distlist.status = "error";
-                distlist.message = ex.Message;
-                return distlist;
-            }
+                }  
         }
 
 
@@ -486,9 +350,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         public async Task<CityList> GetCityListAsync(int stateID, int distID)
         {
             CityList citylist = new CityList();
-            try
-            {
-                using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
                     var st = await db.Cities.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.IsActive == true).Select(x => new { x.CityId, x.CityName, }).ToListAsync();
                     if (st.Count != 0)
@@ -510,31 +372,13 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
 
                 }
-
-            }
-            catch (Exception ex)
-            {
-                var w32ex = ex as Win32Exception;
-                if (w32ex == null)
-                {
-                    w32ex = ex.InnerException as Win32Exception;
-                    citylist.code = w32ex.ErrorCode;
-                }
-
-                Log.Error(ex.Message);
-                citylist.status = "error";
-                citylist.message = ex.Message;
-                return citylist;
-            }
         }
 
 
         public async Task<PoliceStationList> GetPoliceStationListAsync(int stateID, int distID, int cityID)
         {
             PoliceStationList pslist = new PoliceStationList();
-            try
-            {
-                using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
                     var st = await db.PoliceStations.AsQueryable().Where(c => c.StateId == stateID && c.DistId == distID && c.CityId == cityID && c.IsActive == true).Select(x => new { x.StationCode, x.StationName }).ToListAsync();
                     if (st.Count != 0)
@@ -555,31 +399,13 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     }
 
                 }
-                //return pslist;
-            }
-            catch (Exception ex)
-            {
-                var w32ex = ex as Win32Exception;
-                if (w32ex == null)
-                {
-                    w32ex = ex.InnerException as Win32Exception;
-                    pslist.code = w32ex.ErrorCode;
-                }
-
-                Log.Error(ex.Message);
-                pslist.status = "error";
-                pslist.message = ex.Message;
-                return pslist;
-            }
         }
 
 
         public async Task<HotelList> GetHotelListAsync(int psId)
         {
             HotelList hlist = new HotelList();
-            try
-            {
-                using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
                 {
 
                     var st = await db.Hotels.AsQueryable().Where(c => c.StationCode == psId).Select(x => new { x.HotelRegNo, x.HotelName }).ToListAsync();
@@ -600,22 +426,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         return hlist;
                     }
                 }
-                //return hlist;
-            }
-            catch (Exception ex)
-            {
-                var w32ex = ex as Win32Exception;
-                if (w32ex == null)
-                {
-                    w32ex = ex.InnerException as Win32Exception;
-                    hlist.code = w32ex.ErrorCode;
-                }
-
-                Log.Error(ex.Message);
-                hlist.status = "error";
-                hlist.message = ex.Message;
-                return hlist;
-            }
         }
 
 
@@ -626,104 +436,72 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
                     var hotelrefdetails = await db.Hotels.Where(c => c.UserId == obj.hUsername).FirstOrDefaultAsync();
+                if (hotelrefdetails != null)
+                {
+                    var hotelDetailsRes = await db.Hotels.Where(x => x.UserId == obj.hUsername).Select(x => new { x.HotelRegNo, x.HotelName }).ToListAsync();
 
-                    if (hotelrefdetails != null)
+                    if (hotelrefdetails.Password == null || hotelrefdetails.Password == "")
                     {
-                        var hotelDetailsRes = await db.Hotels.Where(x => x.UserId == obj.hUsername).Select(x => new { x.HotelRegNo, x.HotelName }).ToListAsync();
-
-                        if (hotelrefdetails.Password == null || hotelrefdetails.Password == "")
+                        if (hotelrefdetails.Otp == obj.hPassword)
                         {
-                            if (hotelrefdetails.Otp == obj.hPassword)
+                            if (hotelrefdetails.Otpuse == null)
                             {
-                                if (hotelrefdetails.Otpuse == null)
-                                {
-                                    hotelrefdetails.Otpuse = 1;
-                                }
-                                else
-                                {
-                                    int a = (int)hotelrefdetails.Otpuse;
-                                    hotelrefdetails.Otpuse = a + 1;
-                                }
-                                hotelrefdetails.OtpuseDateTime = DateTime.Now;
-
-                                await db.SaveChangesAsync();
-
-                                result.code = 200;
-                                result.status = "success";
-                                result.message = "Hotel Login Successfully Done!";
-                                result.otp = true;
-                                result.data = hotelDetailsRes;
-                                return result;
+                                hotelrefdetails.Otpuse = 1;
                             }
                             else
                             {
-                                result.code = 200;
-                                result.status = "error";
-                                result.message = "Login Failed..You Entered Wrong OTP!";
-                                result.otp = false;
-                                result.data = "";
-                                return result;
+                                int a = (int)hotelrefdetails.Otpuse;
+                                hotelrefdetails.Otpuse = a + 1;
                             }
+                            hotelrefdetails.OtpuseDateTime = DateTime.Now;
+
+                            await db.SaveChangesAsync();
+
+                            result.code = 200;
+                            result.status = "success";
+                            result.message = "Hotel Login Successfully Done!";
+                            result.otp = true;
+                            result.data = hotelDetailsRes;
+                            return result;
                         }
                         else
                         {
-                            if (hotelrefdetails.Password == obj.hPassword)
-                            {
-                                result.code = 200;
-                                result.status = "success";
-                                result.message = "Hotel Login Successfully Done!";
-                                result.otp = false;
-                                result.data = hotelDetailsRes;
-                                return result;
-                            }
-                            else
-                            {
-                                result.code = 200;
-                                result.status = "error";
-                                result.message = "Login Failed.. You Entered Wrong Password!";
-                                return result;
-                            }
+                            result.code = 200;
+                            result.status = "error";
+                            result.message = "Login Failed..You Entered Wrong OTP!";
+                            result.otp = false;
+                            result.data = "";
+                            return result;
                         }
-
                     }
                     else
                     {
-                        result.code = 200;
-                        result.status = "error";
-                        result.message = "The Username " + obj.hUsername + " Is Not Available.. Please Enter Correct Username";
-                        return result;
+                        if (hotelrefdetails.Password == obj.hPassword)
+                        {
+                            result.code = 200;
+                            result.status = "success";
+                            result.message = "Hotel Login Successfully Done!";
+                            result.otp = false;
+                            result.data = hotelDetailsRes;
+                            return result;
+                        }
+                        else
+                        {
+                            result.code = 200;
+                            result.status = "error";
+                            result.message = "Login Failed.. You Entered Wrong Password!";
+                            return result;
+                        }
                     }
-                    //return result;
-                }
-                catch (TimeoutException)
-                {
-                    Log.Error("Database timeout exception occurred.");
-                    result.code = 408;
-                    result.status = "error";
-                    result.message = "Database timeout exception occurred.";
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
 
-                    Log.Error(ex.Message);
+                }
+                else
+                {
+                    result.code = 200;
+                    result.status = "error";
+                    result.message = "The Username " + obj.hUsername + " Is Not Available.. Please Enter Correct Username";
                     return result;
-
                 }
             }
         }
@@ -736,8 +514,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
                     var deptrefdetails = await db.Polices.Where(c => c.UserId == obj.dUsername).FirstOrDefaultAsync();
 
                     if (deptrefdetails != null)
@@ -806,34 +582,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.message = "The Username " + obj.dUsername + " Is Not Available.. Please Enter Correct Username";
                         return result;
                     }
-                    //return result;
-                }
-                catch (TimeoutException)
-                {
-                    Log.Error("Database timeout exception occurred.");
-                    result.code = 408;
-                    result.status = "error";
-                    result.message = "Database timeout exception occurred.";
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
+                
             }
         }
 
@@ -847,9 +596,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
-                    var hotelrefdetails = await db.Hotels.Where(c => c.UserId == obj.hUsername).FirstOrDefaultAsync();
+                var hotelrefdetails = await db.Hotels.Where(c => c.UserId == obj.hUsername).FirstOrDefaultAsync();
 
                     if (hotelrefdetails != null)
                     {
@@ -899,26 +646,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.message = "The Username " + obj.hUsername + " Is Not Available.. Please Enter Correct Username";
                         return result;
                     }
-                    //return result;
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
+                
             }
 
         }
@@ -930,9 +658,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
-                    var deptrefdetails = await db.Polices.Where(c => c.UserId == obj.dUsername).FirstOrDefaultAsync();
+                var deptrefdetails = await db.Polices.Where(c => c.UserId == obj.dUsername).FirstOrDefaultAsync();
 
                     if (deptrefdetails != null)
                     {
@@ -982,26 +708,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.message = "The Username " + obj.dUsername + " Is Not Available.. Please Enter Correct Username";
                         return result;
                     }
-                    //return result;
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
+                 
             }
 
         }
@@ -1015,9 +722,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
-                    var hotelrefdetails = await db.Hotels.Where(c => c.UserId == obj.hUsername && c.Password == obj.oldPass).FirstOrDefaultAsync();
+                 var hotelrefdetails = await db.Hotels.Where(c => c.UserId == obj.hUsername && c.Password == obj.oldPass).FirstOrDefaultAsync();
 
                     if (hotelrefdetails != null)
                     {
@@ -1038,27 +743,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.status = "error";
                         result.message = "The Username " + obj.hUsername + " Is Not Available.. Please Enter Correct Username";
                         return result;
-                    }
-                    //return result;
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
+                    } 
             }
         }
 
@@ -1070,9 +755,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
-                    if (obj.otpstatus == false)
+                if (obj.otpstatus == false)
                     {
                         result.code = 200;
                         result.status = "error";
@@ -1113,27 +796,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         //return result;
                     }
 
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-
-
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
             }
         }
 
@@ -1146,9 +808,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
-                    if (obj.otpstatus == false)
+                if (obj.otpstatus == false)
                     {
                         result.code = 200;
                         result.status = "error";
@@ -1189,27 +849,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         //return result;
                     }
 
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-
-
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
+                
             }
         }
 
@@ -1219,8 +859,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             CommonAPIResponse result = new CommonAPIResponse();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
                     var checkauthPin = await db.AuthenticationPins.Where(c => c.AuthPin == authPin).FirstOrDefaultAsync();
 
                     if (checkauthPin != null)
@@ -1248,16 +886,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         return result;
                     }
                     //return result;
-                }
-                catch (Exception ex)
-                {
-                    result.code = 200;
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
             }
         }
 
@@ -1286,17 +914,24 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.message = hotelRegNumber + " Is Available";
                         return result;
                     }
-                    //return result;
+
                 }
                 catch (Exception ex)
                 {
-                    result.code = 200;
-                    result.status = "error";
-                    result.message = ex.Message;
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        int code = w32ex.ErrorCode;
+                        // do stuff
+                    }
                     Log.Error(ex.Message);
                     return result;
-
                 }
+                
             }
         }
 
@@ -1329,17 +964,24 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.message = userid + " Is Available";
                         return result;
                     }
-                    //return result;
                 }
                 catch (Exception ex)
                 {
-                    result.code = 200;
-                    result.status = "error";
-                    result.message = ex.Message;
+                    var w32ex = ex as Win32Exception;
+                    if (w32ex == null)
+                    {
+                        w32ex = ex.InnerException as Win32Exception;
+                    }
+                    if (w32ex != null)
+                    {
+                        int code = w32ex.ErrorCode;
+                        // do stuff
+                    }
                     Log.Error(ex.Message);
                     return result;
-
                 }
+               
+                  
             }
         }
 
@@ -1349,8 +991,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             CheckHotelUsernameRes result = new CheckHotelUsernameRes();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
+               
                     var hotelrefdetails = await db.Hotels.Where(c => c.UserId == username).FirstOrDefaultAsync();
 
                     if (hotelrefdetails != null)
@@ -1399,11 +1040,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 //    mono = myStr[0];
                                 //    status1 = myStr[1];
                                 //}
-
-
-
-
-
                                 if (status == "DELIVRD")
                                 {
                                     result.code = 200;
@@ -1463,30 +1099,15 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         return result;
                     }
                     //return result;
-                }
-                catch (Exception ex)
-                {
-                    result.code = 200;
-                    result.status = "error";
-                    result.userid = username;
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
+               
             }
         }
-
-
-
         public async Task<CheckDeptUsernameRes> ForgetDeptPassStep1Async(string username, string mobileno)
         {
             CheckDeptUsernameRes result = new();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
-                    var deptrefdetails = await db.Polices.Where(c => c.UserId == username).FirstOrDefaultAsync();
+                var deptrefdetails = await db.Polices.Where(c => c.UserId == username).FirstOrDefaultAsync();
 
                     if (deptrefdetails != null)
                     {
@@ -1589,20 +1210,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.message = username + " Is Not Exist";
                         return result;
                     }
-                    //return result;
-                }
-                catch (Exception ex)
-                {
-                    result.code = 200;
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
             }
         }
-
 
 
         public void sendSMS(string sms, string MobilNumber)
@@ -1638,10 +1247,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         public async Task<VerifyMobileNo> VerifyMobileNoAsync(string mobileno)
         {
             VerifyMobileNo result = new();
-            try
-            {
-
-                Random random = new();
+              Random random = new();
                 //string otp = random.Next(000001, 999999).ToString();
                 int randomotp = random.Next(100000, 1000000);
                 string otp = randomotp.ToString("D6");
@@ -1705,25 +1311,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     result.message = "SMS Status is" + status;
                     return result;
                 }
-            }
-            catch (Exception ex)
-            {
-                var w32ex = ex as Win32Exception;
-                if (w32ex == null)
-                {
-                    w32ex = ex.InnerException as Win32Exception;
-                }
-                if (w32ex != null)
-                {
-                    result.code = w32ex.ErrorCode;
-                    // do stuff
-                }
-                result.otp = "";
-                result.status = "error";
-                result.message = "OTP sent Failed.";
-                Log.Error(ex.Message);
-                return result;
-            }
+            
         }
 
         async Task<string> sendSMSasync(string sms, string MobilNumber)
@@ -1769,8 +1357,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
+                
                     var guestreg = await db.Hotels.Where(c => c.HotelRegNo == obj.HotelRegNo).FirstOrDefaultAsync();
 
                     if (guestreg != null)
@@ -1911,9 +1498,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 return result;
                             }
                         }
-
-
-
                     }
                     else
                     {
@@ -1921,34 +1505,10 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.status = "error";
                         result.message = "Hotel Not Registred!";
                         return result;
-                    }
-                    //return result;
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
+                    }                  
             }
 
         }
-
-
-
-
         // CheckOutGuestAsync
 
         public async Task<HotelCheckInListResult> CheckGuestInOutStatusAsync(string hotelRegNo)
@@ -1961,9 +1521,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
-                    var checkhregno = await db.Hotels.Where(x => x.HotelRegNo == hotelRegNo).FirstOrDefaultAsync();
+                 var checkhregno = await db.Hotels.Where(x => x.HotelRegNo == hotelRegNo).FirstOrDefaultAsync();
                     if (checkhregno != null)
                     {
                         DateTime date = DateTime.Now.Date;
@@ -2037,26 +1595,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.status = "error";
                         result.message = "Hotel Registration Number Not Found!";
                         return result;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
+                    }               
             }
         }
 
@@ -2069,9 +1608,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
-                    //var dlist = await db.HotelGuests.Where(c => c.HotelRegNo == hotelRegNo).Select(x => new {x.GuestName,x.RoomNo,x.CheckInDate,x.Mobile,x.Address}).ToListAsync();
+                //var dlist = await db.HotelGuests.Where(c => c.HotelRegNo == hotelRegNo).Select(x => new {x.GuestName,x.RoomNo,x.CheckInDate,x.Mobile,x.Address}).ToListAsync();
 
                     List<SqlParameter> parms = new List<SqlParameter>
                             {
@@ -2093,7 +1630,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                  "No Guest Found!";
                             data.Add(new CheckedInList
                             {
-                                guestName = i.GuestName,                               
+                                guestName = i.GuestName,
                                 mobile = i.Mobile,
                                 country = i.Country,
                                 state = i.State,
@@ -2104,15 +1641,13 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 // totalAdult = i.Total_Adult,
                                 // totalChild = i.Total_Child,
                             });
-                            
+
                         }
                         result.code = 200;
                         result.status = "success";
                         result.message = "Success Response";
                         result.data = data;
                         return result;
-
-
                     }
                     else
                     {
@@ -2123,66 +1658,22 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         return result;
                     }
 
-
-
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
             }
         }
-
-
-
 
         public async Task<RelationsList> GetRelationAsync()
         {
             RelationsList result = new();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
+               
                     var rel = await db.Relations.AsQueryable().Select(x => new { x.Id, x.Name }).ToListAsync();
                     result.code = 200;
                     result.status = "success";
                     result.message = "Relation List";
                     result.data = rel;
 
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-                }
-
+                    return result;               
             }
         }
 
@@ -2191,8 +1682,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             VisitPurposeList result = new();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
+              
                     var vp = await db.VisitPurposes.AsQueryable().Select(x => new { x.Id, x.Purpose, }).ToListAsync();
                     result.code = 200;
                     result.status = "success";
@@ -2200,25 +1690,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     result.data = vp;
 
                     return result;
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-                }
-
+                
             }
         }
 
@@ -2227,8 +1699,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             SelectIDTypeList result = new();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
+              
                     var vp = await db.IdProofTypes.AsQueryable().Select(x => new { id = x.Id, idProofType = x.IdType, }).ToListAsync();
                     result.code = 200;
                     result.status = "success";
@@ -2236,31 +1707,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                     result.data = vp;
 
                     return result;
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-                }
-
+               
             }
         }
-
-
-
-
 
         public async Task<DeptDashboardRes> DepartmentDashboardAsync(string userID)
         {
@@ -2272,8 +1721,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
+              
                     var stateid = await db.Polices.Where(x => x.UserId == userID).Select(x => x.StateId).FirstOrDefaultAsync();
                     var distid = await db.Polices.Where(x => x.UserId == userID).Select(x => x.DistId).FirstOrDefaultAsync();
                     var cityid = await db.Polices.Where(x => x.UserId == userID).Select(x => x.CityId).FirstOrDefaultAsync();
@@ -2367,9 +1815,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 checkInDate = i.CheckInDate,
                             });
                             result.hotelGuestDetails_DeptDashes = hotelGuestDetails_DeptDashes;
-
-
-                        }
+                       }
                     }
                     else
                     {
@@ -2473,8 +1919,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 result.stationName = null;
                                 return result;
                             }
-
-
                         }
                         else
                         {
@@ -2493,30 +1937,8 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.message = "UserID Not Found!";
                         return result;
                     }
-
-
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-
-                }
             }
         }
-
 
         public async Task<ShowHotelGuestDetailsRes> ShowHotelGuestDetailsAsync(string roomBookingID)
         {
@@ -2527,9 +1949,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
-                    var ExistRoomId = db.HotelGuests.Where(c => c.RoomBookingId == roomBookingID).FirstOrDefault();
+                  var ExistRoomId = db.HotelGuests.Where(c => c.RoomBookingId == roomBookingID).FirstOrDefault();
 
                     if (ExistRoomId == null)
                     {
@@ -2588,11 +2008,9 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             result.status = "success";
                             result.message = "Success Response";
                             result.data = dataresult;
-                            //result.hotelGuestDetails = hotelGuestDetails;
-                            //result.addOnGuestDetails1 = addguestDetails;
-                            return result;
-
-
+                        //result.hotelGuestDetails = hotelGuestDetails;
+                        //result.addOnGuestDetails1 = addguestDetails;
+                        return result;
                         }
                         else
                         {
@@ -2605,25 +2023,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                             return result;
                         }
                     }
-
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-                }
             }
 
         }
@@ -2639,8 +2038,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
                     var hTitle = await db.Hotels.Where(c => c.HotelRegNo == hotelRegNo).FirstOrDefaultAsync();
                     if (hTitle != null)
                     {
@@ -2742,26 +2139,6 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.message = "Hotel Registration Number Not Matched.";
                         return result;
                     }
-
-                }
-
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-                }
             }
 
         }
@@ -2771,9 +2148,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
             CommonAPIResponse result = new CommonAPIResponse();
             using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
             {
-                try
-                {
-                    var outguest = await db.HotelGuests.Where(c => c.RoomBookingId == roomBookingID && c.CheckOutDate == null).FirstOrDefaultAsync();
+                var outguest = await db.HotelGuests.Where(c => c.RoomBookingId == roomBookingID && c.CheckOutDate == null).FirstOrDefaultAsync();
 
                     if (outguest != null)
                     {
@@ -2791,25 +2166,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                         result.status = "error";
                         result.message = "Check Out Failed";
                         return result;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    var w32ex = ex as Win32Exception;
-                    if (w32ex == null)
-                    {
-                        w32ex = ex.InnerException as Win32Exception;
-                    }
-                    if (w32ex != null)
-                    {
-                        result.code = w32ex.ErrorCode;
-                        // do stuff
-                    }
-                    result.status = "error";
-                    result.message = ex.Message;
-                    Log.Error(ex.Message);
-                    return result;
-                }
+                    }               
             }
         }
 

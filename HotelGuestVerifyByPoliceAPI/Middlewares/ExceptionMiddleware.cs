@@ -1,6 +1,8 @@
-﻿using HotelGuestVerifyByPoliceAPI.Exceptions;
+﻿
 using HotelGuestVerifyByPoliceAPI.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Data.SqlClient;
 using System.Net;
 using System.Security.Cryptography.Xml;
 
@@ -29,25 +31,38 @@ namespace HotelGuestVerifyByPoliceAPI.Middlewares
 
         private static Task HandleException(HttpContext context, Exception ex)
         {
-            int statusCode = StatusCodes.Status500InternalServerError;
+            int statuscode = 0;
+            var errorResonse = new ErrorResponse()
+            {
+                status = "error",
+            };
             switch (ex)
             {
-                case NotFoundException :
-                    statusCode = StatusCodes.Status404NotFound;
+               
+                case ApplicationException:
+                    errorResonse.StatusCode = (int)HttpStatusCode.Forbidden;
+                    errorResonse.status = "error";
+                    errorResonse.Message = "Something Went Wrong In Application.";
                     break;
-                case BadRequestException:
-                    statusCode = StatusCodes.Status400BadRequest;
+                case SqlException:
+                    errorResonse.StatusCode = StatusCodes.Status500InternalServerError;
+                    errorResonse.status = "error";
+                    errorResonse.Message = "Database exception occurred.";
                     break;
-                
-            }
+                case TimeoutException:
+                    errorResonse.StatusCode = StatusCodes.Status408RequestTimeout;
+                    errorResonse.status = "error";
+                    errorResonse.Message = "Database timeout exception occurred.";
+                    break;
+                default:
+                    errorResonse.StatusCode = StatusCodes.Status500InternalServerError;
+                    errorResonse.status = "error";
+                    errorResonse.Message = "Internal Server Error.";
+                    break;
 
-            var errorResonse = new ErrorResponse()
-            { 
-                StatusCode = statusCode,
-                Message = ex.Message
-            };
+            }
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = statusCode;
+            //context.Response.StatusCode = statuscode;
             return context.Response.WriteAsync(errorResonse.ToString());
 
         }
