@@ -15,6 +15,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Entities.SPEntities
         public string? Mobile { get; set; }
         public string? Gender { get; set; }
         public int Age { get; set; }
+        public string? GuestType { get; set; }
         public string? Country { get; set; }
         public string? State { get; set; }
         public string? City { get; set; }

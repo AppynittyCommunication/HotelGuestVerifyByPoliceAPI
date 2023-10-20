@@ -31,6 +31,7 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
         public string? relation { get; set; }
         public string? gender { get; set; }
         public int age { get; set; }
+        public string? guestType { get; set; }
         public string? country { get; set; }
         public string? state { get; set; }
         public string? city { get; set; }
@@ -50,6 +51,7 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
         public string? relation { get; set; }
         public string? gender { get; set; }
         public int age { get; set; }
+        public string? guestType { get; set; }
         public string? country { get; set; }
         public string? state { get; set; }
         public string? city { get; set; }

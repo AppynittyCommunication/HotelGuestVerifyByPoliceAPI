@@ -2212,6 +2212,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                     hotelGuestDetails.relation = i.RelationWithGuest;
                                     hotelGuestDetails.gender = i.Gender;
                                     hotelGuestDetails.age = (int)i.Age;
+                                    hotelGuestDetails.guestType = i.GuestType;
                                     hotelGuestDetails.country = i.Country;
                                     hotelGuestDetails.state = i.State;
                                     hotelGuestDetails.city = i.City;
@@ -2235,6 +2236,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                         relation = i.RelationWithGuest,
                                         gender = i.Gender,
                                         age = (int)i.Age,
+                                        guestType = i.GuestType,
                                         country = i.Country,
                                         state = i.State,
                                         city = i.City,
