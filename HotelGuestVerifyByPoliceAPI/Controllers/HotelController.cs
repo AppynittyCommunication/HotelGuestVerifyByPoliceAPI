@@ -112,6 +112,17 @@ namespace HotelGuestVerifyByPoliceAPI.Controllers
         }
 
 
+        [Route("ShowGuestDetails")]
+        [HttpGet]
+        [EnableCors("MyCorsPolicy")]
+        public async Task<ActionResult<ShowGuestDetailsRes>> ShowGuestDetails([FromHeader] string roomBookingID)
+        {
+            ShowGuestDetailsRes objresponse = await objRep.ShowGuestDetailsAsync(roomBookingID);
+            if (objresponse.status == "error" && objresponse.code != 200)
+                throw new Exception("Exception Occured While Fetching The Data.");
+            return objresponse;
+        }
+
 
     }
 }

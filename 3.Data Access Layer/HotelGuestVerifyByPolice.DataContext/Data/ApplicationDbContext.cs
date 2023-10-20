@@ -54,6 +54,7 @@ public partial class ApplicationDbContext : DbContext
     public DbSet<Hotel_MonthlyCheckInOutCount_Result> Hotel_MonthlyCheckInOutCount_Results { get; set; }
     public DbSet<SP_SearchHotel_Result> SP_SearchHotel_Results { get; set; }
     public DbSet<SP_LastVisitorByHotel_Result> SP_LastVisitorByHotel_Results { get; set; }
+    public DbSet<ShowGuestDetails_Result> ShowGuestDetails_Results { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -160,6 +161,7 @@ public partial class ApplicationDbContext : DbContext
         modelBuilder.Entity<Hotel_MonthlyCheckInOutCount_Result>().HasNoKey();
         modelBuilder.Entity<SP_SearchHotel_Result>().HasNoKey();
         modelBuilder.Entity<SP_LastVisitorByHotel_Result>().HasNoKey();
+        modelBuilder.Entity<ShowGuestDetails_Result>().HasNoKey();
 
         OnModelCreatingPartial(modelBuilder);
     }

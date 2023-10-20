@@ -61,6 +61,7 @@ namespace HotelGuestVerifyByPolice.ViewModel.Models.APIResultModels
 
     public class HotelGuestDetails_DeptDash2
     {
+        public string? roomBookingID { get; set; }
         public string? hotelName { get; set; }
         public string? guestName { get; set; }
         public int age { get; set; }

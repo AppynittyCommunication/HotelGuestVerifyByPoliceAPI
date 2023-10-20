@@ -52,13 +52,15 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
         Task<RelationsList> GetRelationAsync(); 
         Task<VisitPurposeList> GetVisitPurposeAsync(); 
-        Task<SelectIDTypeList> GetSelectIDTypeAsync(); 
-
+        Task<SelectIDTypeList> GetSelectIDTypeAsync();
+        Task<ShowGuestDetailsRes> ShowGuestDetailsAsync(string roomBookingID);
 
         //Department Controller
-         Task<DeptDashboardRes> DepartmentDashboardAsync(string userID);
+        Task<DeptDashboardRes> DepartmentDashboardAsync(string userID);
          Task<ShowHotelGuestDetailsRes> ShowHotelGuestDetailsAsync(string roomBookingID);
          Task<SearchHotelResponse> SearchHotelAsync(string hotelRegNo);
+
+     
 
     }
 }

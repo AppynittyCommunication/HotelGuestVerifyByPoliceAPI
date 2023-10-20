@@ -1840,6 +1840,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
 
                             hotelGuestDetails_DeptDash2.Add(new HotelGuestDetails_DeptDash2
                             {
+                                roomBookingID = i.RoomBookingID,
                                 hotelName = i.HotelName,
                                 guestName = i.GuestName,
                                 age = i.Age,
@@ -2171,5 +2172,104 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
         }
 
 
+        public async Task<ShowGuestDetailsRes> ShowGuestDetailsAsync(string roomBookingID)
+        {
+            ShowGuestDetailsRes result = new ();
+            ShowGuestDetailsResData dataresult = new();
+            Mainguestdetails hotelGuestDetails = new();
+            List<AddOnGuestDetail> addguestDetails = new();
+
+            using (HotelGuestVerifyByPoliceEntities db = new HotelGuestVerifyByPoliceEntities())
+            {
+                var ExistRoomId = db.HotelGuests.Where(c => c.RoomBookingId == roomBookingID).FirstOrDefault();
+
+                if (ExistRoomId == null)
+                {
+                    result.code = 200;
+                    result.status = "error";
+                    result.message = "Room Booking Id Not Exist";
+                    return result;
+                }
+                else
+                {
+                    List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                         new SqlParameter { ParameterName = "@RoomBookingID", Value = roomBookingID },
+                    };
+
+                    var data = await db.ShowGuestDetails_Results.FromSqlRaw<ShowGuestDetails_Result>("EXEC ShowGuestDetails @RoomBookingID", parms.ToArray()).ToListAsync();
+                    if (data.Count > 0)
+                    {
+                        {
+                            foreach (var i in data)
+                            {
+                                if (i.RelationWithGuest == "SELF")
+                                {
+                                    hotelGuestDetails.roomBookingId = i.RoomBookingId;
+                                    hotelGuestDetails.name = i.GuestName;
+                                    hotelGuestDetails.checkInDate = i.CheckInDate.ToString();
+                                    hotelGuestDetails.mobileNo = i.Mobile;
+                                    hotelGuestDetails.relation = i.RelationWithGuest;
+                                    hotelGuestDetails.gender = i.Gender;
+                                    hotelGuestDetails.age = (int)i.Age;
+                                    hotelGuestDetails.country = i.Country;
+                                    hotelGuestDetails.state = i.State;
+                                    hotelGuestDetails.city = i.City;
+                                    hotelGuestDetails.commingFrom = i.ComingFrom;
+                                    hotelGuestDetails.visitPurpose = i.VisitPurpose;
+                                    hotelGuestDetails.idType = i.GuestIdType;
+                                    hotelGuestDetails.photo = i.GuestPhoto;
+                                    hotelGuestDetails.idPhoto = i.GuestIDProof;
+
+                                    dataresult.mainguestdetails = hotelGuestDetails;
+
+                                }
+                                else
+                                {
+                                    addguestDetails.Add(new AddOnGuestDetail
+                                    {
+                                        roomBookingId = i.RoomBookingId,
+                                        name = i.GuestName,
+                                        checkInDate = i.CheckInDate.ToString(),
+                                        mobileNo = i.Mobile,
+                                        relation = i.RelationWithGuest,
+                                        gender = i.Gender,
+                                        age = (int)i.Age,
+                                        country = i.Country,
+                                        state = i.State,
+                                        city = i.City,
+                                        commingFrom = i.ComingFrom,
+                                        visitPurpose = i.VisitPurpose,
+                                        idType = i.GuestIdType,
+                                        photo = i.GuestPhoto,
+                                        idPhoto = i.GuestIDProof,
+
+                                    });
+                                    dataresult.addOnGuestDetails = addguestDetails;
+                                }
+                            }
+                        }
+                        result.code = 200;
+                        result.status = "success";
+                        result.message = "Success Response";
+                        result.data = dataresult;
+                        //result.hotelGuestDetails = hotelGuestDetails;
+                        //result.addOnGuestDetails1 = addguestDetails;
+                        return result;
+                    }
+                    else
+                    {
+                        result.code = 200;
+                        result.status = "success";
+                        result.message = "No Data Found";
+                        result.data = null;
+                        //result.hotelGuestDetails = null;
+                        //result.addOnGuestDetails1 = null;
+                        return result;
+                    }
+                }
+            }
+
+        }
     }
 }
