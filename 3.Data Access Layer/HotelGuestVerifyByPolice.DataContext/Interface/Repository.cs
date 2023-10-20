@@ -2207,7 +2207,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                 {
                                     hotelGuestDetails.roomBookingId = i.RoomBookingId;
                                     hotelGuestDetails.name = i.GuestName;
-                                    hotelGuestDetails.checkInDate = i.CheckInDate.ToString();
+                                    hotelGuestDetails.checkInDate = i.CheckInDate.ToString("dd MMM ddd yyyy HH:mm tt");
                                     hotelGuestDetails.mobileNo = i.Mobile;
                                     hotelGuestDetails.relation = i.RelationWithGuest;
                                     hotelGuestDetails.gender = i.Gender;
@@ -2231,7 +2231,7 @@ namespace HotelGuestVerifyByPolice.DataContext.Interface
                                     {
                                         roomBookingId = i.RoomBookingId,
                                         name = i.GuestName,
-                                        checkInDate = i.CheckInDate.ToString(),
+                                        checkInDate = i.CheckInDate.ToString("dd MMM ddd yyyy HH:mm tt"),
                                         mobileNo = i.Mobile,
                                         relation = i.RelationWithGuest,
                                         gender = i.Gender,
