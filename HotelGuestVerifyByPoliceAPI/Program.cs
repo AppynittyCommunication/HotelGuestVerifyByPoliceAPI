@@ -47,6 +47,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         });
 });
 
+
 builder.Services.AddCors(p => p.AddPolicy("MyCorsPolicy", build =>
 {
     //build.WithOrigins("http://localhost:3000", "https://localhost:3000").AllowAnyHeader().WithMethods("GET","POST");
